@@ -1,11 +1,9 @@
 {
-	// REQUIRED
-	
+
 		"manifest_version": 2,
 		"name": "MB3 Upcoming",
 		"version": "0.1",
   
-	// RECOMMENDED
 	
 		"description": "This extension displays the latest upcoming episodes from your Media Browser Server.",
 		"author": "Angelblue05",
@@ -15,14 +13,12 @@
 			"16": "Icons/icon_16.png"
 		},
   
-	// IMPORTANT
-	
+
 		"browser_action": {
 			"default_icon": "icon.png",
 			"default_popup": "popup.html"
 		},
   
-	// SECURITY
 	
 		"content_security_policy": "script-src 'self'; object-src 'self'"
 }
