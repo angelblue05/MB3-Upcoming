@@ -13,6 +13,10 @@ body	{
 	height: 140px;
 }
 
+#table-logo	{
+	width: 55px;
+}
+
 /* SIGN IN - Header */
 
 .header	{
