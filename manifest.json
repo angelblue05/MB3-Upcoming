@@ -17,6 +17,6 @@
 		"default_popup": "popup.html"
 	},
 
-	"permission":  ["storage"],
+
 	"content_security_policy": "script-src 'self'; object-src 'self'"
 }
