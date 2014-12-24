@@ -7,7 +7,7 @@ body	{
 	padding: 0;
 }
 
-.background-login	{
+.bottom-background	{
 	background: #333333;
 	margin: 5px;
 	height: 140px;
@@ -36,14 +36,14 @@ body	{
 
 /* SIGN IN - Server login information */
 
-#table-info	{
+#table-login	{
 	padding-top: 15px;
 	font-family: Arial;
 }
-#table-info label	{
+#table-login label	{
 	color: #c2c2c2;
 }
-#table-info input	{
+#table-login input	{
 	margin-top: 2px;
 	margin-bottom: 5px;
 	padding: 5px;
