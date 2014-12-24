@@ -50,7 +50,8 @@ body	{
 }
 
 #input:focus {
-	border: #27a436;
+	border: 1px solid #27a436;
+	outline: none !important;
 }
 
 }
