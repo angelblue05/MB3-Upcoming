@@ -48,11 +48,11 @@ body	{
 	margin-bottom: 5px;
 	padding: 5px;
 	border: 1px solid #dad9d9;
-	outline: none !important;
 }
 
 #table-login input:focus {
 	border: 1px solid #27a436;
+	outline: none !important;
 }
 
 }
