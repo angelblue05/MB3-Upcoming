@@ -1,12 +1,12 @@
 // Verify if deviceID exists
 chrome.storage.local.get(null, function(items) {
   if (typeof items.deviceID === 'undefined') {
-    // the device id is not there, so let's generate one
+    // the deviceID is not there, generate a guid
     device_id = guid();
-    // and then store it so it is there next time
+    // storing guid as deviceID for future use
     chrome.storage.local.set({ deviceID: device_id });
   } else {
-    // the device id is there, let's use it
+    // the deviceID is there
     device_id = items.deviceID;
   }
 });
