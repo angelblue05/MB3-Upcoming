@@ -47,9 +47,6 @@ body	{
 	margin-top: 2px;
 	margin-bottom: 5px;
 	padding: 5px;
-}
-
-input:focus {
 	border: 1px solid #27a436;
 	outline: none !important;
 }
