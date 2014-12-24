@@ -55,8 +55,6 @@ body	{
 	outline: none !important;
 }
 
-}
-
 #setting_ip	{
 	width: 200px;
 }
@@ -65,18 +63,18 @@ body	{
 	width: 60px;
 }
 
-.save_settings {
+#save_settings {
 	margin-top: 10px;
-	background: #3387cc;
+	background: #27a436;
 	padding: 6.5px 13px;
 	color: white;
 	font-size: 13px;
 	vertical-align: middle;
+	border: 0;
 }
-.save_settings:hover {
-	background: #297ab0;
-	color: #ffffff;
+#save_settings:hover {
+	background: #20932e;
 }
-.save_settings:active {
-	background: #3e7396;
+#save_settings:active {
+	background: #20932e;
 }
