@@ -49,6 +49,12 @@ body	{
 	padding: 5px;
 }
 
+#input:focus {
+	border-color: #27a436;	
+}
+
+}
+
 #setting_ip	{
 	width: 200px;
 }
