@@ -70,11 +70,14 @@ body	{
 	color: white;
 	font-size: 13px;
 	vertical-align: middle;
-	border: 0;
 }
 #save_settings:hover {
 	background: #20932e;
 }
 #save_settings:active {
-	background: #20932e;
+	background: #197524;
+}
+
+#save_settings:focus {
+    outline: none;
 }
