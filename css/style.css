@@ -50,7 +50,7 @@ body	{
 }
 
 #input:focus {
-	border-color: #27a436;	
+	border: #27a436;
 }
 
 }
