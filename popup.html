@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/cryptoJs.js"</script></script>
 		<script type="text/javascript" src="popup.js"></script>
 	</head>
   
@@ -29,14 +30,16 @@
 					<th align="left"><label>Port:</label></th>
 					</tr>
 					
-					<tr><form>
+					<form> <!-- IP, port and connect -->
+					<tr>
 					<th><input type="text" name="ip" id="setting_ip" value=""></th>
 					<th><input type="text" name="ip" id="setting_port" value=""></th>
 					</tr>
 					
 					<tr>
 					<th colspan="2"><button id="save_settings">Connect</button></th>
-					</form></tr>
+					</tr>
+					</form>
 				</table>
 				<div id="msgconnect"></div> <!-- Connecting or error message -->
 			</div>
