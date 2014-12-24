@@ -29,6 +29,11 @@ body	{
 	padding-right: 7px;
 }
 
+#logo {
+	width: 180px;
+	padding-top: 3px;
+}
+
 /* SIGN IN - Server login information */
 
 .table-info	{
