@@ -81,5 +81,9 @@ body	{
 }
 
 #save_settings:focus {
-    outline: none;
+    	outline: none;
+}
+
+#msgconnect {
+	color: white;
 }
