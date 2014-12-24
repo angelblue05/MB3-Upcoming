@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('#server-login').hover(function() {
+  $('#server-login').click(function() {
     $(this).hide();  
   });
 });
