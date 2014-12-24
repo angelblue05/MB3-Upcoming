@@ -36,14 +36,14 @@ body	{
 
 /* SIGN IN - Server login information */
 
-.table-info	{
+#table-info	{
 	padding-top: 15px;
 	font-family: Arial;
 }
-.table-info label	{
+#table-info label	{
 	color: #c2c2c2;
 }
-.table-info input	{
+#table-info input	{
 	margin-top: 2px;
 	margin-bottom: 5px;
 	padding: 5px;
