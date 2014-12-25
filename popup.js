@@ -38,7 +38,7 @@ $(document).ready(function() {
 
 function getUser() {
   console.log("Success, first time login");
-  $('msgconnect').hide();
+  $('#msgconnect').hide();
 };
 
 function headerSetup() {
