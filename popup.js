@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  
+  $('#userSelect').hide();
   // When pressing the connect button
   $('#save_settings').click(function() {
 
