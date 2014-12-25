@@ -41,11 +41,11 @@ function getUser() {
   $('#msgconnect').hide();
   $('#userSelect').show();
   
-  $getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/Public", function(data) {
+  $getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/AuthenticateByName", function(data) {
     $("#users").html('');
   })
 };
 
 function headerSetup() {
-  console.log("Already logged in");
+  ;
 };
