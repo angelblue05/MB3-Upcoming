@@ -3,7 +3,7 @@ $(document).ready(function() {
   $('#userSelect').hide();
   // When pressing the connect button
   $('#save_settings').click(function() {
-    $('#server-login').hide();
+    
     // Save user IP and port
     var $ip = $('#setting_ip').val();
     var $port = $('#setting_port').val();
@@ -26,8 +26,10 @@ $(document).ready(function() {
       chrome.storage.local.get(null, function(items) {
         // If userID doesn't exist, bring up user list
         if (typeof items.user_id === 'undefined') {
+          $('#server-login').hide();
           getUser();  
         } else {
+          $('#server-login').hide();
           headerSetup();
         }
       })
