@@ -1,5 +1,7 @@
 $(document).ready(function() {
   
+  $('#userSelect').hide();
+  
   // When pressing the connect button
   $('#save_settings').click(function() {
 
@@ -41,6 +43,7 @@ $(document).ready(function() {
 function getUser() {
   console.log("Success, first time login");
   $('#server-login').fadeOut('fast');
+  $('#userSelect').show();
 };
 
 function headerSetup() {
