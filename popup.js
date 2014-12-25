@@ -13,9 +13,7 @@ $(document).ready(function() {
     };
     
     // Test the connection
-    $('#msgconnect').slideDown(1600, 'swing', function() {
-      $(this).append("<p>Connecting to server...</p>"); /* Message */  
-    });
+    $('#msgconnect').append("<p>Connecting to server...</p>"); /* Message */
     
     // Test with the given IP and port
     $.getJSON($ip + ":" + $port + "/mediabrowser/Users/Public", function() {
