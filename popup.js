@@ -33,13 +33,12 @@ $(document).ready(function() {
       }).fail(function() { /* Testing connection failed */
         $('#msgconnect').append("<p>Unable to connect. Please verify your IP or URL and port.</p>");
       });
+  });
 });
-});
-
-
 
 function getUser() {
   console.log("Success, first time login");
+  $('msgconnect').hide();
 };
 
 function headerSetup() {
