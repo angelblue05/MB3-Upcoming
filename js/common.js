@@ -22,3 +22,5 @@ function S4() {
 function guid() {
 	return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
 };
+
+// Password encryption
