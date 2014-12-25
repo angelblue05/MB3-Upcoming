@@ -1,13 +1,50 @@
 $(document).ready(function() {
-  /*$('#server-login').click(function() {
-    $(this).hide();  
-  });*/
   
-  // When pressing connect
+  // When pressing the connect button
   $('#save_settings').click(function() {
-    var $url = $('#setting_ip').val();
-    var $ip = $('#setting_port').val();
+
+    // Save user IP and port
+    var $ip = $('#setting_ip').val();
+    var $port = $('#setting_port').val();
     
-    $('#msgconnect').append("<p>Connecting to server!</p>")
-  });
+    // Verify if $ip contains http/https
+    if ($ip.indexOf('http://') == -1 && $ip.indexOf('https://') == -1) {
+      $ip = 'http://' + $ip;
+    };
+    
+    // Test the connection
+    $('#msgconnect').append("<p>Connecting to server...</p>"); /* Message */
+    
+    // Test with the given IP and port
+    $.getJSON($ip + ":" + $port + "/mediabrowser/Users/Public", function() {
+      // Testing successful, save IP and port to storage
+      chrome.storage.local.set({ ip: $ip });
+      chrome.storage.local.set({ port: $port });
+    
+      // Verify if userID already exists
+      chrome.storage.local.get(null, function(items) {
+        // If userID doesn't exist, bring up user list
+        if (typeof items.user_id === 'undefined') {
+          getUser();  
+        } else {
+          headerSetup();
+        }
+      })
+      }).fail(function() { /* Testing connection failed */
+        $('#msgconnect').remove();
+        $('#msgconnect').append("<p>Unable to connect. Please verify your IP or URL and port.</p>");
+      });
+    
+    // Save IP and port to storage
+    chrome.storage.local.set({ ip: $ip });
+    chrome.storage.local.set({ port: $port });
 });
+});
+
+function getUser() {
+  console.log("Success, first time login");
+};
+
+function headerSetup() {
+  console.log("Already logged in");
+};
