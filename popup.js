@@ -36,8 +36,11 @@ $(document).ready(function() {
 });
 });
 
+
+
 function getUser() {
   console.log("Success, first time login");
+  $('#server-login').fadeOut('fast');
 };
 
 function headerSetup() {
