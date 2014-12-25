@@ -95,3 +95,15 @@ body	{
 #userSelect {
 	background: #ffffff;
 }
+
+#users {
+	background: #ffffff;
+}
+
+#users .squarePosterItem {
+	width: 100px;
+}
+
+#users .squarePosterItem .posterItemImage {
+	height: 100px;
+}
