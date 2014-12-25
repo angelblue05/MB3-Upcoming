@@ -26,10 +26,8 @@ $(document).ready(function() {
       chrome.storage.local.get(null, function(items) {
         // If userID doesn't exist, bring up user list
         if (typeof items.user_id === 'undefined') {
-          $('#server-login').hide();
           getUser();  
         } else {
-          $('#server-login').hide();
           headerSetup();
         }
       })
@@ -40,9 +38,8 @@ $(document).ready(function() {
 });
 
 function getUser() {
-  console.log("Success, first time login");
   $('#msgconnect').hide();
-  $('#server-login').hide();
+  $('#userSelect').show();
 };
 
 function headerSetup() {
