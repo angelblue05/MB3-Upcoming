@@ -1,8 +1,9 @@
 $(document).ready(function() {
+  
   $('#userSelect').hide();
   // When pressing the connect button
   $('#save_settings').click(function() {
-
+    $('#server-login').hide();
     // Save user IP and port
     var $ip = $('#setting_ip').val();
     var $port = $('#setting_port').val();
@@ -14,7 +15,7 @@ $(document).ready(function() {
     
     // Test the connection
     $('#msgconnect').append("<p>Connecting to server...</p>"); /* Message */
-    $('#server-login').hide();
+    
     // Test with the given IP and port
     $.getJSON($ip + ":" + $port + "/mediabrowser/Users/Public", function() {
       // Testing successful, save IP and port to storage
