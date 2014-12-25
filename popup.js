@@ -17,7 +17,7 @@ $(document).ready(function() {
     $('#msgconnect').append("<p>Connecting to server...</p>"); /* Message */
     
     // Test with the given IP and port
-    $.getJSON($ip + ":" + $port + "/mediabrowser/Users/Public", function() {
+    $.getJSON($ip + ":" + $port + "/mediabrowser/Users/Public", function(data) {
       // Testing successful, save IP and port to storage
       chrome.storage.local.set({ ip: $ip });
       chrome.storage.local.set({ port: $port });
@@ -40,6 +40,8 @@ $(document).ready(function() {
 function getUser() {
   $('#msgconnect').hide();
   $('#userSelect').show();
+  
+  
 };
 
 function headerSetup() {
