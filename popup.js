@@ -13,7 +13,7 @@ $(document).ready(function() {
     };
     
     // Test the connection
-    $('#msgconnect').slideDown(function() {
+    $('#msgconnect').slideDown(1600, 'swing', function() {
       $(this).append("<p>Connecting to server...</p>"); /* Message */  
     });
     
