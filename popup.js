@@ -14,13 +14,13 @@ $(document).ready(function() {
     
     // Test the connection
     $('#msgconnect').append("<p>Connecting to server...</p>"); /* Message */
-    
+    $('#server-login').hide();
     // Test with the given IP and port
     $.getJSON($ip + ":" + $port + "/mediabrowser/Users/Public", function() {
       // Testing successful, save IP and port to storage
       chrome.storage.local.set({ ip: $ip });
       chrome.storage.local.set({ port: $port });
-    
+      
       // Verify if userID already exists
       chrome.storage.local.get(null, function(items) {
         // If userID doesn't exist, bring up user list
