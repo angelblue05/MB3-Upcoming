@@ -41,7 +41,9 @@ function getUser() {
   $('#msgconnect').hide();
   $('#userSelect').show();
   
-  
+  $getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/Public", function(data) {
+    $("#users").html('');
+  })
 };
 
 function headerSetup() {
