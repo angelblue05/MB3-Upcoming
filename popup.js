@@ -31,13 +31,8 @@ $(document).ready(function() {
         }
       })
       }).fail(function() { /* Testing connection failed */
-        $('#msgconnect').remove();
         $('#msgconnect').append("<p>Unable to connect. Please verify your IP or URL and port.</p>");
       });
-    
-    // Save IP and port to storage
-    chrome.storage.local.set({ ip: $ip });
-    chrome.storage.local.set({ port: $port });
 });
 });
 
