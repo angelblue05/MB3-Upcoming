@@ -17,5 +17,9 @@
 		"default_popup": "popup.html"
 	},
 
-	"permissions": ["storage"]
+	"permissions": [
+		"storage",
+		"http://*/*",
+		"https://*/*"
+		]
 }
