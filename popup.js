@@ -22,6 +22,7 @@ $(document).ready(function() {
       chrome.storage.local.set({ ip: $ip });
       chrome.storage.local.set({ port: $port });
       
+      // WORK IN PROGRESS
       // Verify if userID already exists
       chrome.storage.local.get(null, function(items) {
         // If userID doesn't exist, bring up user list
