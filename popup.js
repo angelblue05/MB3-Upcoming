@@ -34,7 +34,7 @@ $(document).ready(function() {
                 });
                 
                 $("#server-login").hide();
-				$("#userSelect").show();
+		$("#userSelect").show();
            
             // Verify if userID already exists
             /*chrome.storage.local.get(null, function(items) {
