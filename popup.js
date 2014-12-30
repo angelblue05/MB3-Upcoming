@@ -21,7 +21,7 @@ $(document).ready(function() {
 	        	$('#msgconnect').html("Connecting to server..."); /* Message */
 	          
 	        	// Test with the given IP and port
-	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
+	        	/*$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		                // Testing successful, save IP and port to storage
 		                chrome.storage.local.set({ ip: ip });
 		                chrome.storage.local.set({ port: port });
@@ -30,10 +30,15 @@ $(document).ready(function() {
 				$.each(data, function(key, val) {
 					// Display if user is enabled and not hidden
 					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
-						$('#userSelect').append(val['Name'] + "<br />\n")
+						var userImage;
+						var userPass;
+						// If user has an image
+						if (typeOf )
+						$('#userSelect').append(val['Name'] + "<br />\n");
 					}
-				});
+				});*/
 				
+				getUser();
 				$("#server-login").fadeOut('slow');
 				$("#userSelect").delay(600).fadeIn('slow');
 		                
@@ -48,7 +53,7 @@ $(document).ready(function() {
 
 function getUser() {
 	
-	$.getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/Public" + jsonf, function(data) {
+	$.getJSON(chrome.storage.local.get('ip')) + ":" + (chrome.storage.local.get('port')) + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		$.each(data, function(key, val) {
 			$('#userSelect').append(val['Name'] + "<br />\n")
 		});
