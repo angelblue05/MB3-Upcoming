@@ -8,7 +8,7 @@ $(document).ready(function() {
     $('#save_settings').click(function() {
       
       // Prevent user from pressing connect multiple times.
-      var processing = 1;
+      processing = 1;
       // Save user IP and port
       var ip = $('#setting_ip').val();
       var port = $('#setting_port').val();
@@ -42,7 +42,7 @@ $(document).ready(function() {
         });
     });
     
-    var processing = 0;
+    processing = 0;
   });
 });
 
