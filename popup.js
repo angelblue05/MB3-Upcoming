@@ -27,7 +27,12 @@ $(document).ready(function() {
 		                chrome.storage.local.set({ port: port });
 		    
 		                // Display the list of users
-				getUser();
+				$.each(data, function(key, val) {
+					$('#userSelect').append(val['Name'] + "<br />\n")
+				});
+				
+				$("#server-login").fadeOut('slow');
+				$("#userSelect").delay(600).fadeIn('slow');
 		                
 	        	}).fail(function() { /* Testing failed */
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
