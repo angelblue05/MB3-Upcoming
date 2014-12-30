@@ -1,5 +1,16 @@
 var processing = 0;
 var jsonf = "?format=json";
+var popup = chrome.extension.getBackgroundPage().popup,
+	$body = $('body'); 
+    $(window).unload(function() {
+        popup.cache = $body.html();
+    });
+
+if (popup.cache) {
+        $('body').html(popup.cache);
+    } else {
+        initialize();
+    }
 
 $(document).ready(function() {
   
