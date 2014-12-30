@@ -7,6 +7,7 @@ $(document).ready(function() {
   if (processing == 0) {
     // Prevent user from pressing connect multiple times.
     var processing = 1;
+    $('#server-login').hide();
     
     $('#save_settings').click(function() {
       
