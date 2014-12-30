@@ -5,11 +5,10 @@ $(document).ready(function() {
   $('#userSelect').hide();
   // When pressing the connect button
   if (processing == 0) {
-    // Prevent user from pressing connect multiple times.
-    var processing = 1;
-    
     $('#save_settings').click(function() {
       
+      // Prevent user from pressing connect multiple times.
+      var processing = 1;
       // Save user IP and port
       var ip = $('#setting_ip').val();
       var port = $('#setting_port').val();
