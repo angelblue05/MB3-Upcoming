@@ -18,7 +18,7 @@ $(document).ready(function() {
 	                	ip = 'http://' + ip;
 	        	}
 	          
-	        	$('#msgconnect').html("<p>Connecting to server...</p>"); /* Message */
+	        	$('#msgconnect').html("Connecting to server..."); /* Message */
 	          
 	        	// Test with the given IP and port
 	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
