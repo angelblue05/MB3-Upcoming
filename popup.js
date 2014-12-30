@@ -28,7 +28,10 @@ $(document).ready(function() {
 		    
 		                // Display the list of users
 				$.each(data, function(key, val) {
-					$('#userSelect').append(val['Name'] + "<br />\n")
+					// Display if user is enabled and not hidden
+					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
+						$('#userSelect').append(val['Name'] + "<br />\n")
+					}
 				});
 				
 				$("#server-login").fadeOut('slow');
