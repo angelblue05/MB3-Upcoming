@@ -8,6 +8,7 @@ $(document).ready(function() {
   	$(window).unload(function() {
     		chrome.runtime.sendMessage({cmd: "savestate"});
 	});
+	
 	// When pressing the connect button
 	$('#save_settings').on('click', function() {
 		if (processing == 0) {  
