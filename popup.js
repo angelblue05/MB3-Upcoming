@@ -19,15 +19,15 @@ $(document).ready(function() {
 	        	}
 	          
 	        	$('#msgconnect').html("Connecting to server..."); /* Message */
-	          	getUser();
+
 	        	// Test with the given IP and port
-	        	/*$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
+	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		                // Testing successful, save IP and port to storage
 		                chrome.storage.local.set({ ip: ip });
 		                chrome.storage.local.set({ port: port });
-		    
+		    		getUser();
 		                // Display the list of users
-				$.each(data, function(key, val) {
+				/*$.each(data, function(key, val) {
 					// Display if user is enabled and not hidden
 					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
 						var userImage;
@@ -39,11 +39,11 @@ $(document).ready(function() {
 				});
 				
 				$("#server-login").fadeOut('slow');
-				$("#userSelect").delay(600).fadeIn('slow');
+				$("#userSelect").delay(600).fadeIn('slow');*/
 		                
-	        	}).fail(function() { /* Testing failed 
+	        	}).fail(function() { /* Testing failed */
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
-	        	});*/
+	        	});
 	        
 	        	processing = 0;
 		}
