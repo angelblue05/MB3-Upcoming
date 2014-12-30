@@ -27,7 +27,7 @@ $(document).ready(function() {
         // Testing successful, save IP and port to storage
         chrome.storage.local.set({ ip: ip });
         chrome.storage.local.set({ port: port });
-        $('#server-login').hide();
+
         // WORK IN PROGRESS
         // Verify if userID already exists
         chrome.storage.local.get(null, function(items) {
