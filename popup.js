@@ -1,6 +1,6 @@
 var processing = 0;
 var jsonf = "?format=json";
-var popup = extension.getBackgroundPage().popup;
+var popup = chrome.extension.getBackgroundPage().popup;
 
 $(document).ready(function() {
   	$(window).unload(function() {
