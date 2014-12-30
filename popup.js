@@ -59,7 +59,7 @@ function getUser() {
 				/*if (typeOf ) {
 					$('#userSelect').append(val['Name'] + "<br />\n");
 				}*/
-			});
+			}
 				
 		});
 			
