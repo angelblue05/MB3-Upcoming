@@ -34,10 +34,10 @@ $(document).ready(function() {
 		                });
 		                
 		                $("#server-login").fadeOut('slow');
-						$("#userSelect").delay(600).fadeIn('slow');
+				$("#userSelect").delay(600).fadeIn('slow');
 	           
 	        	}).fail(function() { /* Testing failed */
-	        		$('#msgconnect').html("<p>Unable to connect. Please verify your IP or URL and port.</p>");
+	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
 	        	});
 	        
 	        	processing = 0;
