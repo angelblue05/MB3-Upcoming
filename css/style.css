@@ -96,14 +96,14 @@ body	{
 	background: #ffffff;
 }
 
-#users {
+.users {
 	background: #ffffff;
 }
 
-#users .squarePosterItem {
+.users .squarePosterItem {
 	width: 100px;
 }
 
-#users .squarePosterItem .posterItemImage {
+.users .squarePosterItem .posterItemImage {
 	height: 100px;
 }
