@@ -1,10 +1,7 @@
 var processing = 0;
 var jsonf = "?format=json";
-var popup = chrome.runtime.getBackgroundPage().popup,
-	$body = $('body'); 
-    $(window).unload(function() {
-        popup.cache = $body.html();
-    });
+var popup = chrome.runtime.getBackgroundPage().popup;
+
 
 if (popup.cache) {
         $('body').html(popup.cache);
@@ -13,7 +10,15 @@ if (popup.cache) {
     }
 
 $(document).ready(function() {
-  
+  	$(window).unload(function() {
+        	popup.cache = $('body').html();
+    	});
+    	
+    	if (popup.cache) {
+        	$('body').html(popup.cache);
+    	} else {
+        	initialize();
+    	}
 	// When pressing the connect button
 	$('#save_settings').click(function() {
 		if (processing == 0) {  
