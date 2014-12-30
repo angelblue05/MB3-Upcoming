@@ -28,8 +28,14 @@ $(document).ready(function() {
 		                	'port': port
 		                })
 		                
+		                // Set variable using storage
+		                chrome.storage.local.get(['ip', 'port'], function(result) {
+					ipStorage = result['ip'];
+					portStorage = result['port'];
+						
 		                // Display the list of users
-				getUser();
+					getUser();
+				})
 		                
 	        	}).fail(function() { /* Testing failed */
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
@@ -41,34 +47,24 @@ $(document).ready(function() {
 });
 
 function getUser() {
-
-	var ipStorage;
-	var portStorage;
-	
-	chrome.storage.local.get(['ip', 'port'], function(result) {
-	        ipStorage += result['ip'];
-	        portStorage += result['port'];
-	});
 	
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		$.each(data, function(key, val) {
-							// Display if user is enabled and not hidden
-					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
-						var userImage;
-						var userPass;
-						// If user has an image
-						if (typeOf )
-						$('#userSelect').append(val['Name'] + "<br />\n");
-					}
-				});
+			// Display if user is enabled and not hidden
+			if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
+				var userImage;
+				var userPass;
+			
+				// If user has an image
+				/*if (typeOf ) {
+					$('#userSelect').append(val['Name'] + "<br />\n");
+				}*/
+			});
 				
 		});
 			
 		$("#server-login").fadeOut('slow');
 		$("#userSelect").delay(600).fadeIn('slow');
-			
-	}).fail(function() { /* Testing failed */
-	        $('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
 	});
 	
 	/*$.getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/AuthenticateByName", function(data) {
