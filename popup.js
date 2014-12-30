@@ -1,5 +1,7 @@
 var processing = 0;
 var jsonf = "?format=json";
+var ipStorage;
+var portStorage;
 
 $(document).ready(function() {
   
@@ -28,21 +30,8 @@ $(document).ready(function() {
 		                	'port': port
 		                })
 		                
-		    		getUser();
 		                // Display the list of users
-				/*$.each(data, function(key, val) {
-					// Display if user is enabled and not hidden
-					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
-						var userImage;
-						var userPass;
-						// If user has an image
-						if (typeOf )
-						$('#userSelect').append(val['Name'] + "<br />\n");
-					}
-				});
-				
-				$("#server-login").fadeOut('slow');
-				$("#userSelect").delay(600).fadeIn('slow');*/
+				getUser();
 		                
 	        	}).fail(function() { /* Testing failed */
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
@@ -54,9 +43,6 @@ $(document).ready(function() {
 });
 
 function getUser() {
-	
-	var ipStorage;
-	var portStorage;
 	
 	chrome.storage.local.get(['ip', 'port'], function(result) {
 	        ipStorage = result.ip;
