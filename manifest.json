@@ -2,6 +2,11 @@
 	"manifest_version": 2,
 	"name": "MB3 Upcoming",
 	"version": "0.1",
+	
+	"background": {
+    		"scripts": ["eventPage.js"],
+    		"persistent": false
+  	},
 
 	"description": "This extension displays the latest upcoming episodes populated in Media Browser 3.",
 	"author": "angelblue05",
