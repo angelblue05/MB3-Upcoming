@@ -7,7 +7,7 @@ $(document).ready(function() {
         	popup.cache = $('body').html();
     	});
     	
-    	if (popup.cache) {
+    	if (typeof(popup) != "undefined" && popup.cache) {
         	$('body').html(popup.cache);
     	} else {
         	initialize();
