@@ -13,36 +13,35 @@ $(document).ready(function() {
 	        	var ip = $('#setting_ip').val();
 	        	var port = $('#setting_port').val();
           
-        	// Verify if the IP contains http/https
-        	if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
-                	ip = 'http://' + ip;
-        	}
-          
-        	$('#msgconnect').html("<p>Connecting to server...</p>"); /* Message */
-          
-        	// Test with the given IP and port
-        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
-	                // Testing successful, save IP and port to storage
-	                chrome.storage.local.set({ ip: ip });
-	                chrome.storage.local.set({ port: port });
-	    
-	                // WORK IN PROGRESS
-	            
-	                // Display the list of users
-	                $.each(data, function(key, val) {
-	                    $('#userSelect').append(val['Name'] + "<br />\n")
-	                });
-	                
-	                $("#server-login").hide();
-			$("#userSelect").show();
-           
-        	}).fail(function() { /* Testing failed */
-        		$('#msgconnect').html("<p>Unable to connect. Please verify your IP or URL and port.</p>");
-        	});
-        
-        	processing = 0;
-        	});
-    });
+	        	// Verify if the IP contains http/https
+	        	if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
+	                	ip = 'http://' + ip;
+	        	}
+	          
+	        	$('#msgconnect').html("<p>Connecting to server...</p>"); /* Message */
+	          
+	        	// Test with the given IP and port
+	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
+		                // Testing successful, save IP and port to storage
+		                chrome.storage.local.set({ ip: ip });
+		                chrome.storage.local.set({ port: port });
+		    
+		                // WORK IN PROGRESS
+		            
+		                // Display the list of users
+		                $.each(data, function(key, val) {
+		                    $('#userSelect').append(val['Name'] + "<br />\n")
+		                });
+		                
+		                $("#server-login").hide();
+				$("#userSelect").show();
+	           
+	        	}).fail(function() { /* Testing failed */
+	        		$('#msgconnect').html("<p>Unable to connect. Please verify your IP or URL and port.</p>");
+	        	});
+	        
+	        	processing = 0;
+	});
 });
 
 function getUser() {
