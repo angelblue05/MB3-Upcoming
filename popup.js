@@ -61,6 +61,8 @@ function getUser() {
 	chrome.storage.local.get(['ip', 'port'], function(result) {
 	        ipStorage = result.ip;
 	        portStorage = result.port;
+	        console.log(ipStorage);
+	        console.log(portStorage);
 	});
 	
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
