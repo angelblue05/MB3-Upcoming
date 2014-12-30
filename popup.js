@@ -1,15 +1,13 @@
 var processing = 0;
 var jsonf = "?format=json";
-var popup = chrome.extension.getBackgroundPage().popup;
 
 $(document).ready(function() {
+  	// Verify if extension state exists
+  	chrome.runtime.sendMessage({cmd: "getstate"});
+  	
   	$(window).unload(function() {
-        	popup.cache = $('body').html();
-    	});
-    	
-    	if (typeof(popup) != "undefined" && popup.cache) {
-        	$('body').html(popup.cache);
-    	}
+    		chrome.runtime.sendMessage({cmd: "savestate"});
+	});
 	// When pressing the connect button
 	$('#save_settings').on('click', function() {
 		if (processing == 0) {  
@@ -64,7 +62,7 @@ function getUser() {
 				// Verify is there's a user image
 				if (typeof(val.PrimaryImageTag) != 'undefined') {
 					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
-					$('#userSelect').append(userImage);
+					items.push("<a id=\""+val.Id+"\" class=\"users "+req_password+" posterItem squarePosterItem\" href=\"#\" data-user=\""+val.Name+"\"><div class=\"posterItemImage\" style=\""+user_image+"\"></div><div class=\"posterItemText\" style=\"color:#000;\">"+val.Name+"</div></a>");
 				}
 				/*$('#userSelect').append(val['Name'] + "<br />\n");*/
 			}
