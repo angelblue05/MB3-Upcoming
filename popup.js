@@ -13,7 +13,7 @@ $(document).ready(function() {
         	initialize();
     	}
 	// When pressing the connect button
-	$('#save_settings').click(function() {
+	$('#save_settings').live("click"(function() {
 		if (processing == 0) {  
 	        	// Prevent user from pressing connect multiple times.
 	        	processing = 1;
@@ -52,7 +52,7 @@ $(document).ready(function() {
 	        
 	        	processing = 0;
 		}
-	});
+	}));
 });
 
 function getUser() {
