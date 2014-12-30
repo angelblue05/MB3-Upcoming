@@ -41,6 +41,7 @@ $(document).ready(function() {
 	        	});
 	        
 	        	processing = 0;
+		}
 	});
 });
 
