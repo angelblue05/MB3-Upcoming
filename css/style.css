@@ -88,6 +88,7 @@ body	{
 	color: white;
 	font-size: 13px;
 	margin-bottom: 10px;
+	vertical-align: middle;
 }
 
 /* getUser */
