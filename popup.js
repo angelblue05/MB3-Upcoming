@@ -36,15 +36,15 @@ $(document).ready(function() {
 						if (typeOf )
 						$('#userSelect').append(val['Name'] + "<br />\n");
 					}
-				});*/
+				});
 				
 				getUser();
 				$("#server-login").fadeOut('slow');
 				$("#userSelect").delay(600).fadeIn('slow');
 		                
-	        	}).fail(function() { /* Testing failed */
+	        	}).fail(function() { /* Testing failed 
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
-	        	});
+	        	});*/
 	        
 	        	processing = 0;
 		}
@@ -57,10 +57,13 @@ function getUser() {
 		$.each(data, function(key, val) {
 			$('#userSelect').append(val['Name'] + "<br />\n")
 		});
+		
+		$("#server-login").fadeOut('slow');
+		$("#userSelect").delay(600).fadeIn('slow');
+	}).fail(function() { /* Testing failed */
+	        $('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
 	});
-	
-	$("#server-login").fadeOut('slow');
-	$("#userSelect").delay(600).fadeIn('slow');
+
 	
 	/*$.getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/AuthenticateByName", function(data) {
 		$("#users").html('');
