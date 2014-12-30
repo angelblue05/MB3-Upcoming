@@ -9,6 +9,7 @@ $(document).ready(function() {
           
             // Prevent user from pressing connect multiple times.
             processing = 1;
+            console.log("connect_stage1");
             // Save user IP and port
             var ip = $('#setting_ip').val();
             var port = $('#setting_port').val();
