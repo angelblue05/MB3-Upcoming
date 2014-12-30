@@ -9,8 +9,6 @@ $(document).ready(function() {
     	
     	if (typeof(popup) != "undefined" && popup.cache) {
         	$('body').html(popup.cache);
-    	} else {
-        	initialize();
     	}
 	// When pressing the connect button
 	$('#save_settings').live('click'(function() {
