@@ -55,9 +55,6 @@ $(document).ready(function() {
 
 function getUser() {
 	
-	var ipStorage;
-	var portStorage;
-	
 	chrome.storage.local.get(['ip', 'port'], function(result) {
 	        var ipStorage = result.ip;
 	        var portStorage = result.port;
