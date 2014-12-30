@@ -85,10 +85,9 @@ body	{
 }
 
 #msgconnect {
-	color: white;
+	color: #dad9d9;
 	font-size: 13px;
 	margin-bottom: 6px;
-	vertical-align: middle;
 }
 
 /* getUser */
