@@ -43,8 +43,8 @@ $(document).ready(function() {
 function getUser() {
 	
 	chrome.storage.local.get(['ip', 'port'], function(result) {
-	        ipStorage = result.ip;
-	        portStorage = result.port;
+	        ipStorage = result['ip'];
+	        portStorage = result['port'];
 	});
 	
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
