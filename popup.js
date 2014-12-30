@@ -19,7 +19,7 @@ $(document).ready(function() {
 	        	}
 	          
 	        	$('#msgconnect').html("Connecting to server..."); /* Message */
-	          
+	          	getUser();
 	        	// Test with the given IP and port
 	        	/*$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		                // Testing successful, save IP and port to storage
@@ -38,7 +38,6 @@ $(document).ready(function() {
 					}
 				});
 				
-				getUser();
 				$("#server-login").fadeOut('slow');
 				$("#userSelect").delay(600).fadeIn('slow');
 		                
