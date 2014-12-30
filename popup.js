@@ -23,8 +23,8 @@ $(document).ready(function() {
 	        	// Test with the given IP and port
 	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		                // Testing successful, save IP and port to storage
-		                chrome.storage.local.set({ ip: ip });
-		                chrome.storage.local.set({ port: port });
+		                chrome.storage.local.set({ 'ip': ip });
+		                chrome.storage.local.set({ 'port': port });
 		    		getUser();
 		                // Display the list of users
 				/*$.each(data, function(key, val) {
@@ -52,7 +52,7 @@ $(document).ready(function() {
 
 function getUser() {
 	
-	$.getJSON((chrome.storage.local.get(ip)) + ":" + (chrome.storage.local.get(port)) + "/mediabrowser/Users/Public" + jsonf, function(data) {
+	$.getJSON((chrome.storage.local.get('ip')) + ":" + (chrome.storage.local.get('port')) + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		$.each(data, function(key, val) {
 			$('#userSelect').append(val['Name'] + "<br />\n")
 		});
