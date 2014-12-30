@@ -4,9 +4,8 @@ var jsonf = "?format=json";
 $(document).ready(function() {
   
     // When pressing the connect button
-    if (processing == 0) {
-        $('#save_settings').click(function() {
-          
+    $('#save_settings').click(function() {
+        	if (processing == 0) {  
             // Prevent user from pressing connect multiple times.
             processing = 1;
             console.log("connect_stage1");
@@ -49,9 +48,9 @@ $(document).ready(function() {
             }).fail(function() { /* Testing failed */
                 $('#msgconnect').html("<p>Unable to connect. Please verify your IP or URL and port.</p>");
             });
-        });
-    
-        processing = 0;
+        
+        	processing = 0;
+        	});
     });
 });
 
