@@ -6,12 +6,12 @@ $(document).ready(function() {
 	// When pressing the connect button
 	$('#save_settings').click(function() {
 		if (processing == 0) {  
-        	// Prevent user from pressing connect multiple times.
-        	processing = 1;
-        	console.log("connect_stage1");
-        	// Save user IP and port
-        	var ip = $('#setting_ip').val();
-        	var port = $('#setting_port').val();
+	        	// Prevent user from pressing connect multiple times.
+	        	processing = 1;
+	        	console.log("connect_stage1");
+	        	// Save user IP and port
+	        	var ip = $('#setting_ip').val();
+	        	var port = $('#setting_port').val();
           
         	// Verify if the IP contains http/https
         	if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
