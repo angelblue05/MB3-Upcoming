@@ -62,7 +62,7 @@ function getUser() {
 				// Verify is there's a user image
 				if (typeof(val.PrimaryImageTag) != 'undefined') {
 					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
-					items.push("<a id=\""+val.Id+"\" class=\"users "+req_password+" posterItem squarePosterItem\" href=\"#\" data-user=\""+val.Name+"\"><div class=\"posterItemImage\" style=\""+user_image+"\"></div><div class=\"posterItemText\" style=\"color:#000;\">"+val.Name+"</div></a>");
+					$('#userSelect').push("<a id=\""+val.Id+"\" class=\"users "+req_password+" posterItem squarePosterItem\" href=\"#\" data-user=\""+val.Name+"\"><div class=\"posterItemImage\" style=\""+user_image+"\"></div><div class=\"posterItemText\" style=\"color:#000;\">"+val.Name+"</div></a>");
 				}
 				/*$('#userSelect').append(val['Name'] + "<br />\n");*/
 			}
