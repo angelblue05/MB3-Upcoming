@@ -63,7 +63,8 @@ function getUser() {
 				var userPass;
 				// Verify is there's a user image
 				if (typeof(val.PrimaryImageTag) != 'undefined') {
-					user_image = "background-image:url('"+localStorage.mb3_ip+":"+localStorage.mb3_port+"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"');";
+					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"');
+					$('#userSelect').append(userImage);
 				}
 				/*$('#userSelect').append(val['Name'] + "<br />\n");*/
 			}
