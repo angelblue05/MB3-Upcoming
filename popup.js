@@ -3,19 +3,11 @@ var jsonf = "?format=json";
 
 $(document).ready(function() {
   	// Verify if extension state exists
-	chrome.runtime.getBackgroundPage(function(Window) {
-		/*chrome.runtime.sendMessage({cmd: "getstate"});*/
-		
-  		
-  		/*chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-   			console.log(response.farewell);
- 		});*/
-	});
+  	chrome.runtime.sendMessage({cmd: "getstate"});
+  	
   	$(window).unload(function() {
     		chrome.runtime.sendMessage({cmd: "savestate"});
-    		alert("Bye now!");
 	});
-
 	// When pressing the connect button
 	$('#save_settings').on('click', function() {
 		if (processing == 0) {  
