@@ -1,8 +1,8 @@
 var processing = 0;
+var jsonf = "?format=json";
 
 $(document).ready(function() {
   
-  $('#userSelect').hide();
   // When pressing the connect button
   if (processing == 0) {
     $('#save_settings').click(function() {
@@ -13,7 +13,7 @@ $(document).ready(function() {
       var ip = $('#setting_ip').val();
       var port = $('#setting_port').val();
       
-      // Verify if $ip contains http/https
+      // Verify if ip contains http/https
       if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
         ip = 'http://' + ip;
       }
@@ -22,7 +22,7 @@ $(document).ready(function() {
       $('#msgconnect').append("<p>Connecting to server...</p>"); /* Message */
       
       // Test with the given IP and port
-      $.getJSON(ip + ":" + port + "/mediabrowser/Users/Public", function(data) {
+      $.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
         // Testing successful, save IP and port to storage
         chrome.storage.local.set({ ip: ip });
         chrome.storage.local.set({ port: port });
