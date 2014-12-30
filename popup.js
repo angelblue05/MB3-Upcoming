@@ -5,6 +5,7 @@ $(document).ready(function() {
   $('#userSelect').hide();
   // When pressing the connect button
   if (processing == 0) {
+    // Prevent user from pressing connect multiple times.
     var processing = 1;
     
     $('#save_settings').click(function() {
