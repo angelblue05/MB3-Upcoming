@@ -27,10 +27,7 @@ $(document).ready(function() {
 		                chrome.storage.local.set({ port: port });
 		    
 		                // Display the list of users
-		               	$.each(data, function(key, val) {
-					$('#userSelect').append(val['Name'] + "<br />\n")
-				});
-
+				getUser();
 		                
 	        	}).fail(function() { /* Testing failed */
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
@@ -42,14 +39,15 @@ $(document).ready(function() {
 });
 
 function getUser() {
-	$("#server-login").fadeOut('slow');
-	$("#userSelect").delay(600).fadeIn('slow');
 	
 	$.getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		$.each(data, function(key, val) {
 			$('#userSelect').append(val['Name'] + "<br />\n")
 		});
 	});
+	
+	$("#server-login").fadeOut('slow');
+	$("#userSelect").delay(600).fadeIn('slow');
 	
 	/*$.getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/AuthenticateByName", function(data) {
 		$("#users").html('');
