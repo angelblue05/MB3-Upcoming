@@ -52,7 +52,7 @@ $(document).ready(function() {
 
 function getUser() {
 	
-	$.getJSON(chrome.storage.local.get('ip')) + ":" + (chrome.storage.local.get('port')) + "/mediabrowser/Users/Public" + jsonf, function(data) {
+	$.getJSON((chrome.storage.local.get('ip')) + ":" + (chrome.storage.local.get('port')) + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		$.each(data, function(key, val) {
 			$('#userSelect').append(val['Name'] + "<br />\n")
 		});
