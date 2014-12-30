@@ -74,7 +74,6 @@ function getUser() {
 	}).fail(function() { /* Testing failed */
 	        $('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
 	});
-});
 	
 	/*$.getJSON(chrome.storage.local.get('ip') + ":" + chrome.storage.local.get('port') + "/mediabrowser/Users/AuthenticateByName", function(data) {
 		$("#users").html('');
