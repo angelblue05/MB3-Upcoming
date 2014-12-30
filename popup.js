@@ -33,8 +33,8 @@ $(document).ready(function() {
 		                    $('#userSelect').append(val['Name'] + "<br />\n")
 		                });
 		                
-		                $("#server-login").hide();
-				$("#userSelect").show();
+		                $("#server-login").fadeOut('slow');
+						$("#userSelect").delay(600).fadeIn('slow');
 	           
 	        	}).fail(function() { /* Testing failed */
 	        		$('#msgconnect').html("<p>Unable to connect. Please verify your IP or URL and port.</p>");
