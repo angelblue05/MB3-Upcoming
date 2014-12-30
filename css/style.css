@@ -94,6 +94,7 @@ body	{
 
 #userSelect {
 	background: #ffffff;
+	display:none;
 }
 
 #users {
