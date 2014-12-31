@@ -94,6 +94,7 @@ body	{
 
 #userSelect {
 	text-align: center;
+	margin-bottom: 5px;
 	width: 100%;
 	overflow: auto;
 	white-space: nowrap;
@@ -102,7 +103,7 @@ body	{
 #userSelect a {
 	display: inline-block;
 	margin: 3px;
-	padding-bottom: 5px;
+	padding-bottom: 3px;
 	background-color: #ffffff;
 	opacity: 0.85;
 	vertical-align: center;
@@ -147,4 +148,22 @@ body	{
 	overflow: hidden;
 	text-shadow: none;
 	white-space: nowrap;
+}
+
+#manualLogin {
+	font-size: 13px;
+	color: #dad9d9;
+	text-align: center;
+	display: block;
+}
+
+.panel {
+    border: 1px solid transparent;
+    height: 200px;
+	display:none;
+    font-family:garamond,times-new-roman,serif;
+}
+
+.slide {
+	
 }

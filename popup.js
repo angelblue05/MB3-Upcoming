@@ -59,6 +59,7 @@ function getUser() {
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		// Container for userImage
 		var userItems = [];
+		var manualLogin = [];
 		$.each(data, function(key, val) {
 			// Display if user is enabled and not hidden
 			if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
@@ -78,16 +79,25 @@ function getUser() {
 			}
 		});
 		
+		// Add manual login option
+		manualLogin.push("<div class=\"slide\"><div id=\"manualLogin_text\">Manual Login</div><div class=\"panel\"></div></div>");	
+
 		$( "<div/>", {
 			"class": "userItems",
 			html: userItems.join( "" )
 		}).appendTo( "#userSelect");
 
-		$("#server-login").fadeOut('slow');
-		$("#userSelect").delay(600).fadeIn('slow');
-	});
-}
+		$( "<div/>", {
+			"class": "userItems",
+			html: manualLogin.join( "" )
+		}).appendTo( "#manualLogin");
 
-function headerSetup() {
-  
+		// slideToggle
+		$('#manualLogin_text').click(function() {
+        $('.panel').slideToggle('slow');        
+    	}); 
+
+		$("#server-login").fadeOut('slow');
+		$("#userSelect, #manualLogin").delay(600).fadeIn('slow');
+	});
 }
