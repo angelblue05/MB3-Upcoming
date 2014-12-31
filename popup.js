@@ -72,7 +72,12 @@ function getUser() {
 				/*$('#userSelect').append(val['Name'] + "<br />\n");*/
 			}
 		});
-			
+		
+		$( "<div/>", {
+			"class": "userItems",
+			html: items.join( "" )
+		}).appendTo( "#userSelect");
+		
 		$("#server-login").fadeOut('slow');
 		$("#userSelect").delay(600).fadeIn('slow');
 	});
