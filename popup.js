@@ -1,13 +1,15 @@
 var processing = 0;
 var jsonf = "?format=json";
+var port = null;
 
 $(document).ready(function() {
-  	// Verify if extension state exists
-  	chrome.runtime.sendMessage({cmd: "getstate"});
-  	
-  	$(window).unload(function() {
-    		chrome.runtime.sendMessage({cmd: "savestate"});
+	port = chrome.runtime.connect();
+
+	port.onDisconnect.addListener(function() {
+		chrome.runtime.sendMessage({cmd: "savestate"});
 	});
+
+	chrome.runtime.sendMessage({cmd: "getstate"});
 	
 	// When pressing the connect button
 	$('#save_settings').on('click', function() {
