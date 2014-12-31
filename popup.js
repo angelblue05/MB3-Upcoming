@@ -76,7 +76,7 @@ function getUser() {
 		
 		$( "<div/>", {
 			"class": "userItems",
-			html: items.join( "" )
+			html: userItems.join( "" )
 		}).appendTo( "#userSelect");
 		
 		$("#server-login").fadeOut('slow');
