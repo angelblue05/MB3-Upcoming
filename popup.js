@@ -69,6 +69,7 @@ function getUser() {
 					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
 				}
 				userItems.push(userImage);
+				console.log(userImage);
 				/*$('#userSelect').append(val['Name'] + "<br />\n");*/
 			}
 		});
