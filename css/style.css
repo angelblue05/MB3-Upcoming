@@ -10,7 +10,7 @@ body	{
 .bottom-background	{
 	background: #333333;
 	margin: 5px;
-	height: 140px;
+	height: 150px;
 }
 
 /* SIGN IN - Header */
@@ -94,7 +94,7 @@ body	{
 
 #userSelect {
 	text-align: center;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	width: 100%;
 	overflow: auto;
 	white-space: nowrap;
@@ -158,12 +158,11 @@ body	{
 }
 
 .panel {
-    border: 1px solid transparent;
-    height: 200px;
-	display:none;
-    font-family:garamond,times-new-roman,serif;
+    height: 130px;
+    width: 400px;
+	display: none;
 }
 
 .slide {
-	
+
 }
