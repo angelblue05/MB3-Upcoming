@@ -57,6 +57,8 @@ $(document).ready(function() {
 function getUser() {
 	
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
+		// Container for userImage
+		var userItems = [];
 		$.each(data, function(key, val) {
 			// Display if user is enabled and not hidden
 			if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
@@ -65,7 +67,7 @@ function getUser() {
 				// Verify is there's a user image
 				if (typeof(val.PrimaryImageTag) != 'undefined') {
 					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
-					/*$('#userSelect').push("<a id=\""+val.Id+"\" class=\"users "+req_password+" posterItem squarePosterItem\" href=\"#\" data-user=\""+val.Name+"\"><div class=\"posterItemImage\" style=\""+user_image+"\"></div><div class=\"posterItemText\" style=\"color:#000;\">"+val.Name+"</div></a>");*/
+					userItems.push("<a id=\""+val.Id+"\" class=\"users "+" posterItem squarePosterItem\" href=\"#\" data-user=\""+val.Name+"\"><div class=\"posterItemImage\" style=\""+ userImage +"\"></div><div class=\"posterItemText\" style=\"color:#000;\">"+val.Name+"</div></a>");*/
 				}
 				/*$('#userSelect').append(val['Name'] + "<br />\n");*/
 			}
