@@ -93,18 +93,28 @@ body	{
 /* getUser */
 
 #userSelect {
-	background: #ffffff;
+	text-align: center;
+	width: 100%;
+	overflow: auto;
+	white-space: nowrap;
 }
 
-.users {
-	background: #ffffff;
-}
-
-.users .squarePosterItem {
-	width: 100px;
+.posterItemSquare {
+	height: 75px;
+	width: 75px;
+	background: #dad9d9;
+	display: inline-block;
+	margin: 3px;
 }
 
 .posterItemImage {
-	height: 100px;
-	width: 100px;
+	height: 75px;
+	width: 75px;
+	background-color: #000000;
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	background-size: contain;
+	position: relative;
+	display: inline-block;
+	margin: 3px;
 }
