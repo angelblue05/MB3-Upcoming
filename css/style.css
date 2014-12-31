@@ -104,6 +104,7 @@ body	{
 	width: 100px;
 }
 
-.users .squarePosterItem .posterItemImage {
+.posterItemImage {
 	height: 100px;
+	width: 100px;
 }
