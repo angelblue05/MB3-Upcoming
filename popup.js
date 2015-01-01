@@ -35,7 +35,9 @@ function ipSetup() {
 	// When pressing the connect button
 	$('#save_settings').unbind('click');
 	$('#save_settings').on('click', function() {
+		
 		if (processing == 0) {  
+	        	
 	        	// Prevent user from pressing connect multiple times.
 	        	processing = 1;
 
@@ -53,6 +55,7 @@ function ipSetup() {
 
 	        	// Test with the given IP and port
 	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function() {
+		                
 		                // Testing successful, save IP and port to storage
 		                chrome.storage.local.set({
 		                	'ip': ip,
@@ -85,18 +88,20 @@ function ipSetup() {
 function getUser() {
 
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
+		
 		// Reset getUser and userSelect/manualLogin divs
 		$('#userSelect').html('');
 		$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
-
 
 		// Container for userImage
 		var userItems = [];
 		var manualLogin = [];
 			
 		$.each(data, function(key, val) {
-			// Display if user is enabled and not hidden
+			
+			// Display user if enabled and not hidden
 			if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
+				
 				var userImage;
 				var userPass;
 				
@@ -114,6 +119,7 @@ function getUser() {
 			}
 		});
 
+		// Create a div userItems that contains users
 		$( "<div/>", {
 			"class": "userItems",
 			html: userItems.join( "" )
@@ -122,13 +128,17 @@ function getUser() {
 		// slideToggle
 		$('#manualLogin').unbind('click');
 		$('#manualLogin').on('click', function() {
+
+
 			$('.panel').slideToggle();        
 		}); 
 
 		// When pressing the back button
+		$('#back_ipSetup').unbind('click');
 		$('#back_ipSetup').on('click', function() {
+
 			$("#userSelect, #manualLogin").fadeOut(function() {
-				// Send back user to set up IP
+				// Send user back to setup IP
 				ipSetup();	
 			});
 		});
