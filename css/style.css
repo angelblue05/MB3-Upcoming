@@ -9,7 +9,6 @@ body	{
 
 .bottom-background	{
 	background: #333333;
-	margin: 5px;
 	height: 150px;
 }
 
@@ -154,15 +153,17 @@ body	{
 	font-size: 13px;
 	color: #dad9d9;
 	text-align: center;
-	display: block;
 }
 
 .panel {
     height: 130px;
     width: 400px;
+    margin: 5px;
 	display: none;
+	overflow: hidden;
+	-webkit-transform: translateZ(0);
 }
 
-.slide {
-
+.slide a:hover {
+	color: #27a436;
 }

@@ -10,7 +10,23 @@ $(document).ready(function() {
 	});
 
 	chrome.runtime.sendMessage({cmd: "getstate"});
+
+	// When first time running, user need to set up their IP
+	ipSetup();
 	
+});
+
+function ipSetup() {
+
+	// Reset ipSetup to default
+	$('#header_signIn').html('SIGN IN');
+	$('#msgconnect').html('');
+	$('#setting_ip').val('');
+	$('#setting_port').val('8096');
+
+	// Fancy
+	$("#server-login").fadeIn('slow');
+
 	// When pressing the connect button
 	$('#save_settings').on('click', function() {
 		if (processing == 0) {  
@@ -38,11 +54,11 @@ $(document).ready(function() {
 		                
 		                // Set variable using storage
 		                chrome.storage.local.get(['ip', 'port'], function(result) {
-					ipStorage = result['ip'];
-					portStorage = result['port'];
+							ipStorage = result['ip'];
+							portStorage = result['port'];
 						
 		                // Display the list of users
-					getUser();
+						getUser();
 				})
 		                
 	        	}).fail(function() { /* Testing failed */
@@ -52,10 +68,11 @@ $(document).ready(function() {
 	        	processing = 0;
 		}
 	});
-});
+}
+
 
 function getUser() {
-	
+
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		// Container for userImage
 		var userItems = [];
@@ -80,7 +97,7 @@ function getUser() {
 		});
 		
 		// Add manual login option
-		manualLogin.push("<div class=\"slide\"><div id=\"manualLogin_text\">Manual Login</div><div class=\"panel\"></div></div>");	
+		manualLogin.push("<div class=\"slide\"><a id=\"manualLogin_text\">Manual Login</a><div class=\"panel\"></div></div>");	
 
 		$( "<div/>", {
 			"class": "userItems",
@@ -92,9 +109,19 @@ function getUser() {
 			html: manualLogin.join( "" )
 		}).appendTo( "#manualLogin");
 
+		$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+
+		// When pressing the back button
+		$('#back_ipSetup').on('click', function() {
+			$("#userSelect, #manualLogin").fadeOut(function() {
+				// Send back user to set up IP
+				ipSetup();	
+			});
+		});
+
 		// slideToggle
-		$('#manualLogin_text').click(function() {
-        $('.panel').slideToggle('slow');        
+		$('#manualLogin').click(function() {
+        $('.panel').slideToggle();        
     	}); 
 
 		$("#server-login").fadeOut('slow');
