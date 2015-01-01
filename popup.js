@@ -11,7 +11,7 @@ $(document).ready(function() {
 
 	chrome.runtime.sendMessage({cmd: "getstate"});
 
-	// When first time running, user need to set up their IP
+	// When first time running, setup IP
 	ipSetup();
 	
 });
@@ -41,8 +41,9 @@ function ipSetup() {
 	        	if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
 	                	ip = 'http://' + ip;
 	        	}
-	          
-	        	$('#msgconnect').html("Connecting to server..."); /* Message */
+	          	
+	          	// Message
+	        	$('#msgconnect').html("Connecting to server...");
 
 	        	// Test with the given IP and port
 	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
@@ -54,17 +55,19 @@ function ipSetup() {
 		                
 		                // Set variable using storage
 		                chrome.storage.local.get(['ip', 'port'], function(result) {
-							ipStorage = result['ip'];
-							portStorage = result['port'];
+					ipStorage = result['ip'];
+					portStorage = result['port'];
 						
 		                // Display the list of users
 						getUser();
 				})
-		                
-	        	}).fail(function() { /* Testing failed */
+			
+			// Teseting failed      
+	        	}).fail(function() {
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
 	        	});
-	        
+	        	
+	        	// End the processing
 	        	processing = 0;
 		}
 	});
