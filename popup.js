@@ -87,6 +87,7 @@ function ipSetup() {
 
 function getUser() {
 
+
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 		
 		// Reset getUser and userSelect/manualLogin divs
@@ -95,7 +96,6 @@ function getUser() {
 
 		// Container for userImage
 		var userItems = [];
-		var manualLogin = [];
 			
 		$.each(data, function(key, val) {
 			
@@ -128,7 +128,6 @@ function getUser() {
 		// slideToggle
 		$('#manualLogin').unbind('click');
 		$('#manualLogin').on('click', function() {
-
 
 			$('.panel').slideToggle();        
 		}); 
