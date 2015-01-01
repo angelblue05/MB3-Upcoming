@@ -153,10 +153,11 @@ body	{
 	font-size: 13px;
 	color: #dad9d9;
 	text-align: center;
+	border: 1px solid transparent;
 }
 
 .panel {
-    height: 130px;
+	height: 130px;
     width: 400px;
     margin: 5px;
 	display: none;

@@ -18,6 +18,7 @@ $(document).ready(function() {
 
 function ipSetup() {
 
+	
 	// Reset ipSetup to default
 	$('#header_signIn').html('SIGN IN');
 	$('#msgconnect').html('');
@@ -27,7 +28,12 @@ function ipSetup() {
 	// Fancy
 	$("#server-login").fadeIn('slow');
 
+	// Reset storage for good mesure
+	chrome.storage.local.remove('ip');
+	chrome.storage.local.remove('port');
+
 	// When pressing the connect button
+	$('#save_settings').unbind('click');
 	$('#save_settings').on('click', function() {
 		if (processing == 0) {  
 	        	// Prevent user from pressing connect multiple times.
@@ -46,7 +52,7 @@ function ipSetup() {
 	        	$('#msgconnect').html("Connecting to server...");
 
 	        	// Test with the given IP and port
-	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function(data) {
+	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function() {
 		                // Testing successful, save IP and port to storage
 		                chrome.storage.local.set({
 		                	'ip': ip,
@@ -58,8 +64,10 @@ function ipSetup() {
 					ipStorage = result['ip'];
 					portStorage = result['port'];
 						
-		                // Display the list of users
-						getUser();
+		                	// Display the list of users
+					$("#server-login").fadeOut(function() {
+						getUser();	
+					});
 				})
 			
 			// Testing failed      
@@ -77,14 +85,21 @@ function ipSetup() {
 function getUser() {
 
 	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
+		// Reset getUser and userSelect/manualLogin divs
+		$('#userSelect').html('');
+		$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+
+
 		// Container for userImage
 		var userItems = [];
 		var manualLogin = [];
+			
 		$.each(data, function(key, val) {
 			// Display if user is enabled and not hidden
 			if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
 				var userImage;
 				var userPass;
+				
 				// Verify is there's a user image
 				if (typeof(val.PrimaryImageTag) != 'undefined') {
 					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
@@ -98,21 +113,17 @@ function getUser() {
 				}
 			}
 		});
-		
-		// Add manual login option
-		manualLogin.push("<div class=\"slide\"><a id=\"manualLogin_text\">Manual Login</a><div class=\"panel\"></div></div>");	
 
 		$( "<div/>", {
 			"class": "userItems",
 			html: userItems.join( "" )
 		}).appendTo( "#userSelect");
 
-		$( "<div/>", {
-			"class": "userItems",
-			html: manualLogin.join( "" )
-		}).appendTo( "#manualLogin");
-
-		$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+		// slideToggle
+		$('#manualLogin').unbind('click');
+		$('#manualLogin').on('click', function() {
+			$('.panel').slideToggle();        
+		}); 
 
 		// When pressing the back button
 		$('#back_ipSetup').on('click', function() {
@@ -122,12 +133,7 @@ function getUser() {
 			});
 		});
 
-		// slideToggle
-		$('#manualLogin').click(function() {
-        $('.panel').slideToggle();        
-    	}); 
-
-		$("#server-login").fadeOut('slow');
-		$("#userSelect, #manualLogin").delay(600).fadeIn('slow');
+		// Fancy
+		$("#userSelect, #manualLogin").fadeIn('slow');
 	});
 }
