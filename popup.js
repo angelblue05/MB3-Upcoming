@@ -62,7 +62,7 @@ function ipSetup() {
 						getUser();
 				})
 			
-			// Teseting failed      
+			// Testing failed      
 	        	}).fail(function() {
 	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
 	        	});
