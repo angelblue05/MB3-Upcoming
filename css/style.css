@@ -89,7 +89,7 @@ body	{
 	padding: 7px;
 	font-style: italic;
 	vertical-align: middle;
-	color: #dad9d9;
+	color: #a4a4a4;
 	font-size: 13px;
 }
 
@@ -173,7 +173,7 @@ body	{
 }
 .panel {
 	color: #27a436;
-	height: 110px;
+	height: 115px;
 }
 
 #userLogin {

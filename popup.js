@@ -1,21 +1,24 @@
 var processing = 0;
+var current;
 var jsonf = "?format=json";
-var port = null;
 
 
 $(document).ready(function() {
-	port = chrome.runtime.connect();
 
-	port.onDisconnect.addListener(function() {
-		chrome.runtime.sendMessage({cmd: "savestate"});
+	// Verify to load last loaded div by the user
+	chrome.storage.local.get('current', function(result) {
+		
+		if (result != 'undefined') {
+			current = result['current'];
+			window[current]();
+		} else {
+			// When first time running, setup IP
+			ipSetup();
+		}
 	});
-
-	chrome.runtime.sendMessage({cmd: "getstate"});
-
-	// When first time running, setup IP
-	ipSetup();
 	
 });
+
 
 function message(div, string) {
 	
@@ -25,6 +28,9 @@ function message(div, string) {
 
 function ipSetup() {
 
+
+	current = 'ipSetup';
+	chrome.storage.local.set({ 'current': current });
 	
 	// Reset ipSetup to default
 	$('#header_signIn').html('SIGN IN');
@@ -95,76 +101,85 @@ function ipSetup() {
 function getUser() {
 
 
-	$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
-		
-		// Reset getUser and userSelect/manualLogin divs
-		$('#userSelect').html('');
-		$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
-		$('#username').val('');
-		$('#password').val('');
-		$('#msguser').html('').hide();
-		$('.panel').hide();
+	current = 'getUser';
+	chrome.storage.local.set({ 'current': current });
 
-		// Container for userImage
-		var userItems = [];
+	chrome.storage.local.get(['ip', 'port'], function(result) {
+		ipStorage = result['ip'];
+		portStorage = result['port'];
+
+		$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 			
-		$.each(data, function(key, val) {
-			
-			// Display user if enabled and not hidden
-			if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
+			// Correctly display when div is last loaded
+			$('#server-login').hide();
+			// Reset getUser and userSelect/manualLogin divs
+			$('#userSelect').html('');
+			$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+			$('#username').val('');
+			$('#password').val('');
+			$('#msguser').html('');
+			$('.panel').hide();
+
+			// Container for userImage
+			var userItems = [];
 				
-				var userImage;
-				var userPass;
+			$.each(data, function(key, val) {
 				
-				// Verify is there's a user image
-				if (typeof(val.PrimaryImageTag) != 'undefined') {
-					userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
-					// Add images to the userItems array
-					userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
-				} else {
-					// Default image for undefined
-					userImage = "background-image:url(/css/images/userflyoutdefault.png)";
-					// Add default images to the userItems array
-					userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
+				// Display user if enabled and not hidden
+				if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
+					
+					var userImage;
+					var userPass;
+					
+					// Verify is there's a user image
+					if (typeof(val.PrimaryImageTag) != 'undefined') {
+						userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
+						// Add images to the userItems array
+						userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
+					} else {
+						// Default image for undefined
+						userImage = "background-image:url(/css/images/userflyoutdefault.png)";
+						// Add default images to the userItems array
+						userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
+					}
 				}
-			}
-		});
-
-		// Create a div userItems that contains users
-		$( "<div/>", {
-			"class": "userItems",
-			html: userItems.join( "" )
-		}).appendTo( "#userSelect");
-
-		// slideToggle
-		$('#manualLogin_text').unbind('click');
-		$('#manualLogin_text').on('click', function() {
-
-			$('.panel').slideToggle();       
-		}); 
-
-		// When pressing the save button
-		$('#saveUser').unbind('click');
-		$('#saveUser').on('click', function() {
-
-			// Authenticate the user's credentials5
-			loginUser();
-
-		});
-
-		// When pressing the back button
-		$('#back_ipSetup').unbind('click');
-		$('#back_ipSetup').on('click', function() {
-
-			$("#userSelect, #manualLogin").fadeOut(function() {
-				
-				// Send user back to setup IP
-				ipSetup();	
 			});
-		});
 
-		// Fancy
-		$("#userSelect, #manualLogin").fadeIn('slow');
+			// Create a div userItems that contains users
+			$( "<div/>", {
+				"class": "userItems",
+				html: userItems.join( "" )
+			}).appendTo( "#userSelect");
+
+			// slideToggle
+			$('#manualLogin_text').unbind('click');
+			$('#manualLogin_text').on('click', function() {
+
+				$('.panel').slideToggle();       
+			}); 
+
+			// When pressing the save button
+			$('#saveUser').unbind('click');
+			$('#saveUser').on('click', function() {
+
+				// Authenticate the user's credentials5
+				loginUser();
+			});
+
+			// When pressing the back button
+			$('#back_ipSetup').unbind('click');
+			$('#back_ipSetup').on('click', function() {
+
+				$("#userSelect, #manualLogin").fadeOut(function() {
+					
+					// Send user back to setup IP
+					ipSetup();	
+				});
+			});
+
+			// Fancy
+			$("#userSelect, #manualLogin").fadeIn('slow');
+		});
 	});
 }
 
@@ -207,10 +222,23 @@ function loginUser() {
 				}
 			}
 		});
+
+		// Go to Today's upcoming
+		$('#userSelect, #manualLogin').fadeOut('slow', function() {
+			todayUp();
+		});
   	
 	}).fail(function(){
-		$('#msguser').html("Wrong username or password.").show();
+		message('#msguser', "Wrong username or password.");
 	});
+}
+
+function todayUp() {
+	
+
+	current = 'todayUp';
+	chrome.storage.local.set({ 'current': current });
+
 }
 
 function logoutUser() {
