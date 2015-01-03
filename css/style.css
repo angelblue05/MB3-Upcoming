@@ -87,14 +87,13 @@ body	{
 #msgconnect {
 	color: #dad9d9;
 	font-size: 13px;
-	margin-bottom: 6px;
+	margin-top: 7px;
 }
 
 /* getUser */
 
 #userSelect {
 	text-align: center;
-	margin-bottom: 7px;
 	overflow: auto;
 	white-space: nowrap;
 }
@@ -109,6 +108,7 @@ body	{
 
 #userSelect a:hover {
 	opacity: 1;
+	cursor: pointer;
 }
 
 #userSelect::-webkit-scrollbar-track
@@ -149,21 +149,70 @@ body	{
 }
 
 #manualLogin {
-	font-size: 13px;
+	padding: 7px;
 	color: #dad9d9;
 	text-align: center;
 	border: 1px solid transparent;
 }
 
-.panel {
-	height: 100px;
-    width: 400px;
-    margin: 5px;
-	display: none;
-	overflow: hidden;
-	-webkit-transform: translateZ(0);
+#manualLogin_text {
+	font-size: 14px;
 }
 
-.slide a:hover {
+#manualLogin_text:hover {
+	color: #ffffff;
+	cursor: default;
+}
+
+#back_ipSetup:hover {
+	color: #ffffff;
+	cursor: default;
+}
+.panel {
 	color: #27a436;
+	height: 110px;
+	/*-webkit-transform: translateZ(0);*/
+}
+
+#userLogin {
+	padding-top: 10px;
+	color: #dad9d9;
+}
+
+#userLogin label {
+	font-family: Arial;
+	color: #c2c2c2;
+}
+
+#userLogin input	{
+	padding: 3px;
+	border: 1px solid #dad9d9;
+}
+
+#userLogin input:focus {
+	border: 1px solid #27a436;
+	outline: none !important;
+}
+
+#saveUser {
+	margin-top: 10px;
+	background: #27a436;
+	padding: 6.5px 13px;
+	color: white;
+	font-size: 13px;
+	vertical-align: middle;
+	border: 0;
+	border-radius: 15px;
+}
+
+#saveUser:hover {
+	background: #20932e;
+}
+
+#saveUser:active {
+	background: #197524;
+}
+
+#saveUser:focus {
+    	outline: none;
 }

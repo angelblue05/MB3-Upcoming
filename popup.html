@@ -26,6 +26,7 @@
 		<div class="bottom-background"> <!-- Bottom portion -->
 			<div id="server-login"> <!-- Login div -->
 				<table id="table-login" align="center">
+					
 					<tr>
 						<td align="left"><label>Server IP or URL:</label></td>
 						<td align="left"><label>Port:</label></td>
@@ -44,14 +45,38 @@
 				</table>
 				<div align="center" id="msgconnect"></div> <!-- Connecting or error message -->
 			</div>
-			
-			<div id="userSelect" style="display:none;"></div> <!-- Display user list or manual login -->
-			<div id="manualLogin" style="display:none;">
+
+			<div id="manualLogin" style="display:none;"><!-- Manual login sliding panel -->
 				<div class="slide">
-					<a id="manualLogin_text">Manual Login</a>
-					<div class="panel"></div>
+					
+					<span id="manualLogin_text">Manual Login</span>
+					
+					<div class="panel" style="display:none;">
+						
+						<!-- Manual login input -->
+						<table id="userLogin" align="center">
+							
+							<tr>
+								<td align="right"><label>Username:</label></td>
+								<td><input type="text" name="username" id="username" value=""></td>
+							</tr>
+							
+							<tr>
+								<td align="right"><label>Password:</label></td>
+								<td><input type="text" name="password" id="password" value=""></td>
+							</tr>
+
+							<tr>
+								<td align="center" colspan="2"><button id="saveUser">Save</button></td>
+							</tr>
+						
+						</table>
+
+					</div>
 				</div>
 			</div>
+			
+			<div id="userSelect" style="display:none;"></div> <!-- Display user list or manual login -->
 		</div>
 	</body>
   

@@ -126,10 +126,10 @@ function getUser() {
 		}).appendTo( "#userSelect");
 
 		// slideToggle
-		$('#manualLogin').unbind('click');
-		$('#manualLogin').on('click', function() {
+		$('#manualLogin_text').unbind('click');
+		$('#manualLogin_text').on('click', function() {
 
-			$('.panel').slideToggle();        
+			$('.panel').slideToggle();       
 		}); 
 
 		// When pressing the back button
@@ -137,6 +137,7 @@ function getUser() {
 		$('#back_ipSetup').on('click', function() {
 
 			$("#userSelect, #manualLogin").fadeOut(function() {
+				
 				// Send user back to setup IP
 				ipSetup();	
 			});
