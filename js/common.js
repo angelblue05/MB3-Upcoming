@@ -29,9 +29,9 @@ function ajaxHeader() {
                 if (typeof items.token != 'undefined') {
                         token = items.token;
                 }
+        
+                return {'Authorization':'MediaBrowser, UserId="' + userId + '", Client="MB3 Upcoming", Device="Chrome", DeviceId="' + deviceId + '", Version="' + version + '"', 'X-MediaBrowser-Token': token }
         });
-
-        return {'Authorization':'MediaBrowser, UserId="' + userId + '", Client="MB3 Upcoming", Device="Chrome", DeviceId="' + deviceId + '", Version="' + version + '"', 'X-MediaBrowser-Token': token }
 }
 
 // Generate serial with 4 alphanumerics

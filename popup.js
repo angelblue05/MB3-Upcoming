@@ -2,6 +2,7 @@ var processing = 0;
 var jsonf = "?format=json";
 var port = null;
 
+
 $(document).ready(function() {
 	port = chrome.runtime.connect();
 
@@ -16,6 +17,12 @@ $(document).ready(function() {
 	
 });
 
+function message(div, string) {
+	
+
+	$(div).html(string);
+}
+
 function ipSetup() {
 
 	
@@ -28,7 +35,7 @@ function ipSetup() {
 	// Fancy
 	$("#server-login").fadeIn('slow');
 
-	// Reset storage for good mesure
+	// Reset storage for ip setup
 	chrome.storage.local.remove('ip');
 	chrome.storage.local.remove('port');
 
@@ -51,7 +58,7 @@ function ipSetup() {
 	        	}
 	          	
 	          	// Message
-	        	$('#msgconnect').html("Connecting to server...");
+	        	$('#msgconnect').html("Connecting to the server...");
 
 	        	// Test with the given IP and port
 	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function() {
@@ -75,7 +82,7 @@ function ipSetup() {
 			
 			// Testing failed      
 	        	}).fail(function() {
-	        		$('#msgconnect').html("Unable to connect. Please verify your IP or URL and port.");
+	        		message('#msgconnect', "Unable to connect. Please verify your IP or URL and port.");
 	        	});
 	        	
 	        	// End the processing
@@ -93,6 +100,10 @@ function getUser() {
 		// Reset getUser and userSelect/manualLogin divs
 		$('#userSelect').html('');
 		$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+		$('#username').val('');
+		$('#password').val('');
+		$('#msguser').html('').hide();
+		$('.panel').hide();
 
 		// Container for userImage
 		var userItems = [];
@@ -136,7 +147,7 @@ function getUser() {
 		$('#saveUser').unbind('click');
 		$('#saveUser').on('click', function() {
 
-			// Authenticate the user's credentials
+			// Authenticate the user's credentials5
 			loginUser();
 
 		});
@@ -160,6 +171,11 @@ function getUser() {
 function loginUser() {
 
 
+	// Reset storage for user credentials
+	chrome.storage.local.remove('userId');
+	chrome.storage.local.remove('user');
+	chrome.storage.local.remove('token');
+
 	// Process user login information
 	var postData = {
 		Username: $("#username").val(),
@@ -181,7 +197,34 @@ function loginUser() {
                 	'user': JSON.stringify(data.User),
                 	'token': data.AccessToken
                 })
+
+                //force re-setup of AJAX header
+		$.ajaxSetup({
+			headers: ajaxHeader(),
+			statusCode: {
+				401: function() {
+					logoutUser();
+				}
+			}
+		});
   	
+	}).fail(function(){
+		$('#msguser').html("Wrong username or password.").show();
+	});
+}
+
+function logoutUser() {
+	
+
+	// Revoke access token
+	$.post(ipStorage + ":" + portStorage + "/mediabrowser/Sessions/Logout", function() {
 	});
 
+	// Reset storage for user credentials
+	chrome.storage.local.remove('userId');
+	chrome.storage.local.remove('user');
+	chrome.storage.local.remove('token');
+
+	// Get the user list, to allow user to re-authenticate
+	getUser();
 }

@@ -40,6 +40,7 @@ body	{
 	padding-top: 15px;
 	font-family: Arial;
 }
+
 #table-login label	{
 	color: #c2c2c2;
 }
@@ -64,7 +65,7 @@ body	{
 }
 
 #connect {
-	margin-top: 10px;
+	margin-top: 7px;
 	background: #27a436;
 	padding: 6.5px 13px;
 	color: white;
@@ -84,10 +85,12 @@ body	{
     	outline: none;
 }
 
-#msgconnect {
+.msg {
+	padding: 7px;
+	font-style: italic;
+	vertical-align: middle;
 	color: #dad9d9;
 	font-size: 13px;
-	margin-top: 7px;
 }
 
 /* getUser */
@@ -174,7 +177,7 @@ body	{
 }
 
 #userLogin {
-	padding-top: 10px;
+	padding-top: 20px;
 	color: #dad9d9;
 }
 
@@ -195,14 +198,15 @@ body	{
 }
 
 #saveUser {
-	margin-top: 10px;
+	margin-left: 2px;
+	height: 50px;
 	background: #27a436;
 	padding: 6.5px 13px;
 	color: white;
 	font-size: 13px;
 	vertical-align: middle;
 	border: 0;
-	border-radius: 15px;
+	border-radius: 3px;
 }
 
 #saveUser:hover {
