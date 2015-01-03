@@ -33,8 +33,8 @@ function ipSetup() {
 	chrome.storage.local.remove('port');
 
 	// When pressing the connect button
-	$('#save_settings').unbind('click');
-	$('#save_settings').on('click', function() {
+	$('#connect').unbind('click');
+	$('#connect').on('click', function() {
 		
 		if (processing == 0) {  
 	        	
@@ -132,6 +132,15 @@ function getUser() {
 			$('.panel').slideToggle();       
 		}); 
 
+		// When pressing the save button
+		$('#saveUser').unbind('click');
+		$('#saveUser').on('click', function() {
+
+			// Authenticate the user's credentials
+			loginUser();
+
+		});
+
 		// When pressing the back button
 		$('#back_ipSetup').unbind('click');
 		$('#back_ipSetup').on('click', function() {
@@ -146,4 +155,33 @@ function getUser() {
 		// Fancy
 		$("#userSelect, #manualLogin").fadeIn('slow');
 	});
+}
+
+function loginUser() {
+
+
+	// Process user login information
+	var postData = {
+		Username: $("#username").val(),
+		password: SHA1($("#password").val()),
+		passwordMd5: MD5($("#password").val())
+	};
+
+	var resp = $.ajax({
+		type: "POST",
+		url: ipStorage + ":" + portStorage + "/mediabrowser/Users/AuthenticateByName/",
+		headers: ajaxHeader(),
+		data: JSON.stringify(postData),
+		dataType: "json",
+		contentType: "application/json"
+	}).done(function(data){
+		// User sucessfully authenticated
+                chrome.storage.local.set({
+                	'userId': data.User.Id,
+                	'user': JSON.stringify(data.User),
+                	'token': data.AccessToken
+                })
+  	
+	});
+
 }

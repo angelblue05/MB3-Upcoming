@@ -4,7 +4,7 @@
 	"version": "0.1",
 	
 	"background": {
-    		"scripts": ["eventPage.js"],
+    		"scripts": ["js/jquery-2.1.1.min.js", "js/common.js", "eventPage.js"],
     		"persistent": false
   	},
 

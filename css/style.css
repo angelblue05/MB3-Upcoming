@@ -63,7 +63,7 @@ body	{
 	width: 60px;
 }
 
-#save_settings {
+#connect {
 	margin-top: 10px;
 	background: #27a436;
 	padding: 6.5px 13px;
@@ -73,14 +73,14 @@ body	{
 	border: 0;
 	border-radius: 15px;
 }
-#save_settings:hover {
+#connect:hover {
 	background: #20932e;
 }
-#save_settings:active {
+#connect:active {
 	background: #197524;
 }
 
-#save_settings:focus {
+#connect:focus {
     	outline: none;
 }
 
@@ -171,7 +171,6 @@ body	{
 .panel {
 	color: #27a436;
 	height: 110px;
-	/*-webkit-transform: translateZ(0);*/
 }
 
 #userLogin {
@@ -185,6 +184,7 @@ body	{
 }
 
 #userLogin input	{
+	font-size: 13px;
 	padding: 3px;
 	border: 1px solid #dad9d9;
 }
@@ -214,5 +214,5 @@ body	{
 }
 
 #saveUser:focus {
-    	outline: none;
+    outline: none;
 }
