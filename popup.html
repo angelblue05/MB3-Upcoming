@@ -16,19 +16,16 @@
 		<div id="header"> <!-- Top bar -->
 			<table id="table-header">	
 				<tr>
-					<td align="left" id="logo"><img style="width: 180px;" src="Icons/mb3_logofont.png"></td>
+					<td id="logo" align="left"><img style="width: 180px;" src="Icons/mb3_logofont.png"></td>
 					<td align="left"><i>-&nbsp;&nbsp;UPCOMING</i></td>
-					<td align="right" id="header_signIn"></td>
+					<td id="header_signIn" align="right"></td>
 				</tr>
 			</table>
 		</div>
 			
-		<div class="bottom-background"> <!-- Bottom portion -->
-			
+		<div id="bottom-background"> <!-- Bottom portion -->
 			<div id="server-login"> <!-- Login div -->
-				
 				<table id="table-login" align="center">
-					
 					<tr>
 						<td align="left"><label>Server IP or URL:</label></td>
 						<td align="left"><label>Port:</label></td>
@@ -51,16 +48,13 @@
 			</div>
 
 			<div id="manualLogin" style="display:none;"><!-- Manual login sliding panel -->
-				
 				<div class="slide">
-					
 					<span id="manualLogin_text">Manual Login</span>
 					
-					<div class="panel" style="display:none;">
+					<div id="panel" style="display:none;">
 
 						<!-- Manual login input -->
 						<table id="userLogin" align="center">
-							
 							<tr>
 								<td align="right"><label>Username:</label></td>
 								<td><input type="text" name="username" id="username" value="" TABINDEX=1></td>
@@ -71,10 +65,9 @@
 								<td align="right"><label>Password:</label></td>
 								<td><input type="password" name="password" id="password" value="" TABINDEX=2></td>
 							</tr>
-						
 						</table>
 
-						<div align="center" id="msguser" class="msg" style="display:none;"></div> <!-- Wrong username or password message -->
+						<div align="center" id="msguser" class="msg"></div> <!-- Wrong username or password message -->
 					</div>
 				</div>
 			</div>

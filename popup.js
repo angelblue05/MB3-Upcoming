@@ -1,6 +1,7 @@
 var processing = 0;
 var jsonf = "?format=json";
 var port = null;
+var current;
 
 
 $(document).ready(function() {
@@ -140,7 +141,7 @@ function getUser() {
 		$('#manualLogin_text').unbind('click');
 		$('#manualLogin_text').on('click', function() {
 
-			$('.panel').slideToggle();       
+			$('#panel').slideToggle();       
 		}); 
 
 		// When pressing the save button

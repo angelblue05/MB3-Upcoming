@@ -1,40 +1,64 @@
-/* SIGN IN - Backgrounds */
+/* In the order encountered in the HTML */
 
 body	{
-	background: #202020;
-	width: 400px;
 	margin: 0;
 	padding: 0;
-	border: 1px solid transparent;
+	width: 400px;
+	background: #202020;
 }
 
-.bottom-background	{
-	background: #333333;
-	height: 150px;
+.msg {
+	padding: 7px;
+	font-style: italic;
+	vertical-align: middle;
+	color: #a4a4a4;
+	font-size: 13px;
 }
 
-/* SIGN IN - Header */
+
+
+/* Top section */
 
 #header	{
-	background: #000000;
-	height: 35px;
 	padding: 5px;
+	height: 35px;
+	background: #000000;
 }
 
 #table-header	{
+	padding-right: 7px;
 	width: 100%;
-	color: #c2c2c2;
 	font-family: Calibri, Arial;
 	font-size: 14px;
-	padding-right: 7px;
+	color: #c2c2c2;
 }
 
 #logo {
-	width: 180px;
 	padding-top: 3px;
+	width: 180px;
 }
 
-/* SIGN IN - Server login information */
+
+
+/* Back to IP setup */
+
+#back_ipSetup:hover {
+	color: #ffffff;
+	cursor: default;
+}
+
+
+
+/* Bottom section */
+
+#bottom-background	{
+	height: 150px;
+	background: #333333;
+}
+
+
+
+/* Server information */
 
 #table-login	{
 	padding-top: 15px;
@@ -44,9 +68,13 @@ body	{
 #table-login label	{
 	color: #c2c2c2;
 }
+
+
+
+/* Server information input */
+
 #table-login input	{
-	margin-top: 2px;
-	margin-bottom: 5px;
+	margin: 2px 0 5px 0;
 	padding: 5px;
 	border: 1px solid #dad9d9;
 }
@@ -64,97 +92,41 @@ body	{
 	width: 60px;
 }
 
+
+
+/* Server information connect button */
+
 #connect {
 	margin-top: 7px;
-	background: #27a436;
 	padding: 6.5px 13px;
+	vertical-align: middle;
 	color: white;
 	font-size: 13px;
-	vertical-align: middle;
 	border: 0;
 	border-radius: 15px;
+	background: #27a436;
 }
+
 #connect:hover {
 	background: #20932e;
 }
+
 #connect:active {
 	background: #197524;
 }
 
 #connect:focus {
-    	outline: none;
+    outline: none;
 }
 
-.msg {
-	padding: 7px;
-	font-style: italic;
-	vertical-align: middle;
-	color: #dad9d9;
-	font-size: 13px;
-}
 
-/* getUser */
 
-#userSelect {
-	text-align: center;
-	overflow: auto;
-	white-space: nowrap;
-}
-
-#userSelect a {
-	display: inline-block;
-	margin: 3px;
-	background-color: #ffffff;
-	opacity: 0.85;
-	vertical-align: center;
-}
-
-#userSelect a:hover {
-	opacity: 1;
-	cursor: pointer;
-}
-
-#userSelect::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #333333;
-}
-
-#userSelect::-webkit-scrollbar
-{
-	height: 7px;
-	background-color: #333333;
-}
-
-#userSelect::-webkit-scrollbar-thumb
-{
-	background-color: #27a436;
-}
-
-.posterItemImage {
-	height: 75px;
-	width: 75px;
-	background-color: #dad9d9;
-	background-position: center bottom;
-	background-repeat: no-repeat;
-	background-size: contain;
-	position: relative;
-	margin: 3px;
-}
-
-.posterItemText {
-	font-size: 12px;
-	width: 75px;
-	margin: 3px;
-	overflow: hidden;
-	text-shadow: none;
-	white-space: nowrap;
-}
+/* Manual login */
 
 #manualLogin {
 	padding: 7px;
-	color: #dad9d9;
 	text-align: center;
+	color: #dad9d9;
 	border: 1px solid transparent;
 }
 
@@ -167,14 +139,18 @@ body	{
 	cursor: default;
 }
 
-#back_ipSetup:hover {
-	color: #ffffff;
-	cursor: default;
-}
-.panel {
-	color: #27a436;
+
+
+/* Manual login sliding panel */
+
+#panel {
 	height: 110px;
+	color: #27a436;
 }
+
+
+
+/* Manual login input */
 
 #userLogin {
 	padding-top: 20px;
@@ -187,8 +163,8 @@ body	{
 }
 
 #userLogin input	{
-	font-size: 13px;
 	padding: 3px;
+	font-size: 13px;
 	border: 1px solid #dad9d9;
 }
 
@@ -197,16 +173,20 @@ body	{
 	outline: none !important;
 }
 
+
+
+/* Manual login save button */
+
 #saveUser {
 	margin-left: 2px;
-	height: 50px;
-	background: #27a436;
 	padding: 6.5px 13px;
+	height: 50px;
 	color: white;
 	font-size: 13px;
-	vertical-align: middle;
 	border: 0;
 	border-radius: 3px;
+	vertical-align: middle;
+	background: #27a436;
 }
 
 #saveUser:hover {
@@ -219,4 +199,67 @@ body	{
 
 #saveUser:focus {
     outline: none;
+}
+
+
+
+/* User list displayed */
+
+#userSelect {
+	text-align: center;
+	overflow: auto;
+	white-space: nowrap;
+}
+
+#userSelect a {
+	display: inline-block;
+	margin: 3px;
+	opacity: 0.85;
+	vertical-align: center;
+	background: #ffffff;
+}
+
+#userSelect a:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+
+
+/* User list poster images */
+
+.posterItemImage {
+	margin: 3px;
+	width: 75px;
+	height: 75px;
+	background: #dad9d9 no-repeat center bottom;
+	background-size: contain;
+	position: relative;
+}
+
+.posterItemText {
+	width: 75px;
+	margin: 3px;
+	font-size: 12px;
+	overflow: hidden;
+	text-shadow: none;
+	white-space: nowrap;
+}
+
+
+
+/* User list scroll bar */
+
+#userSelect::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #333333;
+}
+
+#userSelect::-webkit-scrollbar {
+	height: 7px;
+	background-color: #333333;
+}
+
+#userSelect::-webkit-scrollbar-thumb {
+	background-color: #27a436;
 }
