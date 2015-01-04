@@ -10,7 +10,6 @@
 		<script src="js/cryptoJs.js"></script>
 		<script src="js/common.js"></script>
 		<script src="popup.js"></script>
-	
 	</head>
   
 	<body>
@@ -25,8 +24,11 @@
 		</div>
 			
 		<div class="bottom-background"> <!-- Bottom portion -->
+			
 			<div id="server-login"> <!-- Login div -->
+				
 				<table id="table-login" align="center">
+					
 					<tr>
 						<td align="left"><label>Server IP or URL:</label></td>
 						<td align="left"><label>Port:</label></td>
@@ -40,7 +42,8 @@
 					
 					<tr>
 						<td align="center" colspan="2"><button id="connect">Connect</button></td>
-					</tr>	
+					</tr>
+					
 				</table>
 
 				<div align="center" id="msgconnect" class="msg"></div> <!-- Connecting or error message -->
@@ -48,7 +51,9 @@
 			</div>
 
 			<div id="manualLogin" style="display:none;"><!-- Manual login sliding panel -->
+				
 				<div class="slide">
+					
 					<span id="manualLogin_text">Manual Login</span>
 					
 					<div class="panel" style="display:none;">
@@ -66,16 +71,17 @@
 								<td align="right"><label>Password:</label></td>
 								<td><input type="password" name="password" id="password" value="" TABINDEX=2></td>
 							</tr>
+						
 						</table>
 
-						<div align="center" id="msguser" class="msg"></div> <!-- Wrong username or password message -->
+						<div align="center" id="msguser" class="msg" style="display:none;"></div> <!-- Wrong username or password message -->
 					</div>
 				</div>
 			</div>
 			
 			<div id="userSelect" style="display:none;"></div> <!-- Display user list or manual login -->
 
-			<div id="todayUp" style="display:none;"></div>
+			<div id="upcoming"></div>
 		</div>
 	</body>
   
