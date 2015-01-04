@@ -21,6 +21,13 @@ $(document).ready(function() {
 });
 
 
+function currentFunc(name) {
+
+
+	current = name;
+	chrome.storage.local.set({ 'current': current });
+}
+
 function message(div, string) {
 	
 
@@ -32,8 +39,7 @@ function ipSetup() {
 
 	
 	// Save the state of the extension
-	current = 'ipSetup';
-	chrome.storage.local.set({ 'current': current });
+	currentFunc('ipSetup');
 
 	// Reset ipSetup to default
 	$('#header_signIn').html('SIGN IN');
@@ -105,8 +111,7 @@ function getUser() {
 
 
 	// Save the state of the extension
-	current = 'getUser';
-	chrome.storage.local.set({ 'current': current });
+	currentFunc('getUser');
 
 	// Make chrome storage sync
         chrome.storage.local.get(['ip', 'port'], function(result) {
