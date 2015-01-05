@@ -24,12 +24,13 @@ $(document).ready(function() {
 function storageUrl(callback) {
 
 
-	if (typeof ip !== 'undefined') {
+	/*if (typeof ip !== 'undefined') {
 		callback(null, { ipStorage: ip, portStorage: port});
 		return;
-	}
+	}*/
 
 	chrome.storage.local.get(['ip', 'port'], function(result) {
+		
 		callback(null, { ipStorage: result['ip'], portStorage: result['port']});
 	});
 }
@@ -101,6 +102,7 @@ function ipSetup() {
 		                
 		                // Set variable using storage
 		                chrome.storage.local.get(['ip', 'port'], function(result) {
+					
 					ipStorage = result['ip'];
 					portStorage = result['port'];
 						
@@ -112,6 +114,7 @@ function ipSetup() {
 			
 			// Testing failed      
 	        	}).fail(function() {
+	        		
 	        		message('#msgconnect', "Unable to connect. Please verify your IP or URL and port.");
 	        	});
 	        	
@@ -134,20 +137,21 @@ function getUser() {
         	'storageUrl': storageUrl,
         	'getuser list': ['storageUrl', function getUserList(callback, result) {
 
-	        	ipStorage = result.storageUrl.ipStorage;
-	        	portStorage = result.storageUrl.portStorage;
+	      		// Set shortcut to ip and port
+	        	var ipStorage = result.storageUrl.ipStorage;
+	        	var portStorage = result.storageUrl.portStorage;
+
+        		// Correctly display when div is last loaded
+			$('#server-login').hide();
+			// Reset getUser and userSelect/manualLogin divs
+			$('#userSelect').html('');
+			$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+			$('#username').val('');
+			$('#password').val('');
+			$('#msguser').html('');
+			$('#panel').hide();
 
 			$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
-				
-				// Correctly display when div is last loaded
-				$('#server-login').hide();
-				// Reset getUser and userSelect/manualLogin divs
-				$('#userSelect').html('');
-				$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
-				$('#username').val('');
-				$('#password').val('');
-				$('#msguser').html('');
-				$('#panel').hide();
 
 				// Container for userImage
 				var userItems = [];
@@ -216,6 +220,44 @@ function getUser() {
 }
 
 
+function todayUp() {
+	
+
+	// Save the state of the extension
+	currentFunc('todayUp');
+
+	// Make chrome storage sync
+        async.auto({
+
+        	'storageUrl': storageUrl,
+        	'todayUp': ['storageUrl', function getUserList(callback, result) {
+
+	      		// Set shortcut to ip and port
+	        	var ipStorage = result.storageUrl.ipStorage;
+	        	var portStorage = result.storageUrl.portStorage;
+
+			// Correctly display when div is last loaded
+			$('#server-login').hide();
+
+			$('#header_signIn').html('<a id="back_getUser">SIGN OUT</a>');
+
+			// When pressing the back button
+			$('#back_getUser').unbind('click');
+			$('#back_getUser').on('click', function() {
+
+				$('#todayUp').fadeOut(function() {
+					
+					// Logout user and revoke token
+					logoutUser();	
+				});
+			});
+
+			callback();
+		}]
+	});	
+
+}
+
 function loginUser() {
 
 
@@ -224,40 +266,59 @@ function loginUser() {
 	chrome.storage.local.remove('user');
 	chrome.storage.local.remove('token');
 
-	// Process user login information
-	var postData = {
-		Username: $("#username").val(),
-		password: SHA1($("#password").val()),
-		passwordMd5: MD5($("#password").val())
-	};
+	// Make chrome storage sync
+        async.auto({
 
-	var resp = $.ajax({
-		type: "POST",
-		url: ipStorage + ":" + portStorage + "/mediabrowser/Users/AuthenticateByName/",
-		headers: ajaxHeader(),
-		data: JSON.stringify(postData),
-		dataType: "json",
-		contentType: "application/json"
-	}).done(function(data){
-		// User sucessfully authenticated
-                chrome.storage.local.set({
-                	'userId': data.User.Id,
-                	'user': JSON.stringify(data.User),
-                	'token': data.AccessToken
-                })
+        	'storageUrl': storageUrl,
+        	'loginUser': ['storageUrl', function getUserList(callback, result) {
 
-                //force re-setup of AJAX header
-		$.ajaxSetup({
-			headers: ajaxHeader(),
-			statusCode: {
-				401: function() {
-					logoutUser();
-				}
-			}
-		});
-  	
-	}).fail(function(){
-		$('#msguser').html("Wrong username or password.").show();
+	      		// Set shortcut to ip and port
+	        	var ipStorage = result.storageUrl.ipStorage;
+	        	var portStorage = result.storageUrl.portStorage;
+
+			// Process user login information
+			var postData = {
+				Username: $("#username").val(),
+				password: SHA1($("#password").val()),
+				passwordMd5: MD5($("#password").val())
+			};
+
+			var resp = $.ajax({
+				type: "POST",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Users/AuthenticateByName/",
+				headers: ajaxHeader(),
+				data: JSON.stringify(postData),
+				dataType: "json",
+				contentType: "application/json"
+			}).done(function(data){
+				// User sucessfully authenticated
+		                chrome.storage.local.set({
+		                	'userId': data.User.Id,
+		                	'user': JSON.stringify(data.User),
+		                	'token': data.AccessToken
+		                })
+
+		                //force re-setup of AJAX header
+				/*$.ajaxSetup({
+					headers: ajaxHeader(),
+					statusCode: {
+						401: function() {
+							logoutUser();
+						}
+					}
+				});*/
+
+				// Go to Today's upcoming
+				$('#userSelect, #manualLogin').fadeOut('slow', function() {
+					todayUp();
+				});
+		  	
+			}).fail(function(){
+				message('#msguser', "Wrong username or password.");
+			});
+
+			callback();
+		}]
 	});
 }
 
@@ -265,15 +326,29 @@ function loginUser() {
 function logoutUser() {
 	
 
-	// Revoke access token
-	$.post(ipStorage + ":" + portStorage + "/mediabrowser/Sessions/Logout", function() {
+	// Make chrome storage sync
+        async.auto({
+
+        	'storageUrl': storageUrl,
+        	'logoutUser': ['storageUrl', function getUserList(callback, result) {
+
+	      		// Set shortcut to ip and port
+	        	var ipStorage = result.storageUrl.ipStorage;
+	        	var portStorage = result.storageUrl.portStorage;
+
+			// Revoke access token
+			$.post(ipStorage + ":" + portStorage + "/mediabrowser/Sessions/Logout", function() {
+			});
+
+			// Reset storage for user credentials
+			chrome.storage.local.remove('userId');
+			chrome.storage.local.remove('user');
+			chrome.storage.local.remove('token');
+
+			// Get the user list, to allow user to re-authenticate
+			getUser();
+
+			callback();
+		}]
 	});
-
-	// Reset storage for user credentials
-	chrome.storage.local.remove('userId');
-	chrome.storage.local.remove('user');
-	chrome.storage.local.remove('token');
-
-	// Get the user list, to allow user to re-authenticate
-	getUser();
 }
