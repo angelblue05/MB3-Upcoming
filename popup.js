@@ -28,6 +28,7 @@ function currentFunc(name) {
 	chrome.storage.local.set({ 'current': current });
 }
 
+
 function message(div, string) {
 	
 
