@@ -113,7 +113,6 @@ function ipSetup() {
 			
 			// Testing failed      
 	        	}).fail(function() {
-	        		
 	        		message('#msgconnect', "Unable to connect. Please verify your IP or URL and port.");
 	        	});
 	        	
