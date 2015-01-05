@@ -3,13 +3,13 @@ var current;
 var jsonf = "?format=json";
 
 
+
 $(document).ready(function() {
 	
 
 	// Verify to load last loaded div by the user
 	chrome.storage.local.get('current', function(result) {
 		
-		console.log(result['current']);
 		if (result['current'] != undefined) {
 			current = result['current'];
 			window[current]();
@@ -27,6 +27,16 @@ function storageUrl(callback) {
 	chrome.storage.local.get(['ip', 'port'], function(result) {
 		
 		callback(null, { ipStorage: result['ip'], portStorage: result['port']});
+	});
+}
+
+
+function storageUser(callback) {
+
+
+	chrome.storage.local.get(['userId'], function(result) {
+
+		callback(null, result['userId']);
 	});
 }
 
@@ -231,12 +241,40 @@ function todayUp() {
 
         	'storageUrl': storageUrl,
         	'ajaxHeader': ajaxHeader,
-        	'todayUp': ['storageUrl', 'ajaxHeader', function getUserList(callback, result) {
+        	'storageUser': storageUser,
+        	'todayUp': ['storageUrl', 'ajaxHeader', 'storageUser', function getUserList(callback, result) {
 
 	      		// Set shortcut to ip and port
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
 	        	var header = result.ajaxHeader;
+	        	var userId = result.storageUser;
+
+	        	// Verify if the user's session is still valid
+			$.ajaxSetup({
+				headers: header,
+				statusCode: {
+					401: function() {
+						logoutUser();
+					}
+				}
+			});
+
+	        	var resp = $.ajax({
+				type: "POST",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId,
+				headers: header,
+				dataType: "json",
+				contentType: "application/json"
+			}).done(function(data){
+				// Container for userImage
+				/*var upItems = [];
+
+				$.each(data, function(key, val) {
+						
+
+				});*/
+			});
 
 			callback();
 		}]
