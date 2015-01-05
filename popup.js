@@ -255,7 +255,7 @@ function todayUp() {
 			});
 
 	        	var resp = $.ajax({
-				type: "POST",
+				type: "GET",
 				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId,
 				headers: header,
 				dataType: "json",
