@@ -23,9 +23,7 @@ $(document).ready(function() {
 
 function storageUrl(callback) {
 
-
 	chrome.storage.local.get(['ip', 'port'], function(result) {
-		
 		callback(null, { ipStorage: result['ip'], portStorage: result['port']});
 	});
 }
@@ -33,16 +31,13 @@ function storageUrl(callback) {
 
 function storageUser(callback) {
 
-
 	chrome.storage.local.get(['userId'], function(result) {
-
 		callback(null, result['userId']);
 	});
 }
 
 
 function currentFunc(name) {
-
 
 	current = name;
 	chrome.storage.local.set({ 'current': current });
@@ -51,7 +46,6 @@ function currentFunc(name) {
 
 function message(div, string) {
 	
-
 	$(div).html(string);
 }
 
