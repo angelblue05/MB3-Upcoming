@@ -134,9 +134,8 @@ function getUser() {
         	'storageUrl': storageUrl,
         	'getuser list': ['storageUrl', function getUserList(callback, result) {
 
-	        	/*chrome.storage.local.get(['ip', 'port'], function(result) {
-			ipStorage = result['ip'];
-			portStorage = result['port'];*/
+	        	ipStorage = result.storageUrl.ipStorage;
+	        	portStorage = result.storageUrl.portStorage;
 
 			$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 				
@@ -209,6 +208,8 @@ function getUser() {
 
 				// Fancy
 				$("#userSelect, #manualLogin").fadeIn('slow');
+
+				callback();
 			});
 		}]
 	});
