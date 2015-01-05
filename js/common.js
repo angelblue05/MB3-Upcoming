@@ -12,25 +12,25 @@ chrome.storage.local.get(null, function(items) {
 });
 
 // Media Browser header
-function ajaxHeader() {
+function ajaxHeader(callback) {
         
-
-        var userId;
-        var token;
-        var version = chrome.app.getDetails().version;
         
         // Verify if userId and token exists
         chrome.storage.local.get(null, function(items) {
                 
+                var userId = '';
+                var token = '';
+                var version = chrome.app.getDetails().version;
+
                 if (typeof items.userId != 'undefined') {
-                        userId = items.userId;
+                        userId = ' userId="' + items.userId + '"';
                 }
 
                 if (typeof items.token != 'undefined') {
                         token = items.token;
                 }
         
-                return {'Authorization':'MediaBrowser, UserId="' + userId + '", Client="MB3 Upcoming", Device="Chrome", DeviceId="' + deviceId + '", Version="' + version + '"', 'X-MediaBrowser-Token': token }
+                callback(null, {'Authorization':'MediaBrowser Client="Chrome", Device="MB3 Upcoming", DeviceId="' + deviceId + '",' + userId +  ' Version="' + version + '"', 'X-MediaBrowser-Token': token });
         });
 }
 

@@ -24,11 +24,6 @@ $(document).ready(function() {
 function storageUrl(callback) {
 
 
-	/*if (typeof ip !== 'undefined') {
-		callback(null, { ipStorage: ip, portStorage: port});
-		return;
-	}*/
-
 	chrome.storage.local.get(['ip', 'port'], function(result) {
 		
 		callback(null, { ipStorage: result['ip'], portStorage: result['port']});
@@ -131,6 +126,16 @@ function getUser() {
 	// Save the state of the extension
 	currentFunc('getUser');
 
+	// Correctly display when div is last loaded
+	$('#server-login').hide();
+	// Reset getUser and userSelect/manualLogin divs
+	$('#userSelect').html('');
+	$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+	$('#username').val('');
+	$('#password').val('');
+	$('#msguser').html('');
+	$('#panel').hide();
+
 	// Make chrome storage sync
         async.auto({
 
@@ -140,16 +145,6 @@ function getUser() {
 	      		// Set shortcut to ip and port
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
-
-        		// Correctly display when div is last loaded
-			$('#server-login').hide();
-			// Reset getUser and userSelect/manualLogin divs
-			$('#userSelect').html('');
-			$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
-			$('#username').val('');
-			$('#password').val('');
-			$('#msguser').html('');
-			$('#panel').hide();
 
 			$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
 
@@ -163,10 +158,10 @@ function getUser() {
 						
 						var userImage;
 						var userPass;
-						
+
 						// Verify is there's a user image
 						if (typeof(val.PrimaryImageTag) != 'undefined') {
-							userImage = "background-image:url('"+ ipStorage +":"+ portStorage +"/mediabrowser/Users/"+val.Id+"/Images/Primary?width=100&tag="+val.PrimaryImageTag+"')";
+							userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
 							// Add images to the userItems array
 							userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
 						} else {
@@ -184,39 +179,39 @@ function getUser() {
 					html: userItems.join( "" )
 				}).appendTo( "#userSelect");
 
-				// slideToggle
-				$('#manualLogin_text').unbind('click');
-				$('#manualLogin_text').on('click', function() {
-
-					$('#panel').slideToggle();       
-				}); 
-
-				// When pressing the save button
-				$('#saveUser').unbind('click');
-				$('#saveUser').on('click', function() {
-
-					// Authenticate the user's credentials5
-					loginUser();
-				});
-
-				// When pressing the back button
-				$('#back_ipSetup').unbind('click');
-				$('#back_ipSetup').on('click', function() {
-
-					$("#userSelect, #manualLogin").fadeOut(function() {
-						
-						// Send user back to setup IP
-						ipSetup();	
-					});
-				});
-
-				// Fancy
-				$("#userSelect, #manualLogin").fadeIn('slow');
-
 				callback();
 			});
 		}]
 	});
+
+	// slideToggle
+	$('#manualLogin_text').unbind('click');
+	$('#manualLogin_text').on('click', function() {
+
+		$('#panel').slideToggle();       
+	}); 
+
+	// When pressing the save button
+	$('#saveUser').unbind('click');
+	$('#saveUser').on('click', function() {
+
+		// Authenticate the user's credentials5
+		loginUser();
+	});
+
+	// When pressing the back button
+	$('#back_ipSetup').unbind('click');
+	$('#back_ipSetup').on('click', function() {
+
+		$("#userSelect, #manualLogin").fadeOut(function() {
+			
+			// Send user back to setup IP
+			ipSetup();	
+		});
+	});
+
+	// Fancy
+	$("#userSelect, #manualLogin").fadeIn('slow');
 }
 
 
@@ -226,55 +221,53 @@ function todayUp() {
 	// Save the state of the extension
 	currentFunc('todayUp');
 
+	// Correctly display when div is last loaded
+	$('#server-login').hide();
+
+	$('#header_signIn').html('<a id="back_getUser">SIGN OUT</a>');
+
 	// Make chrome storage sync
         async.auto({
 
         	'storageUrl': storageUrl,
-        	'todayUp': ['storageUrl', function getUserList(callback, result) {
+        	'ajaxHeader': ajaxHeader,
+        	'todayUp': ['storageUrl', 'ajaxHeader', function getUserList(callback, result) {
 
 	      		// Set shortcut to ip and port
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
-
-			// Correctly display when div is last loaded
-			$('#server-login').hide();
-
-			$('#header_signIn').html('<a id="back_getUser">SIGN OUT</a>');
-
-			// When pressing the back button
-			$('#back_getUser').unbind('click');
-			$('#back_getUser').on('click', function() {
-
-				$('#todayUp').fadeOut(function() {
-					
-					// Logout user and revoke token
-					logoutUser();	
-				});
-			});
+	        	var header = result.ajaxHeader;
 
 			callback();
 		}]
-	});	
+	});
 
+	// When pressing the back button
+	$('#back_getUser').unbind('click');
+	$('#back_getUser').on('click', function() {
+
+		$('#todayUp').fadeOut(function() {
+			
+			// Logout user and revoke token
+			logoutUser();	
+		});
+	});
 }
 
 function loginUser() {
 
 
-	// Reset storage for user credentials
-	chrome.storage.local.remove('userId');
-	chrome.storage.local.remove('user');
-	chrome.storage.local.remove('token');
-
 	// Make chrome storage sync
         async.auto({
 
         	'storageUrl': storageUrl,
-        	'loginUser': ['storageUrl', function getUserList(callback, result) {
-
-	      		// Set shortcut to ip and port
+        	'ajaxHeader': ajaxHeader,
+        	'loginUser': ['storageUrl', 'ajaxHeader' , function getUserList(callback, result) {
+        		
+	      		// Set shortcut to ip and port & header
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
+	        	var header = result.ajaxHeader;
 
 			// Process user login information
 			var postData = {
@@ -286,7 +279,7 @@ function loginUser() {
 			var resp = $.ajax({
 				type: "POST",
 				url: ipStorage + ":" + portStorage + "/mediabrowser/Users/AuthenticateByName/",
-				headers: ajaxHeader(),
+				headers: header,
 				data: JSON.stringify(postData),
 				dataType: "json",
 				contentType: "application/json"
@@ -297,16 +290,6 @@ function loginUser() {
 		                	'user': JSON.stringify(data.User),
 		                	'token': data.AccessToken
 		                })
-
-		                //force re-setup of AJAX header
-				/*$.ajaxSetup({
-					headers: ajaxHeader(),
-					statusCode: {
-						401: function() {
-							logoutUser();
-						}
-					}
-				});*/
 
 				// Go to Today's upcoming
 				$('#userSelect, #manualLogin').fadeOut('slow', function() {
@@ -330,25 +313,32 @@ function logoutUser() {
         async.auto({
 
         	'storageUrl': storageUrl,
-        	'logoutUser': ['storageUrl', function getUserList(callback, result) {
+        	'ajaxHeader': ajaxHeader,
+        	'logoutUser': ['storageUrl', 'ajaxHeader', function getUserList(callback, result) {
 
-	      		// Set shortcut to ip and port
+	      		// Set shortcut to ip and port & header
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
+	        	var header = result.ajaxHeader;
 
 			// Revoke access token
-			$.post(ipStorage + ":" + portStorage + "/mediabrowser/Sessions/Logout", function() {
-			});
-
-			// Reset storage for user credentials
-			chrome.storage.local.remove('userId');
-			chrome.storage.local.remove('user');
-			chrome.storage.local.remove('token');
-
-			// Get the user list, to allow user to re-authenticate
-			getUser();
+			var resp = $.ajax({
+				type: "POST",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Sessions/Logout/",
+				headers: header,
+				dataType: "json",
+				contentType: "application/json"
+			}).done(function(){
+				// Reset storage for user credentials
+				chrome.storage.local.remove('userId');
+				chrome.storage.local.remove('user');
+				chrome.storage.local.remove('token');
+		        })
 
 			callback();
 		}]
 	});
+
+	// Get the user list, to allow user to re-authenticate
+	getUser();
 }
