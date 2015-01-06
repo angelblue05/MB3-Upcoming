@@ -260,13 +260,26 @@ function todayUp() {
 				dataType: "json",
 				contentType: "application/json"
 			}).done(function(data){
-				// Container for userImage
-				console.dir(data);
 
+				console.dir(data);/* To erase */
+
+				var today = yyyymmdd();
+				// Container for upcoming items
 				var upItems = [];
 
 				$.each(data, function(key, val) {
-					console.log(val.Items.Name);
+					
+					$.each(val, function(key2, val2) {
+						
+						// Shortened PremiereDate to only include the date
+						var shortDate = (val2.PremiereDate).substring(0, 10);
+						
+						if (shortDate == today) {
+							console.log('the name is ' + val2.Name + 'and the date airing is ' + shortDate);
+						}
+					});
+					/*console.log(val[0].PremiereDate);
+					console.log(today);*/
 					// Verify is there's a user image
 					/*if (typeof(val.PrimaryImageTag) != 'undefined') {
 						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
