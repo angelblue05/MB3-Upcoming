@@ -261,12 +261,19 @@ function todayUp() {
 				contentType: "application/json"
 			}).done(function(data){
 				// Container for userImage
-				/*var upItems = [];
+				console.dir(data);
+
+				var upItems = [];
 
 				$.each(data, function(key, val) {
-						
+					console.log(val.Items.Name);
+					// Verify is there's a user image
+					/*if (typeof(val.PrimaryImageTag) != 'undefined') {
+						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
+						// Add images to the upItems array
+						upItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");*/
 
-				});*/
+				});
 			});
 
 			callback();
