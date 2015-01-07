@@ -57,6 +57,7 @@ function ipSetup() {
 	currentFunc('ipSetup');
 
 	// Reset ipSetup to default
+	/*$('#passSlide').hide();*/
 	$('#header_signIn').html('SIGN IN');
 	$('#msgconnect').html('');
 	$('#setting_ip').val('');
@@ -70,7 +71,7 @@ function ipSetup() {
 	chrome.storage.local.remove('port');
 
 	// When pressing the connect button
-	$('#connect').unbind('click');
+	$('#connect').off('click');
 	$('#connect').on('click', function() {
 		
 		if (processing == 0) {  
@@ -173,7 +174,7 @@ function getUser() {
 						}
 
 						// Add default images to the userItems array
-						userItems.push("<a id=\"" + val.Id + "\" class=\"" + userPass + "\" data-user=\"" + val.Name + "\" href=\"#\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
+						userItems.push("<a id=\"" + val.Id + "\" class=\"" + userPass + "\" data-user=\"" + val.Name + "\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
 						
 					}
 				});
@@ -185,14 +186,57 @@ function getUser() {
 				}).appendTo( "#userSelect");
 
 				// If userPass = "login_woPass"
-				$('.login_woPass').unbind('click');
+				$('.login_woPass').off('click');
 				$('.login_woPass').on('click', function() {
 
 					var id = $(this).attr("id");
 					var dataUser = $(this).attr("data-user");
 
 					// Authenticate the user's credentials
-					loginUser(id, dataUser);
+					loginUser(id, dataUser, false);
+				});
+
+				// To be able to authenticate with login_wPass
+				var id;
+				var dataUser;
+
+				// If userPass = "login_wPass"
+				$('.login_wPass').off('click');
+				$('.login_wPass').on('click', function() {
+
+					id = $(this).attr("id");
+					dataUser = $(this).attr("data-user");
+
+
+					$('.slide').hide('fast', function() {
+						$('#passSlide').slideDown('fast');
+					})
+				});
+
+				// Authenticate login_wPass
+				$('#saveInput').off('click');
+				$('#saveInput').on('click', function() {
+					
+					// Authenticate the user
+					loginUser(id, dataUser, true);
+				});
+
+				// Cancel Password field input when using UserItems
+				$('#cancelInput').off('click');
+				$('#cancelInput').on('click', function() {
+
+					// If manual login panel is open, hide it
+					$('#panel').hide();
+
+					$('#passSlide').hide('fast', function() {
+						$('.slide').slideDown('fast');
+					})
+
+					// Cancel resets any password username input
+					$('#username').val('');
+					$('#password').val('');
+					$('#password2').val('');
+					$('#msguser').html('');
 				});
 
 				callback();
@@ -201,14 +245,14 @@ function getUser() {
 	});
 
 	// slideToggle
-	$('#manualLogin_text').unbind('click');
+	$('#manualLogin_text').off('click');
 	$('#manualLogin_text').on('click', function() {
 
 		$('#panel').slideToggle();       
 	}); 
 
 	// When pressing the save button
-	$('#saveUser').unbind('click');
+	$('#saveUser').off('click');
 	$('#saveUser').on('click', function() {
 
 		// Authenticate the user's credentials
@@ -216,7 +260,7 @@ function getUser() {
 	});
 
 	// When pressing the back button
-	$('#back_ipSetup').unbind('click');
+	$('#back_ipSetup').off('click');
 	$('#back_ipSetup').on('click', function() {
 
 		$("#userSelect, #manualLogin").fadeOut(function() {
@@ -321,7 +365,7 @@ function todayUp() {
 	});
 
 	// When pressing the back button
-	$('#back_getUser').unbind('click');
+	$('#back_getUser').off('click');
 	$('#back_getUser').on('click', function() {
 
 		$('#todayUp').fadeOut(function() {
@@ -332,9 +376,9 @@ function todayUp() {
 	});
 }
 
-function loginUser(id, dataUser) {
+function loginUser(id, dataUser, hasPassword) {
 
-
+	
 	// Make chrome storage sync
         async.auto({
 
@@ -347,15 +391,22 @@ function loginUser(id, dataUser) {
 	        	var portStorage = result.storageUrl.portStorage;
 	        	var header = result.ajaxHeader;
 
-	        	if (id != undefined) {
-	        		// Process user login information userItems
+	        	if (id != undefined && hasPassword === false) {
+	        		// Process user login with no password
 	        		var postData = {
 	        			Username: dataUser,
 	        			password: SHA1(''),
 	        			passwordMd5: MD5('')
 	        		};
+	        	} else if (id != undefined && hasPassword === true) {
+	        		// Process user login that has a Password
+	        		var postData = {
+	        			Username: dataUser,
+	        			password: SHA1($("#password2").val()),
+	        			passwordMd5: MD5($("#password2").val())
+	        		};
 	        	} else {
-	        		// Process user login information
+	        		// Process user login manual login
 				var postData = {
 					Username: $("#username").val(),
 					password: SHA1($("#password").val()),

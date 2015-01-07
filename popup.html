@@ -49,7 +49,20 @@
 			</div>
 
 			<div id="manualLogin" style="display:none;"><!-- Manual login sliding panel -->
+				
+				<div id="passSlide" style="display:none;"><!-- Password field -->
+					<table id="passInput" align="center">
+						<tr>
+							<td align="right"><label>Password:</label></td>
+							<td><input type="password" name="password" id="password2" value="" TABINDEX=2></td>
+							<td align="center"><button id="saveInput" class="passButton">Save</button></td>
+							<td align="center"><button id="cancelInput" class="passButton">Cancel</button></td>
+						</tr>
+					</table>
+				</div>
+
 				<div class="slide">
+
 					<span id="manualLogin_text">Manual Login</span>
 					
 					<div id="panel" style="display:none;">

@@ -150,23 +150,71 @@ body	{
 
 #userLogin {
 	padding-top: 20px;
+	height: 50px;
 	color: #dad9d9;
 }
 
-#userLogin label {
+#userLogin #passInput label {
 	font-family: Arial;
 	color: #c2c2c2;
 }
 
-#userLogin input	{
+#userLogin #passInput input	{
 	padding: 3px;
 	font-size: 13px;
 	border: 1px solid #dad9d9;
 }
 
-#userLogin input:focus {
+#userLogin #passInput input:focus {
 	border: 1px solid #27a436;
 	outline: none !important;
+}
+
+
+
+/* Password field buttons */
+
+.passButton {
+	margin-left: 2px;
+	color: white;
+	font-size: 13px;
+	border: 0;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+
+.passButton:focus {
+	outline: none;
+}
+
+/* Password save button only */
+
+#saveInput {
+	padding: 3px 20px;
+	background: #27a436;
+}
+
+#saveInput:hover {
+	background: #20932e;
+}
+
+#saveInput:active {
+	background: #197524;
+}
+
+/* Password cancel button only */
+
+#cancelInput {
+	padding: 3px 5px;
+	background: #686868;
+}
+
+#cancelInput:hover {
+	background: #5a5a5a;
+}
+
+#cancelInput:active {
+	background: #4a4a4a;
 }
 
 
