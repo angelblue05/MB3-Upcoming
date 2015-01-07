@@ -129,11 +129,9 @@ function getUser() {
 	// Save the state of the extension
 	currentFunc('getUser');
 
-	// Correctly display when div is last loaded
-	/*$('#server-login').hide();*/
 	// Reset getUser and userSelect/manualLogin divs
 	$('#userSelect').html('');
-	$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
+	$('#header_signIn').html('<a id="back_ipSetup" class="headerButton">BACK<a>');
 	$('#username').val('');
 	$('#password').val('');
 	$('#msguser').html('');
@@ -160,19 +158,22 @@ function getUser() {
 					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
 						
 						var userImage;
-						var userPass;
+						var userPass = "login_woPass";
 
 						// Verify is there's a user image
 						if (typeof(val.PrimaryImageTag) != 'undefined') {
 							userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
-							// Add images to the userItems array
-							userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
 						} else {
 							// Default image for undefined
 							userImage = "background-image:url(/css/images/userflyoutdefault.png)";
-							// Add default images to the userItems array
-							userItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
 						}
+
+						if (val.HasPassword === true) {
+							userPass = "login_wPass";
+						}
+
+						// Add default images to the userItems array
+						userItems.push("<a id=\"" + val.Id + "\" class=\"users " + userPass + "\" data-user=\"" + val.Name + "\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
 					}
 				});
 
@@ -186,6 +187,19 @@ function getUser() {
 			});
 		}]
 	});
+	
+	// If userPass = "loginPass_woPass"
+	$('.users').unbind('click');
+	$('.users').on('click', function() {
+
+		var id = $(this).attr("id");
+		var dataUser = $(this).attr("data-user");
+
+		console.log(id + "username: " + dataUser);
+		// Authenticate the user's credentials
+		loginUser(id, dataUser);
+	});
+
 
 	// slideToggle
 	$('#manualLogin_text').unbind('click');
@@ -195,10 +209,10 @@ function getUser() {
 	}); 
 
 	// When pressing the save button
-	$('#saveUser').unbind('click');
+	$('#saveUser').unbind();
 	$('#saveUser').on('click', function() {
 
-		// Authenticate the user's credentials5
+		// Authenticate the user's credentials
 		loginUser();
 	});
 
@@ -224,7 +238,7 @@ function todayUp() {
 	// Save the state of the extension
 	currentFunc('todayUp');
 
-	$('#header_signIn').html('<a id="back_getUser">SIGN OUT</a>');
+	$('#header_signIn').html('<a id="back_getUser" class="headerButton">SIGN OUT</a>');
 
 	// Make chrome storage sync
         async.auto({
@@ -258,9 +272,7 @@ function todayUp() {
 				contentType: "application/json"
 			}).done(function(data){
 
-				console.dir(data);/* To erase */
-
-				var today = yyyymmdd();
+				var date = yyyymmdd();
 				// Container for upcoming items
 				var upItems = [];
 
@@ -269,19 +281,31 @@ function todayUp() {
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
 					
-					if (shortDate == today) {
+					if (shortDate == date) {
 
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Network if possible
-						console.log('the episode name is ' + val.Name + 'and the date airing is ' + shortDate + '. The Series name is ' + val.SeriesName + '. The season is ' + val.ParentIndexNumber + ' and episode is ' + val.IndexNumber);/* To erase */
+						console.log('the episode name is ' + val.Name + 'and the date airing is ' + shortDate + '. The Series name is ' + val.SeriesName + '. The season is ' + val.ParentIndexNumber + ' and episode is ' + val.IndexNumber);
 						
+						
+						var resp = $.ajax({
+							type: "GET",
+							url: ipStorage + ":" + portStorage + "/mediabrowser/Studios?UserId=" + userId + "&NameStartsWithOrGreater=" + val.SeriesName,
+							headers: header,
+							dataType: "json",
+							contentType: "application/json"
+						}).done(function(data) {
+
+							console.log(data);
+						})
+
 						// Verify if the file is currently available to view via MB3
-						if (val.LocationType === "FileSystem") {
+						/*if (val.LocationType === "FileSystem") {
 							console.log('available!');
 
 							// Attach a link to MB3 - when the file is available
 							console.log('path to the episode ' + ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id);
-						}
+						}*/
 					}
 
 					// Verify is there's a user image
@@ -309,7 +333,7 @@ function todayUp() {
 	});
 }
 
-function loginUser() {
+function loginUser(id, dataUser) {
 
 
 	// Make chrome storage sync
@@ -324,12 +348,28 @@ function loginUser() {
 	        	var portStorage = result.storageUrl.portStorage;
 	        	var header = result.ajaxHeader;
 
+	        	if (id != undefined) {
+	        		// Process user login information userItems
+	        		var postData = {
+	        			Username: id,
+	        			password: SHA1(""),
+	        			passwordMd5: MD5("")
+	        		};
+	        	} else {
+	        		// Process user login information
+				var postData = {
+					Username: $("#username").val(),
+					password: SHA1($("#password").val()),
+					passwordMd5: MD5($("#password").val())
+				};
+			}
+
 			// Process user login information
-			var postData = {
+			/*var postData = {
 				Username: $("#username").val(),
 				password: SHA1($("#password").val()),
 				passwordMd5: MD5($("#password").val())
-			};
+			};*/
 
 			var resp = $.ajax({
 				type: "POST",
@@ -339,17 +379,27 @@ function loginUser() {
 				dataType: "json",
 				contentType: "application/json"
 			}).done(function(data){
+				
+				// User appropriate source, manual login vs userList
+				if (dataUser != undefined) {
+					chrome.storage.local.set({ 'userId': dataUser });
+				} else {
+					chrome.storage.local.set({ 'userId': data.User.Id });
+				}
+
 				// User sucessfully authenticated
 		                chrome.storage.local.set({
-		                	'userId': data.User.Id,
+		                	/*'userId': data.User.Id,*/
 		                	'user': JSON.stringify(data.User),
 		                	'token': data.AccessToken
 		                })
 
 				// Go to Today's upcoming
-				$('#userSelect, #manualLogin').fadeOut('slow', function() {
-					todayUp();
-				});
+				$('#userSelect, #manualLogin').fadeOut('slow');
+
+				// Go to Today's upcoming. The function used to be inside
+				// the fadeOut, but it duplicated the ajax request
+				todayUp();
 		  	
 			}).fail(function(){
 				message('#msguser', "Wrong username or password.");

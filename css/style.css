@@ -38,11 +38,7 @@ body	{
 	width: 180px;
 }
 
-
-
-/* Back to IP setup */
-
-#back_ipSetup:hover {
+.headerButton:hover {
 	color: #ffffff;
 	cursor: default;
 }
@@ -216,6 +212,8 @@ body	{
 	margin: 3px;
 	opacity: 0.85;
 	vertical-align: center;
+	color: inherit;
+	text-decoration: none;
 	background: #ffffff;
 }
 
