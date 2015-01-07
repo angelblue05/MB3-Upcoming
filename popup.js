@@ -185,6 +185,7 @@ function getUser() {
 					html: userItems.join( "" )
 				}).appendTo( "#userSelect");
 
+
 				// If userPass = "login_woPass"
 				$('.login_woPass').off('click');
 				$('.login_woPass').on('click', function() {
@@ -196,7 +197,9 @@ function getUser() {
 					loginUser(id, dataUser, false);
 				});
 
-				// To be able to authenticate with login_wPass
+
+				// To authenticate with login_wPass
+
 				var id;
 				var dataUser;
 
@@ -270,6 +273,7 @@ function getUser() {
 		});
 	});
 
+
 	// Fancy
 	$("#userSelect, #manualLogin").fadeIn('slow');
 }
@@ -318,11 +322,13 @@ function todayUp() {
 				var date = yyyymmdd();
 				// Container for upcoming items
 				var upItems = [];
-
+				console.log(data);
 				$.each(data.Items, function(key, val) {
 						
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
+					var utcServer = (val.PremiereDate).substring(10, 21);
+					
 					
 					if (shortDate == date) {
 
@@ -376,6 +382,22 @@ function todayUp() {
 	});
 }
 
+function utcTime() {
+
+
+	var resp = $.ajax({
+		type: "GET",
+		url: ipStorage + ":" + portStorage + "/mediabrowser/Studios?UserId=" + userId + "&NameStartsWithOrGreater=" + val.SeriesName,
+		headers: header,
+		dataType: "json",
+		contentType: "application/json"
+	}).done(function(data) {
+
+		console.log(data);
+	})
+}
+
+
 function loginUser(id, dataUser, hasPassword) {
 
 	
@@ -425,8 +447,10 @@ function loginUser(id, dataUser, hasPassword) {
 				
 				// User appropriate source, manual login vs userList
 				if (dataUser != undefined) {
+					// If userItem is used
 					chrome.storage.local.set({ 'userId': id });
 				} else {
+					// If manual login is used
 					chrome.storage.local.set({ 'userId': data.User.Id });
 				}
 
