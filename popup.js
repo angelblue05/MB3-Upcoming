@@ -255,7 +255,7 @@ function todayUp() {
 
 	        	var resp = $.ajax({
 				type: "GET",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId,
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30",
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
@@ -273,10 +273,17 @@ function todayUp() {
 					var shortDate = (val.PremiereDate).substring(0, 10);
 					
 					if (shortDate == today) {
-						console.log('the name is ' + val.Name + 'and the date airing is ' + shortDate);
+
+						// To display: Image, Series Name, S00E00,
+						// Episode name, air time, the network if possible
+						console.log('the episode name is ' + val.Name + 'and the date airing is ' + shortDate + '. The Series name is ' + val.SeriesName + '. The season is ' + val.ParentIndexNumber + ' and episode is ' + val.IndexNumber);/* To erase */
+						
+						// Verify if the file is currently available to view via MB3
+						if (val.LocationType === "FileSystem") {
+							console.log('available!')
+						}
 					}
-					/*console.log(val[0].PremiereDate);
-					console.log(today);*/
+
 					// Verify is there's a user image
 					/*if (typeof(val.PrimaryImageTag) != 'undefined') {
 						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
