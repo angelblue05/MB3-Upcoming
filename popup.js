@@ -130,7 +130,7 @@ function getUser() {
 	currentFunc('getUser');
 
 	// Correctly display when div is last loaded
-	$('#server-login').hide();
+	/*$('#server-login').hide();*/
 	// Reset getUser and userSelect/manualLogin divs
 	$('#userSelect').html('');
 	$('#header_signIn').html('<a id="back_ipSetup">BACK<a>');
@@ -224,9 +224,6 @@ function todayUp() {
 	// Save the state of the extension
 	currentFunc('todayUp');
 
-	// Correctly display when div is last loaded
-	$('#server-login').hide();
-
 	$('#header_signIn').html('<a id="back_getUser">SIGN OUT</a>');
 
 	// Make chrome storage sync
@@ -275,12 +272,15 @@ function todayUp() {
 					if (shortDate == today) {
 
 						// To display: Image, Series Name, S00E00,
-						// Episode name, air time, the network if possible
+						// Episode name, Air time, Network if possible
 						console.log('the episode name is ' + val.Name + 'and the date airing is ' + shortDate + '. The Series name is ' + val.SeriesName + '. The season is ' + val.ParentIndexNumber + ' and episode is ' + val.IndexNumber);/* To erase */
 						
 						// Verify if the file is currently available to view via MB3
 						if (val.LocationType === "FileSystem") {
-							console.log('available!')
+							console.log('available!');
+
+							// Attach a link to MB3 - when the file is available
+							console.log('path to the episode ' + ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id);
 						}
 					}
 
