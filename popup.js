@@ -267,17 +267,14 @@ function todayUp() {
 				// Container for upcoming items
 				var upItems = [];
 
-				$.each(data, function(key, val) {
+				$.each(data.Items, function(key, val) {
+						
+					// Shortened PremiereDate to only include the date
+					var shortDate = (val.PremiereDate).substring(0, 10);
 					
-					$.each(val, function(key2, val2) {
-						
-						// Shortened PremiereDate to only include the date
-						var shortDate = (val2.PremiereDate).substring(0, 10);
-						
-						if (shortDate == today) {
-							console.log('the name is ' + val2.Name + 'and the date airing is ' + shortDate);
-						}
-					});
+					if (shortDate == today) {
+						console.log('the name is ' + val.Name + 'and the date airing is ' + shortDate);
+					}
 					/*console.log(val[0].PremiereDate);
 					console.log(today);*/
 					// Verify is there's a user image
