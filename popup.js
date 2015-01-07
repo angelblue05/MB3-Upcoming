@@ -130,8 +130,8 @@ function getUser() {
 	currentFunc('getUser');
 
 	// Reset getUser and userSelect/manualLogin divs
-	$('#userSelect').html('');
 	$('#header_signIn').html('<a id="back_ipSetup" class="headerButton">BACK<a>');
+	$('#userSelect').html('');
 	$('#username').val('');
 	$('#password').val('');
 	$('#msguser').html('');
@@ -173,7 +173,8 @@ function getUser() {
 						}
 
 						// Add default images to the userItems array
-						userItems.push("<a id=\"" + val.Id + "\" class=\"users " + userPass + "\" data-user=\"" + val.Name + "\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
+						userItems.push("<a id=\"" + val.Id + "\" class=\"" + userPass + "\" data-user=\"" + val.Name + "\" href=\"#\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
+						
 					}
 				});
 
@@ -183,23 +184,21 @@ function getUser() {
 					html: userItems.join( "" )
 				}).appendTo( "#userSelect");
 
+				// If userPass = "login_woPass"
+				$('.login_woPass').unbind('click');
+				$('.login_woPass').on('click', function() {
+
+					var id = $(this).attr("id");
+					var dataUser = $(this).attr("data-user");
+
+					// Authenticate the user's credentials
+					loginUser(id, dataUser);
+				});
+
 				callback();
 			});
 		}]
 	});
-	
-	// If userPass = "loginPass_woPass"
-	$('.users').unbind('click');
-	$('.users').on('click', function() {
-
-		var id = $(this).attr("id");
-		var dataUser = $(this).attr("data-user");
-
-		console.log(id + "username: " + dataUser);
-		// Authenticate the user's credentials
-		loginUser(id, dataUser);
-	});
-
 
 	// slideToggle
 	$('#manualLogin_text').unbind('click');
@@ -209,7 +208,7 @@ function getUser() {
 	}); 
 
 	// When pressing the save button
-	$('#saveUser').unbind();
+	$('#saveUser').unbind('click');
 	$('#saveUser').on('click', function() {
 
 		// Authenticate the user's credentials
@@ -351,9 +350,9 @@ function loginUser(id, dataUser) {
 	        	if (id != undefined) {
 	        		// Process user login information userItems
 	        		var postData = {
-	        			Username: id,
-	        			password: SHA1(""),
-	        			passwordMd5: MD5("")
+	        			Username: dataUser,
+	        			password: SHA1(''),
+	        			passwordMd5: MD5('')
 	        		};
 	        	} else {
 	        		// Process user login information
@@ -363,13 +362,6 @@ function loginUser(id, dataUser) {
 					passwordMd5: MD5($("#password").val())
 				};
 			}
-
-			// Process user login information
-			/*var postData = {
-				Username: $("#username").val(),
-				password: SHA1($("#password").val()),
-				passwordMd5: MD5($("#password").val())
-			};*/
 
 			var resp = $.ajax({
 				type: "POST",
@@ -382,14 +374,13 @@ function loginUser(id, dataUser) {
 				
 				// User appropriate source, manual login vs userList
 				if (dataUser != undefined) {
-					chrome.storage.local.set({ 'userId': dataUser });
+					chrome.storage.local.set({ 'userId': id });
 				} else {
 					chrome.storage.local.set({ 'userId': data.User.Id });
 				}
 
 				// User sucessfully authenticated
 		                chrome.storage.local.set({
-		                	/*'userId': data.User.Id,*/
 		                	'user': JSON.stringify(data.User),
 		                	'token': data.AccessToken
 		                })
