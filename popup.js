@@ -323,8 +323,6 @@ function todayUp() {
 				var date = yyyymmdd();
 				// Container for upcoming items
 				var upItems = [];
-				// To add to the divs height
-				var heightSet = 0;
 				
 				/*console.log(data); To erase */
 				$.each(data.Items, function(key, val) {
@@ -332,35 +330,30 @@ function todayUp() {
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
 					/*var utcServer = (val.PremiereDate).substring(10, 21);*/
-					var utcServer = val.PremiereDate
+					var utcServer = val.PremiereDate;
+					var localTime = moment(utcServer).format();
+					console.log(localTime);
 					
 					if (shortDate == date) {
-						heightSet += 1
+
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Network if possible
 						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner')";
 						var episode = val.Name;
 						var series = val.SeriesName;
 						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
+						var available = "";
 						
-						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesTitle\">" + series + "</div><div>" + episode + "</div></div></div>");
-						
-
 						// Verify if the file is currently available to view via MB3
-						/*if (val.LocationType === "FileSystem") {
-							console.log('available!');
+						if (val.LocationType === "FileSystem") {
+							
+							var path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id
+							// Mark as available episodes available to watch on MB3
+							available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
+						}
 
-							// Attach a link to MB3 - when the file is available
-							console.log('path to the episode ' + ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id);
-						}*/
+						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesEp\">" + seasonEp + " - "  + episode + "</div><div class=\"seriesLink\">" + available + "</div></div></div>");			
 					}
-
-					// Verify is there's a user image
-					/*if (typeof(val.PrimaryImageTag) != 'undefined') {
-						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
-						// Add images to the upItems array
-						upItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");*/
-
 				});
 
 				// Create a div upItems that contains series
@@ -368,6 +361,9 @@ function todayUp() {
 					"class": "upItems",
 					html: upItems.join( "" )
 				}).appendTo("#todayUp");
+
+				// Link to MB3 when the file is available
+				$('available')
 			});
 
 			callback();

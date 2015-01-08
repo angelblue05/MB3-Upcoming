@@ -320,18 +320,18 @@ body	{
 #todayUp {
 	color: #dad9d9;
 	margin: 5px;
-	max-height: 373px;
+	max-height: 362px;
 	overflow: hidden;
 	overflow-y: scroll;
 	background-color: #202020;
 }
 
 .posterThumb {
-	margin: 5px;
+	margin: 3px;
 	padding: 2px 4px 2px 2px;
 	display: inline-block;
 	width: 370px;
-	height: 110px;
+	height: 113px;
 	background-color: #333333;
 }
 
@@ -349,8 +349,26 @@ body	{
 	height: 30px;
 }
 
-.seriesTitle {
-	margin: 2px 0 2px 7px;
+.available {
+	margin-left: 7px;
+	padding: 0px 5px;
+	height: 15px;
+	color: white;
+	font-size: 11px;
+	border: 0;
+	border-radius: 3px;
+	vertical-align: middle;
+	text-decoration: none;
+	background: #27a436;
+}
+
+.seriesLink {
+	margin-top: 1px;
+	text-align: left;
+}
+
+.seriesEp {
+	margin-left: 7px;
 	text-align: left;
 }
 
