@@ -332,6 +332,7 @@ function todayUp() {
 					/*var utcServer = (val.PremiereDate).substring(10, 21);*/
 					var utcServer = val.PremiereDate;
 					var localTime = moment(utcServer).format();
+					console.log(utcServer);
 					console.log(localTime);
 					
 					if (shortDate == date) {
