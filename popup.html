@@ -48,47 +48,49 @@
 
 			</div>
 
-			<div id="manualLogin" style="display:none;"><!-- Manual login sliding panel -->
-				
-				<div id="passSlide" style="display:none;"><!-- Password field -->
-					<table id="passInput" align="center">
-						<tr>
-							<td align="right"><label>Password:</label></td>
-							<td><input type="password" name="password" id="password2" value="" TABINDEX=2></td>
-							<td align="center"><button id="saveInput" class="passButton">Save</button></td>
-							<td align="center"><button id="cancelInput" class="passButton">Cancel</button></td>
-						</tr>
-					</table>
-				</div>
-
-				<div class="slide">
-
-					<span id="manualLogin_text">Manual Login</span>
+			<div id="user-login" style="display:none;">
+				<div id="manualLogin"><!-- Manual login sliding panel -->
 					
-					<div id="panel" style="display:none;">
-
-						<!-- Manual login input -->
-						<table id="userLogin" align="center">
-							<tr>
-								<td align="right"><label>Username:</label></td>
-								<td><input type="text" name="username" id="username" value="" TABINDEX=1></td>
-								<td align="center" rowspan="2"><button id="saveUser">Save</button></td>
-							</tr>
-							
+					<div id="passSlide" style="display:none;"><!-- Password field -->
+						<table id="passInput" align="center">
 							<tr>
 								<td align="right"><label>Password:</label></td>
-								<td><input type="password" name="password" id="password" value="" TABINDEX=2></td>
+								<td><input type="password" name="password" id="password2" value="" TABINDEX=2></td>
+								<td align="center"><button id="saveInput" class="passButton">Save</button></td>
+								<td align="center"><button id="cancelInput" class="passButton">Cancel</button></td>
 							</tr>
 						</table>
+					</div>
 
-						<div align="center" id="msguser" class="msg"></div> <!-- Wrong username or password message -->
+					<div class="slide">
+
+						<span id="manualLogin_text">Manual Login</span>
+						
+						<div id="panel" style="display:none;">
+
+							<!-- Manual login input -->
+							<table id="userLogin" align="center">
+								<tr>
+									<td align="right"><label>Username:</label></td>
+									<td><input type="text" name="username" id="username" value="" TABINDEX=1></td>
+									<td align="center" rowspan="2"><button id="saveUser">Save</button></td>
+								</tr>
+								
+								<tr>
+									<td align="right"><label>Password:</label></td>
+									<td><input type="password" name="password" id="password" value="" TABINDEX=2></td>
+								</tr>
+							</table>
+
+							<div align="center" id="msguser" class="msg"></div> <!-- Wrong username or password message -->
+						</div>
 					</div>
 				</div>
+				
+				<div id="userSelect"></div> <!-- Display user list or manual login -->
 			</div>
 			
-			<div id="userSelect"></div> <!-- Display user list or manual login -->
-
-			<div id="todayUp"></div>
+			<div id="todayUp" align="center"></div>
 		</div>
 	</body>
   

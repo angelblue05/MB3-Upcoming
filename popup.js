@@ -266,7 +266,7 @@ function getUser() {
 	$('#back_ipSetup').off('click');
 	$('#back_ipSetup').on('click', function() {
 
-		$("#userSelect, #manualLogin").fadeOut(function() {
+		$('#user-login').fadeOut(function() {
 			
 			// Send user back to setup IP
 			ipSetup();	
@@ -275,7 +275,7 @@ function getUser() {
 
 
 	// Fancy
-	$("#userSelect, #manualLogin").fadeIn('slow');
+	$('#user-login').fadeIn('slow');
 }
 
 
@@ -286,6 +286,7 @@ function todayUp() {
 	currentFunc('todayUp');
 
 	$('#header_signIn').html('<a id="back_getUser" class="headerButton">SIGN OUT</a>');
+	$('#todayUp').html('');
 
 	// Make chrome storage sync
         async.auto({
@@ -322,31 +323,28 @@ function todayUp() {
 				var date = yyyymmdd();
 				// Container for upcoming items
 				var upItems = [];
-				console.log(data);
+				// To add to the divs height
+				var heightSet = 0;
+				
+				/*console.log(data); To erase */
 				$.each(data.Items, function(key, val) {
 						
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
-					var utcServer = (val.PremiereDate).substring(10, 21);
-					
+					/*var utcServer = (val.PremiereDate).substring(10, 21);*/
+					var utcServer = val.PremiereDate
 					
 					if (shortDate == date) {
-
+						heightSet += 1
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Network if possible
-						console.log('the episode name is ' + val.Name + 'and the date airing is ' + shortDate + '. The Series name is ' + val.SeriesName + '. The season is ' + val.ParentIndexNumber + ' and episode is ' + val.IndexNumber);
+						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner')";
+						var episode = val.Name;
+						var series = val.SeriesName;
+						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
 						
+						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesTitle\">" + series + "</div><div>" + episode + "</div></div></div>");
 						
-						var resp = $.ajax({
-							type: "GET",
-							url: ipStorage + ":" + portStorage + "/mediabrowser/Studios?UserId=" + userId + "&NameStartsWithOrGreater=" + val.SeriesName,
-							headers: header,
-							dataType: "json",
-							contentType: "application/json"
-						}).done(function(data) {
-
-							console.log(data);
-						})
 
 						// Verify if the file is currently available to view via MB3
 						/*if (val.LocationType === "FileSystem") {
@@ -364,6 +362,12 @@ function todayUp() {
 						upItems.push("<a><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");*/
 
 				});
+
+				// Create a div upItems that contains series
+				$( "<div/>", {
+					"class": "upItems",
+					html: upItems.join( "" )
+				}).appendTo("#todayUp");
 			});
 
 			callback();
@@ -380,9 +384,12 @@ function todayUp() {
 			logoutUser();	
 		});
 	});
+
+	// Fancy
+	$("#todayUp").fadeIn('slow');
 }
 
-function utcTime() {
+function getStudio() {
 
 
 	var resp = $.ajax({
@@ -461,12 +468,10 @@ function loginUser(id, dataUser, hasPassword) {
 		                })
 
 				// Go to Today's upcoming
-				$('#userSelect, #manualLogin').fadeOut('slow');
-
-				// Go to Today's upcoming. The function used to be inside
-				// the fadeOut, but it duplicated the ajax request
-				todayUp();
-		  	
+				$('#user-login').fadeOut('slow', function() {
+					// Go to Today's upcoming.
+					todayUp();
+				});		  	
 			}).fail(function(){
 				message('#msguser', "Wrong username or password.");
 			});
