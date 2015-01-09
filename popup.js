@@ -314,7 +314,7 @@ function todayUp() {
 
 	        	var resp = $.ajax({
 				type: "GET",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime",
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
@@ -323,17 +323,12 @@ function todayUp() {
 				var date = yyyymmdd();
 				// Container for upcoming items
 				var upItems = [];
-				
-				/*console.log(data); To erase */
+				console.log(data);
+
 				$.each(data.Items, function(key, val) {
 						
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
-					/*var utcServer = (val.PremiereDate).substring(10, 21);*/
-					var utcServer = val.PremiereDate;
-					var localTime = moment(utcServer).format();
-					console.log(utcServer);
-					console.log(localTime);
 					
 					if (shortDate == date) {
 
@@ -343,8 +338,10 @@ function todayUp() {
 						var episode = val.Name;
 						var series = val.SeriesName;
 						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
+						var airTime = val.AirTime
 						var available = "";
 						
+						console.log(airTime);
 						// Verify if the file is currently available to view via MB3
 						if (val.LocationType === "FileSystem") {
 							
