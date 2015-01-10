@@ -472,19 +472,6 @@ function upcoming() {
 		});
 	});
 
-	// Link to MB3 server
-	$('#shortenedLogo img').on('click', function() {
-		
-		chrome.storage.local.get(['ip', 'port'], function(result) {
-			ipStorage = result['ip'];
-			portStorage = result['portStorage'];
-
-			// Open the server in a new tab
-			path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/index.html";
-			chrome.tabs.create({ url: path });
-		})
-	});
-
 	// Fancy
 	$('#upcomingList').fadeIn('slow');
 }
@@ -595,8 +582,18 @@ function upContent(day) {
 					chrome.tabs.create({ url: path });
 				});
 
-				$('.posterThumb').on('click', function() {
+
+				/*$('.posterThumb').on('click', function() {
 					$(this).fadeOut('fast');
+				});*/
+
+				// Link to MB3 server
+				$('#shortenedLogo img').off('click');
+				$('#shortenedLogo img').on('click', function() {
+					
+					// Open the server in a new tab
+					path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/index.html";
+					chrome.tabs.create({ url: path });
 				});
 			});
 
