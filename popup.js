@@ -518,7 +518,7 @@ function upContent(day) {
 				// Container for upcoming items
 				var upItems = [];
 				var path;
-
+				
 				$.each(data.Items, function(key, val) {
 
 					// Shortened PremiereDate to only include the date
@@ -535,7 +535,8 @@ function upContent(day) {
 						var airTime = val.AirTime
 						var studio = val.SeriesStudio
 						var available = "";
-						
+						var isWatched = val.UserData.Played
+						var watchedIcon = "";
 						// Verify if a banner exists
 
 						// Verify if airtime is undefined
@@ -558,7 +559,13 @@ function upContent(day) {
 							available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
 						}
 
-						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");	
+						// Verify if the item is watched
+						if (isWatched === true) {
+
+							watchedIcon = "<span class=\"fa-stack\"><i class=\"fa fa-check-circle fa-stack-2x\"></i></span>"
+						}
+
+						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");	
 					}
 				});
 

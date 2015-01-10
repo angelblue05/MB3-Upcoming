@@ -85,7 +85,6 @@ body	{
 
 #yesterdayUp:hover {
 	color: #27a436;
-
 }
 
 #todayUp {
@@ -433,6 +432,15 @@ body	{
 	background: #dad9d9 no-repeat center bottom;
 	background-size: contain;
 	position: relative;
+}
+
+.fa-stack {
+	position: absolute;
+	top: 5px;
+	left: 165px;
+	border-radius: 50%;
+	color: #27a436;
+	background-color: #ffffff;
 }
 
 .infoPanel {

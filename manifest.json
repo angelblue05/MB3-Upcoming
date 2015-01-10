@@ -14,7 +14,7 @@
 	"icons": {
 		"128": "Icons/Icon_128.png",
 		"48": "Icons/Icon_48.png",
-		"16": "Icons/Icon_16.png"
+		"19": "Icons/Icon_19.png"
 	},
 
 	"browser_action": {
