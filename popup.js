@@ -37,10 +37,9 @@ function storageUser(callback) {
 }
 
 
-function currentFunc(name) {
+function currentFunc(name, up) {
 
-	current = name;
-	chrome.storage.local.set({ 'current': current });
+	chrome.storage.local.set({ 'current': name });
 }
 
 
@@ -50,25 +49,32 @@ function message(div, string) {
 }
 
 
-function ipSetup() {
+function ipSetupReset() {
 
-	
-	// Save the state of the extension
-	currentFunc('ipSetup');
-
-	// Reset ipSetup to default
-	/*$('#passSlide').hide();*/
+	// This function is to reset ipSetup
+	// to it's original state.
 	$('#header_signIn').html('SIGN IN');
 	$('#msgconnect').html('');
 	$('#setting_ip').val('');
 	$('#setting_port').val('8096');
 
-	// Fancy
-	$("#server-login").fadeIn('slow');
-
-	// Reset storage for ip setup
+	// Reset storage ip and port
 	chrome.storage.local.remove('ip');
 	chrome.storage.local.remove('port');
+}
+
+// ipSetup is completed
+function ipSetup() {
+
+
+	// Save the state of the extension
+	currentFunc('ipSetup');
+
+	// Reset ipSetup to default
+	ipSetupReset();
+
+	// Fancy
+	$("#server-login").fadeIn('slow');
 
 	// When pressing the connect button
 	$('#connect').off('click');
@@ -108,6 +114,7 @@ function ipSetup() {
 						
 		                	// Display the list of users
 					$("#server-login").fadeOut(function() {
+						
 						getUser();	
 					});
 				})
@@ -124,25 +131,36 @@ function ipSetup() {
 }
 
 
+function getUserReset() {
+
+	// This function is to reset getUser
+	// to it's original state.
+	$('#header_signIn').html('<a id="back_ipSetup" class="headerButton">BACK<a>');
+	$('#logo').show();
+	$('#upcoming').show();
+	// Reset inputs
+	$('#username').val('');
+	$('#password').val('');
+	$('#password2').val('');
+	// Reset manual login
+	$('.slide').show();
+	$('#panel').hide();
+	$('#passSlide').hide();
+	$('#msguser').html('');
+	$('#msguser2').html('');
+	// Reset list of users
+	$('#userSelect').html('');
+}
+
+// getUser is completed
 function getUser() {
 
 
 	// Save the state of the extension
 	currentFunc('getUser');
 
-	// Reset getUser and userSelect/manualLogin divs
-	$('#shortenedLogo').hide();
-	$('#logo').show();
-	$('#upcoming').show();
-	$('#header_signIn').html('<a id="back_ipSetup" class="headerButton">BACK<a>');
-	$('#userSelect').html('');
-	$('#username').val('');
-	$('#password').val('');
-	$('#password2').val('');
-	$('#msguser').html('');
-	$('#panel').hide();
-	$('#passSlide').hide();
-	$('.slide').show();
+	// Reset getUser to default
+	getUserReset();
 
 	// Make chrome storage sync
         async.auto({
@@ -169,12 +187,15 @@ function getUser() {
 
 						// Verify is there's a user image
 						if (typeof(val.PrimaryImageTag) != 'undefined') {
+							
 							userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
+						
 						} else {
 							// Default image for undefined
 							userImage = "background-image:url(/css/images/userflyoutdefault.png)";
 						}
 
+						// Verify is the user has a password
 						if (val.HasPassword === true) {
 							userPass = "login_wPass";
 						}
@@ -188,8 +209,8 @@ function getUser() {
 				// Create a div userItems that contains users
 				$( "<div/>", {
 					"class": "userItems",
-					html: userItems.join( "" )
-				}).appendTo( "#userSelect");
+					html: userItems.join("")
+				}).appendTo("#userSelect");
 
 
 				// If userPass = "login_woPass"
@@ -203,31 +224,26 @@ function getUser() {
 					loginUser(id, dataUser, false);
 				});
 
-
-				// To authenticate with login_wPass
-
-				var id;
-				var dataUser;
-
 				// If userPass = "login_wPass"
 				$('.login_wPass').off('click');
 				$('.login_wPass').on('click', function() {
 
-					id = $(this).attr("id");
-					dataUser = $(this).attr("data-user");
+					var id = $(this).attr("id");
+					var dataUser = $(this).attr("data-user");
 
-
+					// Display password field
 					$('.slide').hide('fast', function() {
+						
 						$('#passSlide').slideDown('fast');
-					})
-				});
+					});
 
-				// Authenticate login_wPass
-				$('#saveInput').off('click');
-				$('#saveInput').on('click', function() {
-					
-					// Authenticate the user
-					loginUser(id, dataUser, true);
+					// Authenticate login_wPass
+					$('#saveInput').off('click');
+					$('#saveInput').on('click', function() {
+
+						// Authenticate the user
+						loginUser(id, dataUser, true);
+					});
 				});
 
 				// Cancel Password field input when using UserItems
@@ -239,13 +255,14 @@ function getUser() {
 
 					$('#passSlide').hide('fast', function() {
 						$('.slide').slideDown('fast');
-					})
+					});
 
 					// Cancel resets any password username input
 					$('#username').val('');
 					$('#password').val('');
 					$('#password2').val('');
 					$('#msguser').html('');
+					$('#msguser2').html('');
 				});
 
 				callback();
@@ -282,173 +299,6 @@ function getUser() {
 
 	// Fancy
 	$('#user-login').fadeIn('slow');
-}
-
-
-function todayUp() {
-	
-
-	// Save the state of the extension
-	currentFunc('todayUp');
-
-	// Setup the extension logo to active
-	chrome.browserAction.setIcon({ path: "Icons/Icon_48_active.png" });
-	
-	$('#logo').hide();
-	$('#shortenedLogo').show();
-	$('#header_signIn').html('<a id="back_getUser" class="headerButton">SIGN OUT</a>');
-	$('#settings').show();
-	$('#upcoming').hide();
-	$('#dateSelector').show();
-	$('#todayUp').html('');
-
-	// Make chrome storage sync
-        async.auto({
-
-        	'storageUrl': storageUrl,
-        	'ajaxHeader': ajaxHeader,
-        	'storageUser': storageUser,
-        	'todayUp': ['storageUrl', 'ajaxHeader', 'storageUser', function getUserList(callback, result) {
-
-	      		// Set shortcut to ip and port
-	        	var ipStorage = result.storageUrl.ipStorage;
-	        	var portStorage = result.storageUrl.portStorage;
-	        	var header = result.ajaxHeader;
-	        	var userId = result.storageUser;
-
-	        	// Verify if the user's session is still valid
-			$.ajaxSetup({
-				headers: header,
-				statusCode: {
-					401: function() {
-						logoutUser();
-					}
-				}
-			});
-
-	        	var resp = $.ajax({
-				type: "GET",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio",
-				headers: header,
-				dataType: "json",
-				contentType: "application/json"
-			}).done(function(data){
-
-				var date = yyyymmdd(-1);
-				// Container for upcoming items
-				var upItems = [];
-				var path;
-				console.log(data);
-
-				$.each(data.Items, function(key, val) {
-
-					// Shortened PremiereDate to only include the date
-					var shortDate = (val.PremiereDate).substring(0, 10);
-					
-					if (shortDate == date) {
-
-						// To display: Image, Series Name, S00E00,
-						// Episode name, Air time, Studios
-						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
-						var episode = (val.Name).substring(0, 25);
-						var series = val.SeriesName;
-						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
-						var airTime = val.AirTime
-						var studio = val.SeriesStudio
-						var available = "";
-						
-						// Verify if a banner exists
-
-						// Verify if airtime is undefined
-						if (airTime == undefined) {
-
-							airTime = "";
-						}
-
-						// Add ... if the episode name is too long
-						if (episode.length > 24) {
-
-							episode = episode + "...";
-						}
-
-						// Verify if the file is currently available to view via MB3
-						if (val.LocationType === "FileSystem") {
-							
-							path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id
-							// Mark as available episodes available to watch on MB3
-							available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
-						}
-
-						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + "</div></div></div>");	
-					}
-				});
-
-				// To display is no shows are available
-				if (upItems.length == 0) {
-					upItems.push("<p style=\"font-size:20px;\"><i>There is no upcoming shows. </i><i class=\"fa fa-frown-o\"></i></p>");
-
-				}
-
-				// Create a div upItems that contains series
-				$( "<div/>", {
-					"class": "upItems",
-					html: upItems.join( "" )
-				}).appendTo("#todayUp");
-
-				// Link to MB3 when the file is available
-				$('.available').off('click');
-				$('.available').on('click', function() {
-
-					path = $(this).attr("href");
-					chrome.tabs.create({ url: path });
-				});
-
-				// Link to MB3 server
-				$('#shortenedLogo img').on('click', function() {
-					
-					path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/index.html";
-					chrome.tabs.create({ url: path });
-				});
-
-				$('.posterThumb').on('click', function() {
-					$(this).fadeOut('fast');
-				});
-			});
-
-			callback();
-		}]
-	});
-
-	// When pressing the back button
-	$('#back_getUser').off('click');
-	$('#back_getUser').on('click', function() {
-
-		$('#todayUp').fadeOut(function() {
-			
-			$('#settings').hide();
-			$('#dateSelector').hide();
-			// Logout user and revoke token
-			logoutUser();	
-		});
-	});
-
-	// Fancy
-	$("#todayUp").fadeIn('slow');
-}
-
-function getStudio() {
-
-
-	var resp = $.ajax({
-		type: "GET",
-		url: ipStorage + ":" + portStorage + "/mediabrowser/Studios?UserId=" + userId + "&NameStartsWithOrGreater=" + val.SeriesName,
-		headers: header,
-		dataType: "json",
-		contentType: "application/json"
-	}).done(function(data) {
-
-		console.log(data);
-	})
 }
 
 // loginUser is completed
@@ -521,12 +371,233 @@ function loginUser(id, dataUser, hasPassword) {
 				$('#user-login').fadeOut('slow', function() {
 					
 					// Go to Today's upcoming.
-					todayUp();
+					upcoming();
 				});
 
 			}).fail(function(){
+					
+				// Display message if manual login
+				if ($('.slide').is(':hidden')) {
+					
+					// Display message with passField
+					message('#msguser2', "Wrong username or password.");
+				
+				} else {
+					
+					// Display message with manual login
+					message('#msguser', "Wrong username or password.");
+				}
+			});
 
-				message('#msguser', "Wrong username or password.");
+			callback();
+		}]
+	});
+}
+
+function upcomingReset() {
+
+	// This function is to reset upcoming
+	// to it's original state.
+	$('#header_signIn').html('<a id="back_getUser" class="headerButton">SIGN OUT</a>');
+	$('#shortenedLogo').show();
+	$('#dateSelector').show();
+	$('#settings').show();
+	// Reset the list of upcming shows
+	$('#upcomingList').html('');
+	// Hide content from getUser to avoid repetition
+	$('#logo').hide();
+	$('#upcoming').hide();
+}
+
+function upcoming() {
+	
+
+	// Save the state of the extension
+	currentFunc('upcoming');
+
+	// Setup the extension logo to active
+	chrome.browserAction.setIcon({ path: "Icons/Icon_48_active.png" });
+
+	// Reset upcoming to default
+	upcomingReset();
+
+	// When first loading, display today
+	$('#todayUp').addClass('dateSelect');
+	upContent();
+
+	// When pressing the Yesterday button
+	$('#yesterdayUp').off('click');
+	$('#yesterdayUp').on('click', function() {
+
+		currentFunc('upcoming')
+
+		$('#todayUp').removeClass('dateSelect');
+		$('#tomorrowUp').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
+		upContent(-1);
+	})
+
+	// When pressing the Today button
+	$('#todayUp').off('click');
+	$('#todayUp').on('click', function() {
+		
+		
+		$('#yesterdayUp').removeClass('dateSelect');
+		$('#tomorrowUp').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
+		upContent();
+	})
+
+	// When pressing the Tomorrow button
+	$('#tomorrowUp').off('click');
+	$('#tomorrowUp').on('click', function() {
+
+		$('#yesterdayUp').removeClass('dateSelect');
+		$('#todayUp').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
+		upContent(1);
+	})
+
+	// When pressing the back button
+	$('#back_getUser').off('click');
+	$('#back_getUser').on('click', function() {
+
+		$('#upcomingList').fadeOut(function() {
+			
+			$('#settings').hide();
+			$('#dateSelector').hide();
+			$('#shortenedLogo').hide();
+			// Logout user and revoke token
+			logoutUser();	
+		});
+	});
+
+	// Link to MB3 server
+	$('#shortenedLogo img').on('click', function() {
+		
+		chrome.storage.local.get(['ip', 'port'], function(result) {
+			ipStorage = result['ip'];
+			portStorage = result['portStorage'];
+
+			// Open the server in a new tab
+			path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/index.html";
+			chrome.tabs.create({ url: path });
+		})
+	});
+
+	// Fancy
+	$('#upcomingList').fadeIn('slow');
+}
+
+function upContent(day) {
+
+	// Reset the list of upcming shows
+	$('#upcomingList').html('');
+
+	// Make chrome storage sync
+        async.auto({
+
+        	'storageUrl': storageUrl,
+        	'ajaxHeader': ajaxHeader,
+        	'storageUser': storageUser,
+        	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', function getUserList(callback, result) {
+
+	      		// Set shortcut to ip and port
+	        	var ipStorage = result.storageUrl.ipStorage;
+	        	var portStorage = result.storageUrl.portStorage;
+	        	var header = result.ajaxHeader;
+	        	var userId = result.storageUser;
+
+	        	// Verify if the user's session is still valid
+			$.ajaxSetup({
+				headers: header,
+				statusCode: {
+					401: function() {
+						logoutUser();
+					}
+				}
+			});
+
+	        	var resp = $.ajax({
+				type: "GET",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio",
+				headers: header,
+				dataType: "json",
+				contentType: "application/json"
+			
+			}).done(function(data){
+
+				var date = yyyymmdd(day);
+				// Container for upcoming items
+				var upItems = [];
+				var path;
+
+				$.each(data.Items, function(key, val) {
+
+					// Shortened PremiereDate to only include the date
+					var shortDate = (val.PremiereDate).substring(0, 10);
+					
+					if (shortDate == date) {
+
+						// To display: Image, Series Name, S00E00,
+						// Episode name, Air time, Studios
+						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
+						var episode = (val.Name).substring(0, 25);
+						var series = val.SeriesName;
+						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
+						var airTime = val.AirTime
+						var studio = val.SeriesStudio
+						var available = "";
+						
+						// Verify if a banner exists
+
+						// Verify if airtime is undefined
+						if (airTime == undefined) {
+
+							airTime = "";
+						}
+
+						// Add ... if the episode name is too long
+						if (episode.length > 24) {
+
+							episode = episode + "...";
+						}
+
+						// Verify if the file is currently available to view via MB3
+						if (val.LocationType === "FileSystem") {
+							
+							path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id
+							// Mark as available episodes available to watch on MB3
+							available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
+						}
+
+						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");	
+					}
+				});
+
+				// To display if no shows are available
+				if (upItems.length == 0) {
+					upItems.push("<div id=\"noItems\"><i>There are no upcoming shows.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
+
+				}
+
+				// Create a div upItems that contains series
+				$( "<div/>", {
+					"class": "upItems",
+					html: upItems.join( "" )
+				}).appendTo('#upcomingList');
+
+				// Link to MB3 when the file is available
+				$('.available').off('click');
+				$('.available').on('click', function() {
+
+					path = $(this).attr("href");
+					chrome.tabs.create({ url: path });
+				});
+
+				$('.posterThumb').on('click', function() {
+					$(this).fadeOut('fast');
+				});
 			});
 
 			callback();

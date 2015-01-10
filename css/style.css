@@ -8,7 +8,7 @@ body	{
 }
 
 .msg {
-	padding: 7px;
+	padding: 2px;
 	font-style: italic;
 	vertical-align: middle;
 	color: #a4a4a4;
@@ -37,11 +37,23 @@ body	{
 #logo {
 	width: 175px;
 }
+
 #logo img {
 	padding-top: 3px;
 	width: 175px;
 	height: 24px;
 }
+
+#header_signIn {
+	width: 70px;
+}
+
+.headerButton:hover {
+	color: #ffffff;
+	cursor: default;
+}
+
+/* upcoming header */
 
 #shortenedLogo {
 	width: 45px;
@@ -54,8 +66,53 @@ body	{
 	cursor: pointer;
 }
 
-#dateSelector i {
-	margin: 7px;
+#dateSelector {
+	padding-left: 10px;
+	cursor: default;
+}
+
+.dateSelect {
+	color: #27a436;
+}
+
+#yesterdayUp {
+	width: 30px;
+	padding-top: 3px;
+	float: left;
+	font-size: 13px;
+	text-align: right;
+}
+
+#yesterdayUp:hover {
+	color: #27a436;
+
+}
+
+#todayUp {
+	margin-right: 7px;
+	margin-left: 7px;
+	width: 43px;
+	padding-top: 1px;
+	float: left;
+	font-size: 15px;
+}
+
+#todayUp:hover {
+	color: #27a436;
+
+}
+
+#tomorrowUp {
+	float: left;
+	width: 30px;
+	font-size: 13px;
+	padding-top: 3px;
+	text-align: left;
+}
+
+#tomorrowUp:hover {
+	color: #27a436;
+
 }
 
 #settings {
@@ -63,14 +120,6 @@ body	{
 	width: 30px;
 }
 
-#header_signIn {
-	width: 70px;
-}
-
-.headerButton:hover {
-	color: #ffffff;
-	cursor: default;
-}
 
 
 /* Bottom section */
@@ -126,7 +175,7 @@ body	{
 	color: white;
 	font-size: 13px;
 	border: 0;
-	border-radius: 15px;
+	border-radius: 3px;
 	background: #27a436;
 }
 
@@ -143,6 +192,12 @@ body	{
 }
 
 
+
+/* user-login */
+
+#user-login {
+	min-height: 148px;
+}
 
 /* Manual login */
 
@@ -173,7 +228,6 @@ body	{
 
 #userLogin {
 	padding-top: 20px;
-	min-height: 148px;
 	color: #dad9d9;
 }
 
@@ -338,7 +392,18 @@ body	{
 
 /* Upcoming episode */
 
-#todayUp {
+#noItems {
+	font-size: 15px;
+	color: #27a436;
+	margin-top:9px;
+}
+
+#noItemsFrown {
+	font-size:50px;
+	color: #27a436;
+}
+
+#upcomingList {
 	color: #dad9d9;
 	margin: 5px;
 	min-height: 115px;
@@ -406,16 +471,16 @@ body	{
 
 /* Upcoming scroll bar */
 
-#todayUp::-webkit-scrollbar-track {
+#upcomingList::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	background-color: #202020;
 }
 
-#todayUp::-webkit-scrollbar {
+#upcomingList::-webkit-scrollbar {
 	width: 7px;
 	background-color: #202020;
 }
 
-#todayUp::-webkit-scrollbar-thumb {
+#upcomingList::-webkit-scrollbar-thumb {
 	background-color: #27a436;
 }

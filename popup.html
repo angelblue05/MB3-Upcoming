@@ -21,7 +21,11 @@
 					<td id="logo" align="left"><img src="Icons/mb3_logofont.png"></td>
 					<td id="shortenedLogo" align="left" style="display:none;"><img src="Icons/mb3_logo.png"></td>
 					<td id="upcoming" align="left"><i>-&nbsp;&nbsp;UPCOMING</i></td>
-					<td id="dateSelector" style="display:none;" style="font-size:50px;"><i class="fa fa-arrow-circle-left" style="font-size:20px;"></i>TODAY<i class="fa fa-arrow-circle-right" style="font-size:20px;"></i></td>
+					<td id="dateSelector" style="display:none;">
+						<div id="yesterdayUp">YDA<!--<i class="fa fa-chevron-left">--></i></div>
+						<div id="todayUp">TODAY</div>
+						<div id="tomorrowUp">TMW<!--<i class="fa fa-chevron-right"></i>--></div>
+					</td>
 					<td id="settings" style="display:none;"><i class="fa fa-cog" style="font-size:18px;"></i></td>
 					<td id="header_signIn" align="right"></td>
 				</tr>
@@ -54,17 +58,6 @@
 
 			<div id="user-login" style="display:none;">
 				<div id="manualLogin"><!-- Manual login sliding panel -->
-					
-					<div id="passSlide" style="display:none;"><!-- Password field -->
-						<table id="passInput" align="center">
-							<tr>
-								<td align="right"><label>Password:</label></td>
-								<td><input type="password" name="password" id="password2" value="" TABINDEX=2></td>
-								<td align="center"><button id="saveInput" class="passButton">Save</button></td>
-								<td align="center"><button id="cancelInput" class="passButton">Cancel</button></td>
-							</tr>
-						</table>
-					</div>
 
 					<div class="slide">
 
@@ -89,12 +82,25 @@
 							<div id="msguser" class="msg" align="center"></div> <!-- Wrong username or password message -->
 						</div>
 					</div>
+
+					<div id="passSlide" style="display:none;"><!-- Password field -->
+						<table id="passInput" align="center">
+							<tr>
+								<td align="right"><label>Password:</label></td>
+								<td><input type="password" name="password2" id="password2" value=""></td>
+								<td align="center"><button id="saveInput" class="passButton">Save</button></td>
+								<td align="center"><button id="cancelInput" class="passButton">Cancel</button></td>
+							</tr>
+						</table>
+
+						<div id="msguser2" class="msg" align="center"></div> <!-- Wrong username or password message -->
+					</div>
 				</div>
 				
 				<div id="userSelect"></div> <!-- Display user list or manual login -->
 			</div>
 			
-			<div id="todayUp" align="center" style="display:none;"></div>
+			<div id="upcomingList" align="center" style="display:none;"></div>
 		</div>
 	</body>
   
