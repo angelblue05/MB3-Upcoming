@@ -451,7 +451,7 @@ function getStudio() {
 	})
 }
 
-
+// loginUser is completed
 function loginUser(id, dataUser, hasPassword) {
 
 	// Make chrome storage sync
@@ -461,7 +461,7 @@ function loginUser(id, dataUser, hasPassword) {
         	'ajaxHeader': ajaxHeader,
         	'loginUser': ['storageUrl', 'ajaxHeader' , function getUserList(callback, result) {
         		
-	      		// Set shortcut to ip and port & header
+	      		// Set shortcut to ip, port and header
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
 	        	var header = result.ajaxHeader;
@@ -473,15 +473,17 @@ function loginUser(id, dataUser, hasPassword) {
 	        			password: SHA1(''),
 	        			passwordMd5: MD5('')
 	        		};
+	        	
 	        	} else if (id != undefined && hasPassword === true) {
-	        		// Process user login that has a Password
+	        		// Process user login with password
 	        		var postData = {
 	        			Username: dataUser,
 	        			password: SHA1($("#password2").val()),
 	        			passwordMd5: MD5($("#password2").val())
 	        		};
+	        	
 	        	} else {
-	        		// Process user login manual login
+	        		// Process user manual login
 				var postData = {
 					Username: $("#username").val(),
 					password: SHA1($("#password").val()),
@@ -496,12 +498,14 @@ function loginUser(id, dataUser, hasPassword) {
 				data: JSON.stringify(postData),
 				dataType: "json",
 				contentType: "application/json"
+			
 			}).done(function(data){
 				
 				// User appropriate source, manual login vs userList
 				if (dataUser != undefined) {
 					// If userItem is used
 					chrome.storage.local.set({ 'userId': id });
+				
 				} else {
 					// If manual login is used
 					chrome.storage.local.set({ 'userId': data.User.Id });
@@ -521,6 +525,7 @@ function loginUser(id, dataUser, hasPassword) {
 				});
 
 			}).fail(function(){
+
 				message('#msguser', "Wrong username or password.");
 			});
 
@@ -554,7 +559,9 @@ function logoutUser() {
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
+			
 			}).done(function(){
+				
 				// Reset storage for user credentials
 				chrome.storage.local.remove('userId');
 				chrome.storage.local.remove('user');
