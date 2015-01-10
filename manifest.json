@@ -8,13 +8,13 @@
     		"persistent": false
   	},
 
-	"description": "This extension displays the latest upcoming episodes populated in Media Browser 3.",
+	"description": "Displays the latest upcoming episodes populated in Media Browser 3.",
 	"author": "angelblue05",
 
 	"icons": {
-		"128": "Icons/icon_128.png",
-		"48": "Icons/icon_48.png",
-		"16": "Icons/icon_16.png"
+		"128": "Icons/Icon_128.png",
+		"48": "Icons/Icon_48.png",
+		"16": "Icons/Icon_16.png"
 	},
 
 	"browser_action": {

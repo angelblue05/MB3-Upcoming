@@ -290,6 +290,9 @@ function todayUp() {
 
 	// Save the state of the extension
 	currentFunc('todayUp');
+
+	// Setup the extension logo to active
+	chrome.browserAction.setIcon({ path: "Icons/Icon_48_active.png" });
 	
 	$('#logo').hide();
 	$('#shortenedLogo').show();
@@ -325,7 +328,7 @@ function todayUp() {
 
 	        	var resp = $.ajax({
 				type: "GET",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio",
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
@@ -344,27 +347,18 @@ function todayUp() {
 					
 					if (shortDate == date) {
 
-						var parentId = val.SeriesId;	
-						// Get the studios for each episode pulled
-						/*var resp = $.ajax({
-							type: "GET",
-							url: ipStorage + ":" + portStorage + "/mediabrowser/Studios?UserId" + userId,
-							headers: header,
-							dataType: "json",
-							contentType: "application/json"
-						}).done(function(data) {
-							console.log(data);
-						});*/
-
 						// To display: Image, Series Name, S00E00,
-						// Episode name, Air time, Network if possible
-						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner')";
+						// Episode name, Air time, Studios
+						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
 						var episode = (val.Name).substring(0, 25);
 						var series = val.SeriesName;
 						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
 						var airTime = val.AirTime
+						var studio = val.SeriesStudio
 						var available = "";
 						
+						// Verify if a banner exists
+
 						// Verify if airtime is undefined
 						if (airTime == undefined) {
 
@@ -388,6 +382,12 @@ function todayUp() {
 						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\"></div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + "</div></div></div>");	
 					}
 				});
+
+				// To display is no shows are available
+				if (upItems.length == 0) {
+					upItems.push("<p style=\"font-size:20px;\"><i>There is no upcoming shows. </i><i class=\"fa fa-frown-o\"></i></p>");
+
+				}
 
 				// Create a div upItems that contains series
 				$( "<div/>", {
@@ -516,9 +516,11 @@ function loginUser(id, dataUser, hasPassword) {
 
 				// Go to Today's upcoming
 				$('#user-login').fadeOut('slow', function() {
+					
 					// Go to Today's upcoming.
 					todayUp();
-				});		  	
+				});
+
 			}).fail(function(){
 				message('#msguser', "Wrong username or password.");
 			});
@@ -531,6 +533,8 @@ function loginUser(id, dataUser, hasPassword) {
 
 function logoutUser() {
 	
+	// Setup the icon to inactive 
+	chrome.browserAction.setIcon({ path: "Icon.png" });
 
 	// Make chrome storage sync
         async.auto({
