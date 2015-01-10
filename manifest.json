@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "MB3 Upcoming",
+	"name": "MB Upcoming",
 	"version": "0.1",
 	
 	"background": {
@@ -8,7 +8,7 @@
     		"persistent": false
   	},
 
-	"description": "Displays the latest upcoming episodes populated in Media Browser 3.",
+	"description": "Displays the latest upcoming episodes populated in Media Browser.",
 	"author": "angelblue05",
 
 	"icons": {

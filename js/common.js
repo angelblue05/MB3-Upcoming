@@ -14,12 +14,12 @@ chrome.storage.local.get(null, function(items) {
 // Media Browser header
 function ajaxHeader(callback) {
         
-        
         // Verify if userId and token exists
         chrome.storage.local.get(null, function(items) {
                 
                 var userId = '';
                 var token = '';
+                var extname = chrome.app.getDetails().name;
                 var version = chrome.app.getDetails().version;
 
                 if (typeof items.userId != 'undefined') {
@@ -30,7 +30,7 @@ function ajaxHeader(callback) {
                         token = items.token;
                 }
         
-                callback(null, {'Authorization':'MediaBrowser Client="Chrome", Device="MB3 Upcoming", DeviceId="' + deviceId + '",' + userId +  ' Version="' + version + '"', 'X-MediaBrowser-Token': token });
+                callback(null, {'Authorization':'MediaBrowser Client="Chrome", Device="' + extname + '", DeviceId="' + deviceId + '",' + userId +  ' Version="' + version + '"', 'X-MediaBrowser-Token': token });
         });
 }
 

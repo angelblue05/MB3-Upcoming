@@ -454,7 +454,6 @@ function getStudio() {
 
 function loginUser(id, dataUser, hasPassword) {
 
-	
 	// Make chrome storage sync
         async.auto({
 
@@ -530,7 +529,7 @@ function loginUser(id, dataUser, hasPassword) {
 	});
 }
 
-
+// logoutUser is completed
 function logoutUser() {
 	
 	// Setup the icon to inactive 
@@ -566,6 +565,6 @@ function logoutUser() {
 		}]
 	});
 
-	// Get the user list, to allow user to re-authenticate
+	// Get the user list to allow user to re-authenticate
 	getUser();
 }
