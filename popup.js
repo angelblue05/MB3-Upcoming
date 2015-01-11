@@ -1,5 +1,4 @@
 var processing = 0;
-var processingB = 0;
 var current;
 var jsonf = "?format=json";
 
@@ -544,6 +543,7 @@ function upContentReset() {
 	$('#preferences').hide();
 }
 
+// Addition to the empty array message
 function upContent(day) {
 
 		
@@ -600,6 +600,7 @@ function upContent(day) {
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Studios
 						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
+						var bannerLink = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.SeriesId;
 						var episode = (val.Name).substring(0, 21);
 						var series = val.SeriesName;
 						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
@@ -608,6 +609,7 @@ function upContent(day) {
 						var available = "";
 						var isWatched = val.UserData.Played;
 						var watchedIcon = "";
+						
 
 						// Verify if airtime is undefined
 						if (airTime == undefined) {
@@ -641,7 +643,7 @@ function upContent(day) {
 							// Don't push the item	
 						} else {
 
-							upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");
+							upItems.push("<div class=\"posterThumb\"><a class=\"bannerLink\" href=\"" + bannerLink + "\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div></a><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");
 						} 
 					}
 				});
@@ -649,7 +651,15 @@ function upContent(day) {
 				// To display if no shows are available
 				if (upItems.length == 0) {
 					
-					upItems.push("<div id=\"noItems\"><i>There are no upcoming shows.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
+					if ($('#yesterdayUp').hasClass("dateSelect") == true) {
+						
+						// For yesterday only - past tense
+						upItems.push("<div id=\"noItems\"><i>There were no shows.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
+					
+					} else {
+						// For today and tomorrow - present tense
+						upItems.push("<div id=\"noItems\"><i>There are no upcoming shows.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
+					}
 				}
 
 				// Create a div upItems that contains series
@@ -657,6 +667,14 @@ function upContent(day) {
 					"class": "upItems",
 					html: upItems.join( "" )
 				}).appendTo('#upcomingList');
+
+				// Link to series Id with the banner
+				$('.bannerLink').off('click');
+				$('.bannerLink').on('click', function() {
+
+					path = $(this).attr("href");
+					chrome.tabs.create({ url: path })
+				})
 
 				// Link to MB3 when the file is available
 				$('.available').off('click');
