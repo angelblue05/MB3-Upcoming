@@ -1,4 +1,4 @@
-MB3-Upcoming
+MB Upcoming
 ============
 
 Chrome extension that displays the latest upcoming episodes in Media Browser.
