@@ -1,6 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "MB Upcoming",
+	"shortname": "MBU",
 	"version": "0.1",
 	
 	"background": {

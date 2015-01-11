@@ -600,7 +600,7 @@ function upContent(day) {
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Studios
 						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
-						var episode = (val.Name).substring(0, 25);
+						var episode = (val.Name).substring(0, 21);
 						var series = val.SeriesName;
 						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
 						var airTime = val.AirTime
@@ -616,7 +616,7 @@ function upContent(day) {
 						}
 
 						// Add ... if the episode name is too long
-						if (episode.length > 24) {
+						if (episode.length > 20) {
 
 							episode += "...";
 						}
