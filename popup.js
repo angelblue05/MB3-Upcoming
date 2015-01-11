@@ -24,7 +24,7 @@ $(document).ready(function() {
 function storageUrl(callback) {
 
 	chrome.storage.local.get(['ip', 'port'], function(result) {
-		callback(null, { ipStorage: result['ip'], portStorage: result['port']});
+		callback(null, { ipStorage: result['ip'], portStorage: result['port'] });
 	});
 }
 
@@ -33,6 +33,22 @@ function storageUser(callback) {
 
 	chrome.storage.local.get(['userId'], function(result) {
 		callback(null, result['userId']);
+	});
+}
+
+
+function storageWatched(callback) {
+
+	chrome.storage.local.get(['hideWatched'], function(result) {
+		
+		if (result['hideWatched'] != undefined) {
+			
+			// If value is stored, load it
+			callback(null, { hideWatched: result['hideWatched'] });
+		} else {
+			// If the value is undefined, set to false by default
+			callback(null, { hideWatched: false })
+		}
 	});
 }
 
@@ -407,6 +423,7 @@ function upcomingReset() {
 	// Hide content from getUser to avoid repetition
 	$('#logo').hide();
 	$('#upcoming').hide();
+	$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 }
 
 function upcoming() {
@@ -422,6 +439,7 @@ function upcoming() {
 	upcomingReset();
 
 	// When first loading, display today
+
 	$('#todayUp').addClass('dateSelect');
 	upContent();
 
@@ -429,8 +447,7 @@ function upcoming() {
 	$('#yesterdayUp').off('click');
 	$('#yesterdayUp').on('click', function() {
 
-		currentFunc('upcoming')
-
+		$('#todayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 		$('#todayUp').removeClass('dateSelect');
 		$('#tomorrowUp').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
@@ -441,9 +458,7 @@ function upcoming() {
 	$('#todayUp').off('click');
 	$('#todayUp').on('click', function() {
 		
-		
-		$('#yesterdayUp').removeClass('dateSelect');
-		$('#tomorrowUp').removeClass('dateSelect');
+		$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
 		upContent();
 	})
@@ -452,10 +467,52 @@ function upcoming() {
 	$('#tomorrowUp').off('click');
 	$('#tomorrowUp').on('click', function() {
 
-		$('#yesterdayUp').removeClass('dateSelect');
-		$('#todayUp').removeClass('dateSelect');
+		$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
 		upContent(1);
+	})
+
+	// When pressing the settings button
+	$('#settings').off('click');
+	$('#settings').on('click', function() {
+
+		$('#yesterdayUp, #todayUp, #tomorrowUp').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
+
+		$('#upcomingList').fadeOut('fast', function() {
+
+			// Load preferences
+			chrome.storage.local.get('hideWatched', function(result) {
+			
+				if (result['hideWatched'] == undefined) {
+
+					// First time opening settings
+					document.getElementById('display_isWatched').checked=false;
+
+				} else {
+					// If hideWatched is stored in chrome storage
+					document.getElementById('display_isWatched').checked=result['hideWatched'];
+				}
+			})
+
+			// Fancy
+			$('#preferences').fadeIn('fast');
+		})
+	})
+
+	$('#savePref').off('click');
+	$('#savePref').on('click', function() {
+
+		// Check the settings display_isWatched is enabled or not
+		var hideWatched = document.getElementById('display_isWatched').checked;	
+		
+		chrome.storage.local.set({ 'hideWatched': hideWatched });
+
+		$('#settings').removeClass('dateSelect');
+		$('#preferences').fadeOut('fast', function() {
+			upcoming();
+		});
+		
 	})
 
 	// When pressing the back button
@@ -465,6 +522,7 @@ function upcoming() {
 		$('#upcomingList').fadeOut(function() {
 			
 			$('#settings').hide();
+			$('#preferences').hide();
 			$('#dateSelector').hide();
 			$('#shortenedLogo').hide();
 			// Logout user and revoke token
@@ -476,10 +534,17 @@ function upcoming() {
 	$('#upcomingList').fadeIn('slow');
 }
 
+function upContentReset() {
+	
+	// Reset the list of upcoming shows and displayed
+	$('#upcomingList').html('').show();
+	$('#preferences').hide();
+}
+
 function upContent(day) {
 
-	// Reset the list of upcming shows
-	$('#upcomingList').html('');
+	// Reset upContent to default
+	upContentReset();
 
 	// Make chrome storage sync
         async.auto({
@@ -487,13 +552,15 @@ function upContent(day) {
         	'storageUrl': storageUrl,
         	'ajaxHeader': ajaxHeader,
         	'storageUser': storageUser,
-        	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', function getUserList(callback, result) {
+        	'storageWatched': storageWatched,
+        	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', 'storageWatched', function getUserList(callback, result) {
 
 	      		// Set shortcut to ip and port
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
 	        	var header = result.ajaxHeader;
 	        	var userId = result.storageUser;
+	        	var hideWatched = result.storageWatched.hideWatched;
 
 	        	// Verify if the user's session is still valid
 			$.ajaxSetup({
@@ -518,12 +585,12 @@ function upContent(day) {
 				// Container for upcoming items
 				var upItems = [];
 				var path;
-				
+
 				$.each(data.Items, function(key, val) {
 
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
-					
+
 					if (shortDate == date) {
 
 						// To display: Image, Series Name, S00E00,
@@ -535,9 +602,8 @@ function upContent(day) {
 						var airTime = val.AirTime
 						var studio = val.SeriesStudio
 						var available = "";
-						var isWatched = val.UserData.Played
+						var isWatched = val.UserData.Played;
 						var watchedIcon = "";
-						// Verify if a banner exists
 
 						// Verify if airtime is undefined
 						if (airTime == undefined) {
@@ -548,7 +614,7 @@ function upContent(day) {
 						// Add ... if the episode name is too long
 						if (episode.length > 24) {
 
-							episode = episode + "...";
+							episode += "...";
 						}
 
 						// Verify if the file is currently available to view via MB3
@@ -565,7 +631,14 @@ function upContent(day) {
 							watchedIcon = "<span class=\"fa-stack\"><i class=\"fa fa-check-circle fa-stack-2x\"></i></span>"
 						}
 
-						upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");	
+						// Verify if the hide watched is enabled and if the watched state is played
+						if (hideWatched === true && isWatched === true) {
+
+							// Don't push the item	
+						} else {
+
+							upItems.push("<div class=\"posterThumb\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");
+						} 
 					}
 				});
 
@@ -588,11 +661,6 @@ function upContent(day) {
 					path = $(this).attr("href");
 					chrome.tabs.create({ url: path });
 				});
-
-
-				/*$('.posterThumb').on('click', function() {
-					$(this).fadeOut('fast');
-				});*/
 
 				// Link to MB3 server
 				$('#shortenedLogo img').off('click');
@@ -641,6 +709,7 @@ function logoutUser() {
 				chrome.storage.local.remove('userId');
 				chrome.storage.local.remove('user');
 				chrome.storage.local.remove('token');
+				chrome.storage.local.remove('hideWatched');
 		        })
 
 			callback();

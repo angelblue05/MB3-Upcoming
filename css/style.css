@@ -495,3 +495,42 @@ body	{
 #upcomingList::-webkit-scrollbar-thumb {
 	background-color: #27a436;
 }
+
+/* Settings preferences */
+
+#preferences {
+	margin: 5px;
+	padding-top: 15px;
+	min-height: 115px;
+}
+
+#display_isWatched_text {
+	font-size: 14px;
+	color: #8c8c8c;
+	text-align: left;
+}
+
+/* Save preferences */
+
+#savePref {
+	margin-top: 15px;
+	padding: 3px 20px;
+	color: white;
+	font-size: 13px;
+	border: 0;
+	border-radius: 3px;
+	vertical-align: middle;
+	background: #27a436;
+}
+
+#savePref:hover {
+	background: #20932e;
+}
+
+#savePref:active {
+	background: #197524;
+}
+
+#savePref:focus {
+    outline: none;
+}
