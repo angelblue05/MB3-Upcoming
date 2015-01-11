@@ -1,4 +1,5 @@
 var processing = 0;
+var processingB = 0;
 var current;
 var jsonf = "?format=json";
 
@@ -439,7 +440,6 @@ function upcoming() {
 	upcomingReset();
 
 	// When first loading, display today
-
 	$('#todayUp').addClass('dateSelect');
 	upContent();
 
@@ -451,15 +451,17 @@ function upcoming() {
 		$('#todayUp').removeClass('dateSelect');
 		$('#tomorrowUp').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
+
 		upContent(-1);
 	})
 
 	// When pressing the Today button
 	$('#todayUp').off('click');
 	$('#todayUp').on('click', function() {
-		
+
 		$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
+
 		upContent();
 	})
 
@@ -469,6 +471,7 @@ function upcoming() {
 
 		$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
+		
 		upContent(1);
 	})
 
@@ -543,6 +546,7 @@ function upContentReset() {
 
 function upContent(day) {
 
+		
 	// Reset upContent to default
 	upContentReset();
 
@@ -555,7 +559,7 @@ function upContent(day) {
         	'storageWatched': storageWatched,
         	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', 'storageWatched', function getUserList(callback, result) {
 
-	      		// Set shortcut to ip and port
+	      		// Set shortcut to other functions variables
 	        	var ipStorage = result.storageUrl.ipStorage;
 	        	var portStorage = result.storageUrl.portStorage;
 	        	var header = result.ajaxHeader;
@@ -644,8 +648,8 @@ function upContent(day) {
 
 				// To display if no shows are available
 				if (upItems.length == 0) {
+					
 					upItems.push("<div id=\"noItems\"><i>There are no upcoming shows.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
-
 				}
 
 				// Create a div upItems that contains series
