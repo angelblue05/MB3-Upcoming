@@ -1,8 +1,9 @@
 {
+	"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtp+wOUfaZxU63mKeeasvdREXl+KksNNwAvsC9tW8za5kmbqm2aUcDi7aC9uvdtDLZHVaixifCnjrVXdfGbVHpsxXnIHwZW9hDbjYRrFNw4UpHdN6rMhPigs8rcmoJoPG9kYhqVfANtym26U6ozAx62QG3mGo2EAYvZfuphXmJ1kuN/vVj2sE7IUOrUKpM0F1gE2vkV/PH/hR2NE2yDGNeWeZHK8yfjlDxO+U0DXgwCCVmnbqrV2sELXOKVvkyFk1bcZWCQmQds2IRPuBWjWj44wzgjOnYTE6PXqnXa0X5kahNVveHINGIXhnDxLtBXt46G2IMLeob541PvMq75DWOwIDAQAB",
 	"manifest_version": 2,
 	"name": "MB Upcoming",
 	"short_name": "MBU",
-	"version": "0.1.1",
+	"version": "0.1",
 	
 	"background": {
     		"scripts": ["js/jquery-2.1.1.min.js", "js/common.js", "eventPage.js"],
