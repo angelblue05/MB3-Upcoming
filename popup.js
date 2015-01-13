@@ -1,5 +1,4 @@
 var processing = 0;
-var processingB = 0;
 var current;
 var jsonf = "?format=json";
 
@@ -447,42 +446,30 @@ function upcoming() {
 	$('#yesterdayUp').off('click');
 	$('#yesterdayUp').on('click', function() {
 
-		if (processingB === 0) {
-			processingB = 1;
-			$('#todayUp, #tomorrowUp, #settings').removeClass('dateSelect');
-			$(this).addClass('dateSelect');
+		$('#todayUp, #tomorrowUp, #settings').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
 
-			upContent(-1);
-			processingB = 0;
-		}
+		upContent(-1);
 	})
 
 	// When pressing the Today button
 	$('#todayUp').off('click');
 	$('#todayUp').on('click', function() {
 
-		if (processingB === 0) {
-			processingB = 1;
-			$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
-			$(this).addClass('dateSelect');
+		$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
 
-			upContent();
-			processingB = 0;
-		}
+		upContent();
 	})
 
 	// When pressing the Tomorrow button
 	$('#tomorrowUp').off('click');
 	$('#tomorrowUp').on('click', function() {
 
-		if (processingB === 0) {
-			processingB = 1;
-			$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
-			$(this).addClass('dateSelect');
-			
-			upContent(1);
-			processingB = 0;
-		}
+		$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
+		$(this).addClass('dateSelect');
+		
+		upContent(1);
 	})
 
 	// When pressing the settings button
@@ -588,6 +575,7 @@ function upContent(day) {
 			});
 
 	        	var resp = $.ajax({
+	        		async: false,
 				type: "GET",
 				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio",
 				headers: header,
