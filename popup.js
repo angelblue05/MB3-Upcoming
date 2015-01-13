@@ -1,4 +1,5 @@
 var processing = 0;
+var processingB = 0;
 var current;
 var jsonf = "?format=json";
 
@@ -446,32 +447,42 @@ function upcoming() {
 	$('#yesterdayUp').off('click');
 	$('#yesterdayUp').on('click', function() {
 
-		$('#todayUp, #tomorrowUp, #settings').removeClass('dateSelect');
-		$('#todayUp').removeClass('dateSelect');
-		$('#tomorrowUp').removeClass('dateSelect');
-		$(this).addClass('dateSelect');
+		if (processingB === 0) {
+			processingB = 1;
+			$('#todayUp, #tomorrowUp, #settings').removeClass('dateSelect');
+			$(this).addClass('dateSelect');
 
-		upContent(-1);
+			upContent(-1);
+			processingB = 0;
+		}
 	})
 
 	// When pressing the Today button
 	$('#todayUp').off('click');
 	$('#todayUp').on('click', function() {
 
-		$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
-		$(this).addClass('dateSelect');
+		if (processingB === 0) {
+			processingB = 1;
+			$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
+			$(this).addClass('dateSelect');
 
-		upContent();
+			upContent();
+			processingB = 0;
+		}
 	})
 
 	// When pressing the Tomorrow button
 	$('#tomorrowUp').off('click');
 	$('#tomorrowUp').on('click', function() {
 
-		$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
-		$(this).addClass('dateSelect');
-		
-		upContent(1);
+		if (processingB === 0) {
+			processingB = 1;
+			$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
+			$(this).addClass('dateSelect');
+			
+			upContent(1);
+			processingB = 0;
+		}
 	})
 
 	// When pressing the settings button
