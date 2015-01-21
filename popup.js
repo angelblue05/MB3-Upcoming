@@ -195,31 +195,28 @@ function getUser() {
 					
 				$.each(data, function(key, val) {
 					
-					// Display user if enabled and not hidden
-					if (val.Configuration.IsDisabled===false && val.Configuration.IsHidden===false) {
-						
-						var userImage;
-						var userPass = "login_woPass";
+					// Public list
+				
+					var userImage;
+					var userPass = "login_woPass";
 
-						// Verify is there's a user image
-						if (typeof(val.PrimaryImageTag) != 'undefined') {
-							
-							userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
+					// Verify is there's a user image
+					if (typeof(val.PrimaryImageTag) != 'undefined') {
 						
-						} else {
-							// Default image for undefined
-							userImage = "background-image:url(/css/images/userflyoutdefault.png)";
-						}
-
-						// Verify is the user has a password
-						if (val.HasPassword === true) {
-							userPass = "login_wPass";
-						}
-
-						// Add default images to the userItems array
-						userItems.push("<a id=\"" + val.Id + "\" class=\"" + userPass + "\" data-user=\"" + val.Name + "\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
-						
+						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
+					
+					} else {
+						// Default image for undefined
+						userImage = "background-image:url(/css/images/userflyoutdefault.png)";
 					}
+
+					// Verify is the user has a password
+					if (val.HasPassword === true) {
+						userPass = "login_wPass";
+					}
+
+					// Add default images to the userItems array
+					userItems.push("<a id=\"" + val.Id + "\" class=\"" + userPass + "\" data-user=\"" + val.Name + "\"><div class=\"posterItemImage\" style=\"" + userImage + "\"></div><div class=\"posterItemText\">" + val.Name + "</div></a>");
 				});
 
 				// Create a div userItems that contains users
