@@ -6,7 +6,7 @@ var jsonf = "?format=json";
 
 $(document).ready(function() {
 	
-
+	
 	// Verify to load last loaded div by the user
 	chrome.storage.local.get('current', function(result) {
 		
@@ -166,6 +166,12 @@ function getUserReset() {
 	$('#msguser2').html('');
 	// Reset list of users
 	$('#userSelect').html('');
+	// Reset upcoming
+	$('#upcomingList').hide();
+	$('#settings').hide();
+	$('#preferences').hide();
+	$('#dateSelector').hide();
+	$('#shortenedLogo').hide();
 }
 
 // getUser is completed
@@ -561,16 +567,6 @@ function upContent(day) {
 	        	var userId = result.storageUser;
 	        	var hideWatched = result.storageWatched.hideWatched;
 
-	        	// Verify if the user's session is still valid
-			$.ajaxSetup({
-				headers: header,
-				statusCode: {
-					401: function() {
-						logoutUser();
-					}
-				}
-			});
-
 	        	var resp = $.ajax({
 	        		async: false,
 				type: "GET",
@@ -578,7 +574,12 @@ function upContent(day) {
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
-			
+				
+			}).error(function() {
+
+				// Token has been revoked, 401 unauthorized
+				logoutUser();
+
 			}).done(function(data){
 
 				var date = yyyymmdd(day);
