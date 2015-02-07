@@ -503,7 +503,7 @@ body	{
 	min-height: 115px;
 }
 
-#display_isWatched_text {
+#preferences tr {
 	font-size: 14px;
 	color: #8c8c8c;
 	text-align: left;

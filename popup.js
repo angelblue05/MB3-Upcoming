@@ -1,5 +1,6 @@
 var processing = 0;
 var current;
+var upContentDay = 0;
 var jsonf = "?format=json";
 
 
@@ -39,7 +40,7 @@ function storageUser(callback) {
 
 function storageWatched(callback) {
 
-	chrome.storage.local.get(['hideWatched'], function(result) {
+	chrome.storage.local.get('hideWatched', function(result) {
 		
 		if (result['hideWatched'] != undefined) {
 			
@@ -48,6 +49,21 @@ function storageWatched(callback) {
 		} else {
 			// If the value is undefined, set to false by default
 			callback(null, { hideWatched: false })
+		}
+	});
+}
+
+function storageDisliked(callback) {
+
+	chrome.storage.local.get('hideDisliked', function(result) {
+
+		if (result['hideDisliked'] != undefined) {
+
+			// If value is stored, load it
+			callback(null, { hideDisliked: result['hideDisliked'] });
+		} else {
+			// If the value is undefined, set to false by default
+			callback(null, { hideDisliked: false})
 		}
 	});
 }
@@ -443,7 +459,8 @@ function upcoming() {
 
 	// When first loading, display today
 	$('#todayUp').addClass('dateSelect');
-	upContent();
+	upContentDay = 0
+	upContent(0);
 
 	// When pressing the Yesterday button
 	$('#yesterdayUp').off('click');
@@ -452,6 +469,7 @@ function upcoming() {
 		$('#todayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
 
+		upContentDay = -1;
 		upContent(-1);
 	})
 
@@ -462,7 +480,8 @@ function upcoming() {
 		$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
 
-		upContent();
+		upContentDay = 0;
+		upContent(0);
 	})
 
 	// When pressing the Tomorrow button
@@ -472,6 +491,7 @@ function upcoming() {
 		$('#yesterdayUp, #todayUp, #settings').removeClass('dateSelect');
 		$(this).addClass('dateSelect');
 		
+		upContentDay = 1;
 		upContent(1);
 	})
 
@@ -485,7 +505,7 @@ function upcoming() {
 		$('#upcomingList').fadeOut('fast', function() {
 
 			// Load preferences
-			chrome.storage.local.get('hideWatched', function(result) {
+			chrome.storage.local.get(['hideWatched', 'hideDisliked'], function(result) {
 			
 				if (result['hideWatched'] == undefined) {
 
@@ -495,6 +515,15 @@ function upcoming() {
 				} else {
 					// If hideWatched is stored in chrome storage
 					document.getElementById('display_isWatched').checked=result['hideWatched'];
+				}
+
+				if (result['hideDisliked'] == undefined) {
+
+					// First time opening settings
+					document.getElementById('display_isDisliked').checked=false;
+				} else {
+					// If hideDisliked is stored in chrome storage
+					document.getElementById('display_isDisliked').checked=result['hideDisliked'];
 				}
 			})
 
@@ -511,11 +540,15 @@ function upcoming() {
 		
 		chrome.storage.local.set({ 'hideWatched': hideWatched });
 
+		// Verify if settings display_isDisliked is enabled or not
+		var hideDisliked = document.getElementById('display_isDisliked').checked;
+
+		chrome.storage.local.set({ 'hideDisliked': hideDisliked});
+
 		$('#settings').removeClass('dateSelect');
 		$('#preferences').fadeOut('fast', function() {
 			upcoming();
-		});
-		
+		});	
 	})
 
 	// When pressing the back button
@@ -558,7 +591,8 @@ function upContent(day) {
         	'ajaxHeader': ajaxHeader,
         	'storageUser': storageUser,
         	'storageWatched': storageWatched,
-        	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', 'storageWatched', function getUserList(callback, result) {
+        	'storageDisliked': storageDisliked,
+        	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', 'storageWatched', 'storageDisliked', function getUserList(callback, result) {
 
 	      		// Set shortcut to other functions variables
 	        	var ipStorage = result.storageUrl.ipStorage;
@@ -566,11 +600,11 @@ function upContent(day) {
 	        	var header = result.ajaxHeader;
 	        	var userId = result.storageUser;
 	        	var hideWatched = result.storageWatched.hideWatched;
+	        	var hideDisliked = result.storageDisliked.hideDisliked;
 
 	        	var resp = $.ajax({
-	        		async: false,
 				type: "GET",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio",
+				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio,UserData",
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
@@ -586,13 +620,13 @@ function upContent(day) {
 				// Container for upcoming items
 				var upItems = [];
 				var path;
-
+				
 				$.each(data.Items, function(key, val) {
 
 					// Shortened PremiereDate to only include the date
 					var shortDate = (val.PremiereDate).substring(0, 10);
 
-					if (shortDate == date) {
+					if (shortDate == date && upContentDay == day) {
 
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Studios
@@ -605,6 +639,7 @@ function upContent(day) {
 						var studio = val.SeriesStudio
 						var available = "";
 						var isWatched = val.UserData.Played;
+						var isDisliked = false;
 						var watchedIcon = "";
 						
 
@@ -634,10 +669,35 @@ function upContent(day) {
 							watchedIcon = "<span class=\"fa-stack\"><i class=\"fa fa-check-circle fa-stack-2x\"></i></span>"
 						}
 
-						// Verify if the hide watched is enabled and if the watched state is played
-						if (hideWatched === true && isWatched === true) {
+						// Verify if the hide disliked is enabled
+						if (hideDisliked === true) {
 
+							// Additional query to find if show is disliked
+							$.ajax({
+								type: "GET",
+								async: false,
+								url: ipStorage + ":" + portStorage + "/mediabrowser/Users/" + userId +"/Items/" + val.SeriesId,
+								headers: header,
+								dataType: "json",
+								contentType: "application/json",
+								
+							}).done(function(data2) {
+
+								if (data2.UserData.Likes == false) {
+									isDisliked = true;
+								}
+							})	
+						}
+
+						// Verify if the hide watched is enabled and if the watched state is played
+						if (hideDisliked === true && isDisliked === true) {
+							console.log("Disliked!")
 							// Don't push the item	
+						
+						} else if (hideWatched === true && isWatched === true) {
+
+							// Don't push the item
+						
 						} else {
 
 							upItems.push("<div class=\"posterThumb\"><a class=\"bannerLink\" href=\"" + bannerLink + "\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div></a><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");
@@ -646,7 +706,7 @@ function upContent(day) {
 				});
 
 				// To display if no shows are available
-				if (upItems.length == 0) {
+				if (upItems.length == 0 && upContentDay == day) {
 					
 					if ($('#yesterdayUp').hasClass("dateSelect") == true) {
 						
@@ -696,6 +756,7 @@ function upContent(day) {
 	});
 }
 
+
 // logoutUser is completed
 function logoutUser() {
 	
@@ -729,6 +790,7 @@ function logoutUser() {
 				chrome.storage.local.remove('user');
 				chrome.storage.local.remove('token');
 				chrome.storage.local.remove('hideWatched');
+				chrome.storage.local.remove('hideDisliked');
 		        })
 
 			callback();

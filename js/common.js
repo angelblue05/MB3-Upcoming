@@ -59,7 +59,7 @@ function yyyymmdd(d) {
         var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
         
         // Get day, example: today, tomorrow
-        if (d != undefined) {
+        if (d != 0) {
                 // Get a different day
                 var dd = (date.getDate()+d).toString();
         } else {
