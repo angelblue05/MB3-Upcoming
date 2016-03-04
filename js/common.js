@@ -11,7 +11,7 @@ chrome.storage.local.get(null, function(items) {
   }
 });
 
-// Media Browser header
+// Emby header
 function ajaxHeader(callback) {
         
         // Verify if userId and token exists
@@ -51,21 +51,10 @@ function guid() {
 // Today's date in a workable format
 function yyyymmdd(d) {         
         
-        // Get current date
-        var date = new Date();                        
+        var result = new Date(); // Local
+
+        result.setDate(result.getDate() + d);
+        result = result.toISOString().slice(0, 10);
         
-        // Get YYYY-MM-DD
-        var yyyy = date.getFullYear().toString();                                    
-        var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
-        
-        // Get day, example: today, tomorrow
-        if (d != 0) {
-                // Get a different day
-                var dd = (date.getDate()+d).toString();
-        } else {
-                // Get today's date
-                var dd = date.getDate().toString();
-        }
-                          
-        return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+        return result
 };

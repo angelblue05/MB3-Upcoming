@@ -3,9 +3,10 @@
 <html>
   
 	<head>
-		<title>MB3 Upcoming</title>
+		<title>MB Upcoming</title>
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		
 		<script src="js/jquery-2.1.1.min.js"></script>
 		<script src="js/async.js"></script>
@@ -18,9 +19,8 @@
 		<div id="header"> <!-- Top bar -->
 			<table id="table-header">	
 				<tr>
-					<td id="logo" align="left"><img src="Icons/mb3_logofont.png"></td>
-					<td id="shortenedLogo" align="left" style="display:none;"><img src="Icons/mb3_logo.png"></td>
-					<td id="upcoming" align="left"><i>-&nbsp;&nbsp;UPCOMING</i></td>
+					<td id="logo" align="left"><img src="Icons/logowhite.png"></td>
+					<td id="shortenedLogo" align="left" style="display:none;"><img src="Icons/logoicon.png"></td>
 					<td id="dateSelector" style="display:none;">
 						<div id="yesterdayUp">YESTERDAY</i></div>
 						<div id="todayUp">TODAY</div>
@@ -36,7 +36,7 @@
 			<div id="server-login" style="display:none;"> <!-- Login div -->
 				<table id="table-login" align="center">
 					<tr>
-						<td align="left"><label>Server IP or URL:</label></td>
+						<td align="left"><label>Server address:</label></td>
 						<td align="left"><label>Port:</label></td>
 					</tr>
 					
@@ -69,8 +69,8 @@
 							<table id="userLogin" align="center">
 								<tr>
 									<td align="right"><label>Username:</label></td>
-									<td><input type="text" name="username" id="username" value="" TABINDEX=1></td>
-									<td align="center" rowspan="2"><button id="saveUser">Save</button></td>
+									<td><input type="text" name="username" id="username" value="" TABINDEX=1 autofocus></td>
+									<td align="center" rowspan="2"><button id="saveUser" type=submit>Save</button></td>
 								</tr>
 								
 								<tr>
@@ -87,7 +87,7 @@
 						<table id="passInput" align="center">
 							<tr>
 								<td align="right"><label>Password:</label></td>
-								<td><input type="password" name="password2" id="password2" value=""></td>
+								<td><input type="password" name="password2" id="password2" value="" autofocus></td>
 								<td align="center"><button id="saveInput" class="passButton">Save</button></td>
 								<td align="center"><button id="cancelInput" class="passButton">Cancel</button></td>
 							</tr>
@@ -107,21 +107,46 @@
 			<div id="preferences" align="center" style="display:none;"><!-- #settings preference -->
 				<table>
 					<tr>
+						<td id="watched-icon" colspan="2">
+							<div><input type="radio" name="check-icon" id="check-corner" checked></div>
+							<div><img id="corner-icon" src='/css/images/check_corner.png'></div>
+							<div><input type="radio" name="check-icon" id="check-circle"></div>
+							<div><img id="circle-icon" src='/css/images/check_circle.png'></div>
+						</td>
+					</tr>
+					<tr>
 						<td><input type="checkbox" name="display_isWatched" id="display_isWatched" value=""></td>
 						<td id="display_isWatched_text">Hide watched shows</td>
 					</tr>
-
 					<tr>
 						<td><input type="checkbox" name="display_isDisliked" id="display_isDisliked" value=""></td>
 						<td id="display_isDisliked_text">Hide disliked shows</td>
 					</tr>
-
 					<tr>
 						<td align="center" colspan="2"><button id="savePref">Save</button></td>
 					</tr>
 				</table>
 			</div>
 		</div>
+		<nav class="context-menu">
+		  <ul class="context-menu__items">
+		    <li class="context-menu__item">
+		      <a href="#" class="context-menu__link">
+		        <i class="fa fa-eye"></i> View Task
+		      </a>
+		    </li>
+		    <li class="context-menu__item">
+		      <a href="#" class="context-menu__link">
+		        <i class="fa fa-edit"></i> Edit Task
+		      </a>
+		    </li>
+		    <li class="context-menu__item">
+		      <a href="#" class="context-menu__link">
+		        <i class="fa fa-times"></i> Delete Task
+		      </a>
+		    </li>
+		  </ul>
+		</nav>
 	</body>
   
 </html>

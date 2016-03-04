@@ -15,33 +15,42 @@ body	{
 	font-size: 13px;
 }
 
+#corner-icon {
+	width: 60%;
+}
 
+#watched-icon div {
+	float: left;
+}
+#watched-icon input {
+	margin-right: 10px;
+}
 
 /* Top section */
 
 #header	{
-	padding: 5px;
-	height: 35px;
-	background: #000000;
+	padding: 0px 5px 5px 5px;
+	height: 45px;
+	background: #111111;
 }
 
 #table-header	{
 	padding-right: 7px;
 	width: 100%;
-	font-family: Calibri, Arial;
-	font-size: 14px;
+	font-family: 'Roboto', Arial;
+	font-size: 13px;
 	color: #c2c2c2;
 	vertical-align: middle;
 }
 
 #logo {
-	width: 175px;
+	width: 98px;
 }
 
 #logo img {
-	padding-top: 3px;
-	width: 175px;
-	height: 24px;
+	padding-top: 4px;
+	padding-left: 3px;
+	width: 120px;
 }
 
 #header_signIn {
@@ -60,9 +69,9 @@ body	{
 }
 
 #shortenedLogo img {
-	padding-top: 3px;
-	width: 41px;
-	height: 24px;
+	padding: 4px 0 5px 3px;
+	width: 37px;
+	height: 37px;
 	cursor: pointer;
 }
 
@@ -78,8 +87,9 @@ body	{
 #yesterdayUp {
 	width: 60px;
 	float: left;
-	font-size: 13px;
+	font-size: 12px;
 	text-align: right;
+	margin-right: 7px;
 }
 
 #yesterdayUp:hover {
@@ -92,7 +102,7 @@ body	{
 	width: 40px;
 	text-align: center;
 	float: left;
-	font-size: 13px;
+	font-size: 12px;
 }
 
 #todayUp:hover {
@@ -103,7 +113,7 @@ body	{
 #tomorrowUp {
 	float: left;
 	width: 60px;
-	font-size: 13px;
+	font-size: 12px;
 	text-align: left;
 }
 
@@ -126,7 +136,9 @@ body	{
 /* Bottom section */
 
 #bottom-background	{
-	background: #202020;
+	background-image: url('../css/images/splash-land.jpg');
+	background-position: center;
+	/*background: #202020;*/
 }
 
 
@@ -203,14 +215,21 @@ body	{
 /* Manual login */
 
 #manualLogin {
+	margin-left: -5px;
 	padding: 7px;
+	width: 400px;
 	text-align: center;
 	color: #dad9d9;
 	border: 1px solid transparent;
+	transition: background-color 3s;
+}
+#manualLogin:hover {
+	background-color: #111111;
 }
 
 #manualLogin_text {
 	font-size: 14px;
+	
 }
 
 #manualLogin_text:hover {
@@ -221,6 +240,9 @@ body	{
 /* Manual login sliding panel */
 
 #panel {
+	margin-left: -5px;
+	border: 1px solid transparent;
+	width: 400px;
 	height: 110px;
 	color: #27a436;
 }
@@ -437,9 +459,20 @@ body	{
 	position: absolute;
 	top: 5px;
 	left: 165px;
-	border-radius: 50%;
+	/*border-radius: 50%;*/
 	color: #27a436;
-	background-color: #ffffff;
+	/*background-color: #ffffff;*/
+}
+
+.check-circle {
+	position: absolute;
+	top: 5px;
+	left: 332px;
+}
+.check-corner {
+	position: absolute;
+	/*left: 250px;*/
+	right:0px;
 }
 
 .infoPanel {
@@ -448,7 +481,7 @@ body	{
 	padding-right: 3px;
 }
 
-.available {
+.quality {
 	margin-left: 7px;
 	padding: 0px 5px;
 	height: 15px;
@@ -458,7 +491,11 @@ body	{
 	border-radius: 3px;
 	vertical-align: middle;
 	text-decoration: none;
-	background: #27a436;
+	background: #8400ff;
+}
+
+.qualitysd {
+	background: #1548dc !important;
 }
 
 .seriesLink {
@@ -500,6 +537,7 @@ body	{
 #preferences {
 	margin: 5px;
 	padding-top: 15px;
+	padding-bottom: 15px;
 	min-height: 115px;
 }
 
@@ -532,4 +570,15 @@ body	{
 
 #savePref:focus {
     outline: none;
+}
+
+/* Context menu */
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+
+.context-menu--active {
+  display: block;
 }

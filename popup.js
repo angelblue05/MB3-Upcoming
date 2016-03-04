@@ -18,7 +18,14 @@ $(document).ready(function() {
 			// When first time running, setup IP
 			ipSetup();
 		}
-	});	
+	});
+
+	/*document.addEventListener('contextmenu', function(e) {
+	    if (e.srcElement.className == "bannerItemImage") {
+	    	console.log(e.target.getAttribute('id'));
+	    }
+        //e.preventDefault();
+    }, false);*/
 });
 
 
@@ -37,6 +44,20 @@ function storageUser(callback) {
 	});
 }
 
+function storageCheckIcon(callback) {
+
+	chrome.storage.local.get('checkIcon', function(result) {
+
+		if (result['checkIcon'] != undefined) {
+			
+			// If value is stored, load it
+			callback(null, { checkIcon: result['checkIcon'] });
+		} else {
+			// If the value is undefined, set to false by default
+			callback(null, { checkIcon: "corner" })
+		}
+	});
+}
 
 function storageWatched(callback) {
 
@@ -58,7 +79,6 @@ function storageDisliked(callback) {
 	chrome.storage.local.get('hideDisliked', function(result) {
 
 		if (result['hideDisliked'] != undefined) {
-
 			// If value is stored, load it
 			callback(null, { hideDisliked: result['hideDisliked'] });
 		} else {
@@ -108,43 +128,49 @@ function ipSetup() {
 	// Fancy
 	$("#server-login").fadeIn('slow');
 
+	$('#setting_ip, #setting_port').keypress(function(e){
+						  
+		if(e.keyCode==13) {
+			$('#connect').click();
+		}
+	});
 	// When pressing the connect button
 	$('#connect').off('click');
 	$('#connect').on('click', function() {
 		
 		if (processing == 0) {  
-	        	
-	        	// Prevent user from pressing connect multiple times.
-	        	processing = 1;
+				
+				// Prevent user from pressing connect multiple times.
+				processing = 1;
 
-	        	// Save user IP and port
-	        	var ip = $('#setting_ip').val();
-	        	var port = $('#setting_port').val();
-          
-	        	// Verify if the IP contains http/https
-	        	if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
-	                	ip = 'http://' + ip;
-	        	}
-	          	
-	          	// Message
-	        	message('#msgconnect', "Connecting to the server...");
+				// Save user IP and port
+				var ip = $('#setting_ip').val();
+				var port = $('#setting_port').val();
+		  
+				// Verify if the IP contains http/https
+				if (ip.toLowerCase().indexOf('http://') == -1 && ip.toLowerCase().indexOf('https://') == -1) {
+						ip = 'http://' + ip;
+				}
+				
+				// Message
+				message('#msgconnect', "Connecting to the server...");
 
-	        	// Test with the given IP and port
-	        	$.getJSON(ip + ":" + port + "/mediabrowser/Users/Public" + jsonf, function() {
-		                
-		                // Testing successful, save IP and port to storage
-		                chrome.storage.local.set({
-		                	'ip': ip,
-		                	'port': port
-		                })
-		                
-		                // Set variable using storage
-		                chrome.storage.local.get(['ip', 'port'], function(result) {
+				// Test with the given IP and port
+				$.getJSON(ip + ":" + port + "/emby/Users/Public" + jsonf, function() {
+						
+						// Testing successful, save IP and port to storage
+						chrome.storage.local.set({
+							'ip': ip,
+							'port': port
+						})
+						
+						// Set variable using storage
+						chrome.storage.local.get(['ip', 'port'], function(result) {
 					
 					ipStorage = result['ip'];
 					portStorage = result['port'];
 						
-		                	// Display the list of users
+							// Display the list of users
 					$("#server-login").fadeOut(function() {
 						
 						getUser();	
@@ -152,12 +178,12 @@ function ipSetup() {
 				})
 			
 			// Testing failed      
-	        	}).fail(function() {
-	        		message('#msgconnect', "Unable to connect. Please verify your IP or URL and port.");
-	        	});
-	        	
-	        	// End the processing
-	        	processing = 0;
+				}).fail(function() {
+					message('#msgconnect', "Unable to connect. Please verify your IP or URL and port.");
+				});
+				
+				// End the processing
+				processing = 0;
 		}
 	});
 }
@@ -169,7 +195,6 @@ function getUserReset() {
 	// to it's original state.
 	$('#header_signIn').html('<a id="back_ipSetup" class="headerButton">BACK<a>');
 	$('#logo').show();
-	$('#upcoming').show();
 	// Reset inputs
 	$('#username').val('');
 	$('#password').val('');
@@ -201,16 +226,16 @@ function getUser() {
 	getUserReset();
 
 	// Make chrome storage sync
-        async.auto({
+		async.auto({
 
-        	'storageUrl': storageUrl,
-        	'getuser list': ['storageUrl', function getUserList(callback, result) {
+			'storageUrl': storageUrl,
+			'getuser list': ['storageUrl', function getUserList(callback, result) {
 
-	      		// Set shortcut to ip and port
-	        	var ipStorage = result.storageUrl.ipStorage;
-	        	var portStorage = result.storageUrl.portStorage;
+				// Set shortcut to ip and port
+				var ipStorage = result.storageUrl.ipStorage;
+				var portStorage = result.storageUrl.portStorage;
 
-			$.getJSON(ipStorage + ":" + portStorage + "/mediabrowser/Users/Public" + jsonf, function(data) {
+			$.getJSON(ipStorage + ":" + portStorage + "/emby/Users/Public" + jsonf, function(data) {
 
 				// Container for userImage
 				var userItems = [];
@@ -225,7 +250,7 @@ function getUser() {
 					// Verify is there's a user image
 					if (typeof(val.PrimaryImageTag) != 'undefined') {
 						
-						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
+						userImage = "background-image:url('" + ipStorage + ":" + portStorage + "/emby/Users/" + val.Id + "/Images/Primary?width=100&tag=" + val.PrimaryImageTag + "')";
 					
 					} else {
 						// Default image for undefined
@@ -270,6 +295,12 @@ function getUser() {
 					$('.slide').hide('fast', function() {
 						
 						$('#passSlide').slideDown('fast');
+						$('#password2').keypress(function(e){
+						  
+							if(e.keyCode==13) {
+								$('#saveInput').click();
+							}
+						});
 					});
 
 					// Authenticate login_wPass
@@ -309,8 +340,14 @@ function getUser() {
 	$('#manualLogin_text').off('click');
 	$('#manualLogin_text').on('click', function() {
 
-		$('#panel').slideToggle();       
-	}); 
+		$('#panel').slideToggle();
+		$('#password, #username').keypress(function(e){
+
+			if(e.keyCode==13) {
+				$('#saveUser').click();
+			}
+		});    
+	});
 
 	// When pressing the save button
 	$('#saveUser').off('click');
@@ -336,39 +373,42 @@ function getUser() {
 	$('#user-login').fadeIn('slow');
 }
 
+/*function contextmenu(series, favorite, disliked) {
+	console.log(series + favorite + disliked)
+}*/
 // loginUser is completed
 function loginUser(id, dataUser, hasPassword) {
 
 	// Make chrome storage sync
-        async.auto({
+		async.auto({
 
-        	'storageUrl': storageUrl,
-        	'ajaxHeader': ajaxHeader,
-        	'loginUser': ['storageUrl', 'ajaxHeader' , function getUserList(callback, result) {
-        		
-	      		// Set shortcut to ip, port and header
-	        	var ipStorage = result.storageUrl.ipStorage;
-	        	var portStorage = result.storageUrl.portStorage;
-	        	var header = result.ajaxHeader;
+			'storageUrl': storageUrl,
+			'ajaxHeader': ajaxHeader,
+			'loginUser': ['storageUrl', 'ajaxHeader' , function getUserList(callback, result) {
+				
+				// Set shortcut to ip, port and header
+				var ipStorage = result.storageUrl.ipStorage;
+				var portStorage = result.storageUrl.portStorage;
+				var header = result.ajaxHeader;
 
-	        	if (id != undefined && hasPassword === false) {
-	        		// Process user login with no password
-	        		var postData = {
-	        			Username: dataUser,
-	        			password: SHA1(''),
-	        			passwordMd5: MD5('')
-	        		};
-	        	
-	        	} else if (id != undefined && hasPassword === true) {
-	        		// Process user login with password
-	        		var postData = {
-	        			Username: dataUser,
-	        			password: SHA1($("#password2").val()),
-	        			passwordMd5: MD5($("#password2").val())
-	        		};
-	        	
-	        	} else {
-	        		// Process user manual login
+				if (id != undefined && hasPassword === false) {
+					// Process user login with no password
+					var postData = {
+						Username: dataUser,
+						password: SHA1(''),
+						passwordMd5: MD5('')
+					};
+				
+				} else if (id != undefined && hasPassword === true) {
+					// Process user login with password
+					var postData = {
+						Username: dataUser,
+						password: SHA1($("#password2").val()),
+						passwordMd5: MD5($("#password2").val())
+					};
+				
+				} else {
+					// Process user manual login
 				var postData = {
 					Username: $("#username").val(),
 					password: SHA1($("#password").val()),
@@ -378,7 +418,7 @@ function loginUser(id, dataUser, hasPassword) {
 
 			var resp = $.ajax({
 				type: "POST",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Users/AuthenticateByName/",
+				url: ipStorage + ":" + portStorage + "/emby/Users/AuthenticateByName/",
 				headers: header,
 				data: JSON.stringify(postData),
 				dataType: "json",
@@ -397,10 +437,10 @@ function loginUser(id, dataUser, hasPassword) {
 				}
 
 				// User sucessfully authenticated
-		                chrome.storage.local.set({
-		                	'user': JSON.stringify(data.User),
-		                	'token': data.AccessToken
-		                })
+						chrome.storage.local.set({
+							'user': JSON.stringify(data.User),
+							'token': data.AccessToken
+						})
 
 				// Go to Today's upcoming
 				$('#user-login').fadeOut('slow', function() {
@@ -441,7 +481,7 @@ function upcomingReset() {
 	$('#upcomingList').html('');
 	// Hide content from getUser to avoid repetition
 	$('#logo').hide();
-	$('#upcoming').hide();
+
 	$('#yesterdayUp, #tomorrowUp, #settings').removeClass('dateSelect');
 }
 
@@ -471,7 +511,7 @@ function upcoming() {
 
 		upContentDay = -1;
 		upContent(-1);
-	})
+	});
 
 	// When pressing the Today button
 	$('#todayUp').off('click');
@@ -482,7 +522,7 @@ function upcoming() {
 
 		upContentDay = 0;
 		upContent(0);
-	})
+	});
 
 	// When pressing the Tomorrow button
 	$('#tomorrowUp').off('click');
@@ -493,7 +533,7 @@ function upcoming() {
 		
 		upContentDay = 1;
 		upContent(1);
-	})
+	});
 
 	// When pressing the settings button
 	$('#settings').off('click');
@@ -505,25 +545,31 @@ function upcoming() {
 		$('#upcomingList').fadeOut('fast', function() {
 
 			// Load preferences
-			chrome.storage.local.get(['hideWatched', 'hideDisliked'], function(result) {
+			chrome.storage.local.get(['checkIcon', 'hideWatched', 'hideDisliked'], function(result) {
 			
+				if (result['checkIcon'] == "corner") {
+					document.getElementById('check-corner').checked = true;
+				} else {
+					document.getElementById('check-circle').checked = true;
+				}
+
 				if (result['hideWatched'] == undefined) {
 
 					// First time opening settings
-					document.getElementById('display_isWatched').checked=false;
+					document.getElementById('display_isWatched').checked = false;
 
 				} else {
 					// If hideWatched is stored in chrome storage
-					document.getElementById('display_isWatched').checked=result['hideWatched'];
+					document.getElementById('display_isWatched').checked = result['hideWatched'];
 				}
 
 				if (result['hideDisliked'] == undefined) {
 
 					// First time opening settings
-					document.getElementById('display_isDisliked').checked=false;
+					document.getElementById('display_isDisliked').checked = false;
 				} else {
 					// If hideDisliked is stored in chrome storage
-					document.getElementById('display_isDisliked').checked=result['hideDisliked'];
+					document.getElementById('display_isDisliked').checked = result['hideDisliked'];
 				}
 			})
 
@@ -534,6 +580,13 @@ function upcoming() {
 
 	$('#savePref').off('click');
 	$('#savePref').on('click', function() {
+
+		// Check the settings checkIcon
+		if (document.getElementById('check-corner').checked) {
+			chrome.storage.local.set({ 'checkIcon': "corner" });
+		} else if (document.getElementById('check-circle').checked) {
+			chrome.storage.local.set({ 'checkIcon': "circle"})
+		}
 
 		// Check the settings display_isWatched is enabled or not
 		var hideWatched = document.getElementById('display_isWatched').checked;	
@@ -585,26 +638,28 @@ function upContent(day) {
 	upContentReset();
 
 	// Make chrome storage sync
-        async.auto({
+		async.auto({
 
-        	'storageUrl': storageUrl,
-        	'ajaxHeader': ajaxHeader,
-        	'storageUser': storageUser,
-        	'storageWatched': storageWatched,
-        	'storageDisliked': storageDisliked,
-        	'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', 'storageWatched', 'storageDisliked', function getUserList(callback, result) {
+			'storageUrl': storageUrl,
+			'ajaxHeader': ajaxHeader,
+			'storageUser': storageUser,
+			'storageCheckIcon': storageCheckIcon,
+			'storageWatched': storageWatched,
+			'storageDisliked': storageDisliked,
+			'upContent': ['storageUrl', 'ajaxHeader', 'storageUser', 'storageCheckIcon', 'storageWatched', 'storageDisliked', function getUserList(callback, result) {
 
-	      		// Set shortcut to other functions variables
-	        	var ipStorage = result.storageUrl.ipStorage;
-	        	var portStorage = result.storageUrl.portStorage;
-	        	var header = result.ajaxHeader;
-	        	var userId = result.storageUser;
-	        	var hideWatched = result.storageWatched.hideWatched;
-	        	var hideDisliked = result.storageDisliked.hideDisliked;
+				// Set shortcut to other functions variables
+				var ipStorage = result.storageUrl.ipStorage;
+				var portStorage = result.storageUrl.portStorage;
+				var header = result.ajaxHeader;
+				var userId = result.storageUser;
+				var checkIcon = result.storageCheckIcon.checkIcon;
+				var hideWatched = result.storageWatched.hideWatched;
+				var hideDisliked = result.storageDisliked.hideDisliked;
 
-	        	var resp = $.ajax({
+				var resp = $.ajax({
 				type: "GET",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio,UserData",
+				url: ipStorage + ":" + portStorage + "/emby/Shows/Upcoming?UserId=" + userId + "&Limit=30&Fields=AirTime,SeriesStudio,UserData",
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
@@ -619,8 +674,10 @@ function upContent(day) {
 				var date = yyyymmdd(day);
 				// Container for upcoming items
 				var upItems = [];
+				var upTrack = {};
 				var path;
 				
+				var count = 0
 				$.each(data.Items, function(key, val) {
 
 					// Shortened PremiereDate to only include the date
@@ -628,10 +685,11 @@ function upContent(day) {
 
 					if (shortDate == date && upContentDay == day) {
 
+						var process = true;
 						// To display: Image, Series Name, S00E00,
 						// Episode name, Air time, Studios
-						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/mediabrowser/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
-						var bannerLink = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.SeriesId;
+						var bannerImage = "background-image:url('" + ipStorage + ":" + portStorage + "/emby/Items/" + val.SeriesId + "/Images/banner?Width=366&Height=68')";
+						var bannerLink = ipStorage + ":" + portStorage + "/emby/dashboard/itemdetails.html?id=" + val.SeriesId;
 						var episode = (val.Name).substring(0, 21);
 						var series = val.SeriesName;
 						var seasonEp = ("S" + val.ParentIndexNumber + ", E" + val.IndexNumber);
@@ -641,6 +699,7 @@ function upContent(day) {
 						var isWatched = val.UserData.Played;
 						var isDisliked = false;
 						var watchedIcon = "";
+						var seriesIsFavorite = false;
 						
 
 						// Verify if airtime is undefined
@@ -649,59 +708,73 @@ function upContent(day) {
 							airTime = "";
 						}
 
+						// Verify if the file is currently available to view via MB3
+						if (val.LocationType === "FileSystem") {
+							
+							path = ipStorage + ":" + portStorage + "/emby/dashboard/itemdetails.html?id=" + val.Id
+							// Mark as available episodes available to watch on MB3
+							//available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
+							if (val.IsHD) {
+								available = "<a class=\"quality\">HD</a>"
+							} else {
+								available = "<a class=\"quality qualitysd\">SD</a>"
+							}
+						}
+
 						// Add ... if the episode name is too long
 						if (episode.length > 20) {
 
 							episode += "...";
 						}
 
-						// Verify if the file is currently available to view via MB3
-						if (val.LocationType === "FileSystem") {
-							
-							path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/itemdetails.html?id=" + val.Id
-							// Mark as available episodes available to watch on MB3
-							available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
-						}
-
 						// Verify if the item is watched
 						if (isWatched === true) {
 
-							watchedIcon = "<span class=\"fa-stack\"><i class=\"fa fa-check-circle fa-stack-2x\"></i></span>"
+							watchedIcon = "<img class=\"check-"+ checkIcon +"\" src='/css/images/check_" + checkIcon + ".png'>"
 						}
 
-						// Verify if the hide disliked is enabled
-						if (hideDisliked === true) {
-
+						if (hideDisliked) {
 							// Additional query to find if show is disliked
 							$.ajax({
 								type: "GET",
 								async: false,
-								url: ipStorage + ":" + portStorage + "/mediabrowser/Users/" + userId +"/Items/" + val.SeriesId,
+								url: ipStorage + ":" + portStorage + "/emby/Users/" + userId +"/Items/" + val.SeriesId,
 								headers: header,
 								dataType: "json",
 								contentType: "application/json",
 								
 							}).done(function(data2) {
-
-								if (data2.UserData.Likes == false) {
+								// Verify if the hide disliked is enabled
+								if (hideDisliked && data2.UserData.Likes == false) {
 									isDisliked = true;
 								}
-							})	
+								/*if (data2.UserData.IsFavorite) {
+									seriesIsFavorite = true;
+								}*/
+							})
 						}
 
 						// Verify if the hide watched is enabled and if the watched state is played
 						if (hideDisliked === true && isDisliked === true) {
-							console.log("Disliked!")
-							// Don't push the item	
+							console.log("Disliked!");
+							// Don't push the item
+							return;
 						
 						} else if (hideWatched === true && isWatched === true) {
 
 							// Don't push the item
-						
-						} else {
+							return;
 
-							upItems.push("<div class=\"posterThumb\"><a class=\"bannerLink\" href=\"" + bannerLink + "\"><div class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div></a><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");
-						} 
+						} else if (available && upTrack[val.Name] != undefined)  {
+
+							// Verify if the item is there twice
+							listIndex = upTrack[val.Name];
+							upItems.splice(listIndex, 1);
+						}
+						
+						upItems.push("<div class=\"posterThumb\"><a class=\"bannerLink\" href=\"" + bannerLink + "\"><div id=\"" + val.Id + "\" favorite=\"" + seriesIsFavorite + "\" series=\"" + val.SeriesId + "\" disliked=\"" + isDisliked + "\" class=\"bannerItemImage\" style=\"" + bannerImage + "\">" + watchedIcon + "</div></a><div class=\"infoPanel\"><div class=\"seriesLink\">" + available + "</div><div class=\"seriesEp\">" + seasonEp + " - " + episode + "</div><div class=\"airtime\">" + airTime + " on " + studio + "</div></div></div>");
+						upTrack[val.Name] = count
+						count = Object.keys(upTrack).length
 					}
 				});
 
@@ -711,7 +784,7 @@ function upContent(day) {
 					if ($('#yesterdayUp').hasClass("dateSelect") == true) {
 						
 						// For yesterday only - past tense
-						upItems.push("<div id=\"noItems\"><i>There were no shows.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
+						upItems.push("<div id=\"noItems\"><i>There are no shows to catch up on.</i></div><div id=\"noItemsFrown\"><i class=\"fa fa-frown-o\"></i></div>");
 					
 					} else {
 						// For today and tomorrow - present tense
@@ -746,7 +819,7 @@ function upContent(day) {
 				$('#shortenedLogo img').on('click', function() {
 					
 					// Open the server in a new tab
-					path = ipStorage + ":" + portStorage + "/mediabrowser/dashboard/index.html";
+					path = ipStorage + ":" + portStorage + "/emby/dashboard/index.html";
 					chrome.tabs.create({ url: path });
 				});
 			});
@@ -764,21 +837,21 @@ function logoutUser() {
 	chrome.browserAction.setIcon({ path: "Icon.png" });
 
 	// Make chrome storage sync
-        async.auto({
+		async.auto({
 
-        	'storageUrl': storageUrl,
-        	'ajaxHeader': ajaxHeader,
-        	'logoutUser': ['storageUrl', 'ajaxHeader', function getUserList(callback, result) {
+			'storageUrl': storageUrl,
+			'ajaxHeader': ajaxHeader,
+			'logoutUser': ['storageUrl', 'ajaxHeader', function getUserList(callback, result) {
 
-	      		// Set shortcut to ip and port & header
-	        	var ipStorage = result.storageUrl.ipStorage;
-	        	var portStorage = result.storageUrl.portStorage;
-	        	var header = result.ajaxHeader;
+				// Set shortcut to ip and port & header
+				var ipStorage = result.storageUrl.ipStorage;
+				var portStorage = result.storageUrl.portStorage;
+				var header = result.ajaxHeader;
 
 			// Revoke access token
 			var resp = $.ajax({
 				type: "POST",
-				url: ipStorage + ":" + portStorage + "/mediabrowser/Sessions/Logout/",
+				url: ipStorage + ":" + portStorage + "/emby/Sessions/Logout/",
 				headers: header,
 				dataType: "json",
 				contentType: "application/json"
@@ -791,7 +864,8 @@ function logoutUser() {
 				chrome.storage.local.remove('token');
 				chrome.storage.local.remove('hideWatched');
 				chrome.storage.local.remove('hideDisliked');
-		        })
+				chrome.storage.local.remove('checkIcon')
+				})
 
 			callback();
 		}]
