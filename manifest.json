@@ -3,7 +3,7 @@
 	"manifest_version": 2,
 	"name": "MB Upcoming",
 	"short_name": "MBU",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	
 	"background": {
     		"scripts": ["js/jquery-2.1.1.min.js", "js/common.js", "eventPage.js"],
