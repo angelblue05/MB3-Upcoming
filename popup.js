@@ -681,7 +681,8 @@ function upContent(day) {
 				$.each(data.Items, function(key, val) {
 
 					// Shortened PremiereDate to only include the date
-					var shortDate = (val.PremiereDate).substring(0, 10);
+					var shortDate = new Date(val.PremiereDate);
+					shortDate = dateToString(shortDate)
 
 					if (shortDate == date && upContentDay == day) {
 

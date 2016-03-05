@@ -50,11 +50,22 @@ function guid() {
 
 // Today's date in a workable format
 function yyyymmdd(d) {         
-        
-        var result = new Date(); // Local
 
-        result.setDate(result.getDate() + d);
-        result = result.toISOString().slice(0, 10);
-        
-        return result
+        var date = new Date(); // Local
+
+        date.setDate(date.getDate() + d);
+        date = dateToString(date)
+
+        return date
 };
+
+function dateToString(date) {
+
+    var yyyy = date.getFullYear().toString();
+    var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+    var dd = date.getDate().toString();
+    
+    newDate = yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+
+    return newDate
+}
