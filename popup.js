@@ -21,11 +21,11 @@ $(document).ready(function() {
 	});
 
 	/*document.addEventListener('contextmenu', function(e) {
-	    if (e.srcElement.className == "bannerItemImage") {
-	    	console.log(e.target.getAttribute('id'));
-	    }
-        //e.preventDefault();
-    }, false);*/
+		if (e.srcElement.className == "bannerItemImage") {
+			console.log(e.target.getAttribute('id'));
+		}
+		//e.preventDefault();
+	}, false);*/
 });
 
 
@@ -716,9 +716,9 @@ function upContent(day) {
 							// Mark as available episodes available to watch on MB3
 							//available = "<a id=\"" + val.Id +"\" class=\"available\" href=\"" + path + "\">Available</a>";
 							if (val.IsHD) {
-								available = "<a class=\"quality\">HD</a>"
+								available = "<a class=\"quality\" href=\"" + path + "\">HD</a>";
 							} else {
-								available = "<a class=\"quality qualitysd\">SD</a>"
+								available = "<a class=\"quality qualitysd\" href=\"" + path + "\">SD</a>"//"<a class=\"quality qualitysd\" href=\"" + path + "\">SD</a>";
 							}
 						}
 
@@ -808,8 +808,8 @@ function upContent(day) {
 				})
 
 				// Link to MB3 when the file is available
-				$('.available').off('click');
-				$('.available').on('click', function() {
+				$('.quality').off('click');
+				$('.quality').on('click', function() {
 
 					path = $(this).attr("href");
 					chrome.tabs.create({ url: path });
